@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>财富自由基金 · CryptoTrix</title>
+  <meta name="description" content="CryptoTrix 财富自由基金实时看板 · Day N · $137K → $2M · #NFA">
+  <meta name="theme-color" content="#0B0D10">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/styles/shared.css">
+  <link rel="stylesheet" href="/src/styles/fund.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav class="site-nav">
+      <a class="brand" href="/">Crypto<em>Trix</em></a>
+      <div class="nav-links">
+        <a class="active" href="/fund.html">财富自由基金</a>
+        <a href="/portfolio.html">US Equities</a>
+        <a href="https://x.com/CryptoTrix1" target="_blank" rel="noopener">@CryptoTrix1</a>
+      </div>
+    </nav>
+
+    <div class="toolbar">
+      <span class="badge badge-demo" id="data-badge">Demo data · 示例数据</span>
+      <span class="badge badge-nfa">⚠️ #NFA #DYOR</span>
+      <span class="muted tiny-meta" id="mkt"></span>
+      <span class="muted tiny-meta" id="lastupd">加载中…</span>
+    </div>
+
+    <section class="fund-head">
+      <div>
+        <h1 class="fund-title">财富自由基金 · <span class="day" id="d-day">Day —</span></h1>
+        <p class="fund-sub">持仓、盈亏与决策，全程公开 · <span id="d-sub">US EQUITIES</span></p>
+      </div>
+      <div class="fund-goal">
+        <div class="lbl">长期目标</div>
+        <div class="val" id="d-goal">$2,000,000</div>
+      </div>
+    </section>
+
+    <section class="goal-block panel">
+      <div class="goal-top">
+        <div class="goal-left">
+          <span class="pct-big" id="d-pct">—%</span>
+          <span class="pct-sub">已达成</span>
+        </div>
+        <div class="goal-right" id="d-dist">距目标 —</div>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" id="d-fill"></div>
+        <div class="bar-ticks" id="d-ticks"></div>
+        <div class="bar-knob" id="d-knob"></div>
+      </div>
+      <div class="bar-labels" id="d-labels"></div>
+      <div class="goal-status" id="d-status"></div>
+    </section>
+
+    <section class="stat-cards" id="stat-cards">
+      <div class="card"><div class="label">总资产</div><div class="value flat" id="d-total">—</div><div class="sub" id="d-total-sub"></div></div>
+      <div class="card"><div class="label">当日盈亏</div><div class="value flat" id="d-daypnl">—</div><div class="sub" id="d-daypnl-sub"></div></div>
+      <div class="card"><div class="label">累计盈亏</div><div class="value flat" id="d-cumpnl">—</div><div class="sub" id="d-cumpnl-sub"></div></div>
+      <div class="card"><div class="label">收益率</div><div class="value flat" id="d-ret">—</div><div class="sub" id="d-ret-sub"></div></div>
+      <div class="card"><div class="label">现金占比</div><div class="value flat" id="d-cash">—</div><div class="sub" id="d-cash-sub"></div></div>
+    </section>
+
+    <section class="panel holdings-panel">
+      <div class="panel-head">
+        <h2>持仓 Holdings</h2>
+        <span class="muted" id="holdings-count">—</span>
+      </div>
+      <div class="table-scroll">
+        <table class="data">
+          <thead>
+            <tr>
+              <th class="l">标的</th>
+              <th>现价</th>
+              <th>涨跌</th>
+              <th>IV/HV</th>
+              <th class="l">备注</th>
+            </tr>
+          </thead>
+          <tbody id="d-rows"></tbody>
+        </table>
+      </div>
+      <p class="vol-note" id="vol-note">IV=隐含波动率 · HV=30日历史波动率 · 绿=IV比HV高5点以上，权利金偏厚</p>
+    </section>
+
+    <section class="panel opt-panel" id="opt-panel">
+      <div class="panel-head">
+        <h2>期权 Cash-Secured Puts</h2>
+        <span class="opt-summary" id="opt-summary">—</span>
+      </div>
+      <div class="table-scroll">
+        <table class="data opt-table">
+          <thead>
+            <tr>
+              <th class="l">标的</th>
+              <th class="l">合约</th>
+              <th>DTE</th>
+              <th>收权利金</th>
+              <th>现价</th>
+              <th>价外/价内</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody id="d-opt-rows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="site-foot">
+      <div>
+        @<b style="color:var(--accent)" id="d-handle">CRYPTOTRIX1</b>
+        · <a href="https://x.com/CryptoTrix1" target="_blank" rel="noopener">X</a>
+        <div class="nfa">⚠️ Not financial advice · #NFA #DYOR · 公开访客视图</div>
+      </div>
+      <div class="nfa">从 $137K 出发 · 目标 $2M</div>
+    </footer>
+  </div>
+  <script type="module" src="/src/fund.js"></script>
+</body>
+</html>

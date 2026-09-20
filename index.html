@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CryptoTrix · 财富自由基金</title>
+  <meta name="description" content="CryptoTrix 公开持仓看板 · $137K → $2M 旅程实时公开 · US Equities · #NFA #DYOR">
+  <meta name="theme-color" content="#0B0D10">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/styles/shared.css">
+  <link rel="stylesheet" href="/src/styles/landing.css">
+</head>
+<body class="landing">
+  <div class="hero-wrap">
+    <nav class="site-nav">
+      <a class="brand" href="/">Crypto<em>Trix</em></a>
+      <div class="nav-links">
+        <a href="/fund.html">财富自由基金</a>
+        <a href="/portfolio.html">US Equities</a>
+        <a href="https://x.com/CryptoTrix1" target="_blank" rel="noopener">@CryptoTrix1</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="pill">PUBLIC · 全程公开</div>
+      <h1>Crypto<em>Trix</em></h1>
+      <p class="tagline">$137K → $2M · 持仓、盈亏与决策，全程公开</p>
+      <p class="lede">
+        从 $137K 出发，目标 $2,000,000。仓位结构、当日盈亏、累计回报与 Cash-Secured Puts
+        —— 面向公众访客的实时看板，不是私密后台。
+      </p>
+
+      <div class="progress-card panel">
+        <div class="progress-top">
+          <div>
+            <div class="muted tiny">旅程进度 · Journey</div>
+            <div class="progress-nums">
+              <strong id="hero-pct">—</strong>
+              <span class="muted" id="hero-assets">总资产 —</span>
+            </div>
+          </div>
+          <div class="progress-goal">
+            <div class="muted tiny">长期目标</div>
+            <div class="goal-val">$2,000,000</div>
+          </div>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" id="hero-fill"></div>
+          <div class="bar-knob" id="hero-knob"></div>
+        </div>
+        <div class="milestones" id="hero-ms"></div>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="/fund.html">进入财富自由基金看板 →</a>
+        <a class="btn btn-ghost" href="/portfolio.html">Open US Equities Dashboard</a>
+      </div>
+    </header>
+
+    <section class="cards-grid">
+      <a class="feature-card panel" href="/fund.html">
+        <div class="en">Wealth Freedom Fund</div>
+        <h2>财富自由基金 · 实时看板</h2>
+        <p>Day N、目标进度、总资产、当日/累计盈亏、收益率、现金占比、14 只持仓现价与 IV/HV、Cash-Secured Puts。</p>
+        <span class="go">进入看板 →</span>
+      </a>
+      <a class="feature-card panel" href="/portfolio.html">
+        <div class="en">US Equities Dashboard</div>
+        <h2>美股持仓仪表盘（EN）</h2>
+        <p>Holdings, weights, and weekly / monthly / YTD performance for every position — clean public view.</p>
+        <span class="go">Open dashboard →</span>
+      </a>
+    </section>
+
+    <footer class="site-foot">
+      <div>
+        X · <a href="https://x.com/CryptoTrix1" target="_blank" rel="noopener">@CryptoTrix1</a>
+        <div class="nfa">⚠️ Not financial advice · #NFA #DYOR</div>
+      </div>
+      <div class="nfa">Demo data by default · 默认示例数据</div>
+    </footer>
+  </div>
+  <script type="module" src="/src/landing.js"></script>
+</body>
+</html>
