@@ -45,12 +45,26 @@ img { max-width: 100%; display: block; }
   padding: 28px 22px 48px;
 }
 
-.site-nav {
+/* Sticky shared top navigation tab bar */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(11, 13, 16, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+.top-nav-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 12px 22px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 28px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
@@ -58,14 +72,67 @@ img { max-width: 100%; display: block; }
   display: inline-flex;
   align-items: baseline;
   gap: 2px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
   letter-spacing: -0.6px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .brand em {
   font-style: normal;
   color: var(--accent);
+}
+
+.nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  max-width: 100%;
+}
+
+.nav-tabs::-webkit-scrollbar { display: none; }
+
+.nav-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: border-color .18s, color .18s, background .18s, box-shadow .18s;
+}
+
+.nav-tab:hover {
+  border-color: rgba(240, 185, 11, 0.45);
+  color: var(--accent);
+}
+
+.nav-tab.active {
+  border-color: rgba(240, 185, 11, 0.65);
+  color: #151310;
+  background: linear-gradient(135deg, #F0B90B, #FFD75E);
+  box-shadow: 0 0 0 1px rgba(240, 185, 11, 0.25), 0 6px 18px var(--accent-glow);
+  font-weight: 700;
+}
+
+/* Legacy aliases (unused after nav.js) */
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
 }
 
 .nav-links {
@@ -329,6 +396,9 @@ table.data tbody tr:hover td { background: rgba(255, 255, 255, 0.015); }
 
 @media (max-width: 760px) {
   .wrap { padding: 20px 14px 36px; }
+  .top-nav-inner { padding: 10px 14px; gap: 10px; }
+  .nav-tab { padding: 7px 11px; font-size: 12px; }
+  .brand { font-size: 16px; }
   .card .value { font-size: 18px; }
   table.data thead th,
   table.data tbody td { padding: 10px 11px; font-size: 13px; }

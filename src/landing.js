@@ -1,3 +1,4 @@
+import './nav.js';
 import { DEMO_PRICES } from './data/demo.js';
 import { loadHoldingsData } from './lib/holdings.js';
 import { usd } from './lib/format.js';

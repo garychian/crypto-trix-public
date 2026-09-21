@@ -1,3 +1,4 @@
+import './nav.js';
 import { DEMO_NOTES } from './data/demo.js';
 import { loadHoldingsData } from './lib/holdings.js';
 import { fetchPrices, priceSourceLabel } from './lib/prices.js';

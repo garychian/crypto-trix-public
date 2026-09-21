@@ -1,3 +1,4 @@
+import './nav.js';
 import { loadHoldingsData } from './lib/holdings.js';
 import { fetchPrices, priceSourceLabel } from './lib/prices.js';
 import { marketStatus } from './lib/market.js';
