@@ -37,6 +37,18 @@ function fmtPct(v) {
   return sign + Math.abs(v).toFixed(2) + '%';
 }
 
+function fmtAxisDate(s) {
+  if (!s) return '';
+  const [, m, d] = s.split('-');
+  return `${Number(m)}/${Number(d)}`;
+}
+
+function fmtTipDate(s) {
+  if (!s) return '—';
+  const [y, m, d] = s.split('-');
+  return `${y}-${m}-${d}`;
+}
+
 /** Build equity series: { date, equity }[] */
 export function buildEquitySeries(checkins, anchorTotal) {
   const series = (checkins && checkins.series) || [];
@@ -101,7 +113,7 @@ function toPath(xs, ys, w, h, pad) {
     const py = pad.t + (1 - (ys[i] - minY) / span) * innerH;
     return [px, py];
   });
-  if (!pts.length) return { line: '', area: '', minY, maxY, pts };
+  if (!pts.length) return { line: '', area: '', minY, maxY, pts, span, innerW, innerH };
 
   let line = `M ${pts[0][0].toFixed(2)} ${pts[0][1].toFixed(2)}`;
   for (let i = 1; i < pts.length; i++) {
@@ -115,7 +127,22 @@ function toPath(xs, ys, w, h, pad) {
     line +
     ` L ${pts[pts.length - 1][0].toFixed(2)} ${baseY}` +
     ` L ${pts[0][0].toFixed(2)} ${baseY} Z`;
-  return { line, area, minY, maxY, pts };
+  return { line, area, minY, maxY, pts, span, innerW, innerH };
+}
+
+function pickAxisTicks(rawSlice, maxTicks = 5) {
+  if (!rawSlice.length) return [];
+  if (rawSlice.length === 1) return [{ i: 0, date: rawSlice[0].date }];
+  const n = Math.min(maxTicks, rawSlice.length);
+  const ticks = [];
+  const seen = new Set();
+  for (let t = 0; t < n; t++) {
+    const i = Math.round((t / (n - 1)) * (rawSlice.length - 1));
+    if (seen.has(i)) continue;
+    seen.add(i);
+    ticks.push({ i, date: rawSlice[i].date });
+  }
+  return ticks;
 }
 
 export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) {
@@ -127,6 +154,8 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
   let animStart = 0;
   let fromYs = null;
   let toYs = null;
+  let currentSlice = [];
+  let layout = null; // { minY, span, pts mapping helpers }
   let reduced =
     typeof matchMedia !== 'undefined' &&
     matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -168,39 +197,128 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
             <stop offset="100%" stop-color="#F0B90B" stop-opacity="1"/>
           </linearGradient>
         </defs>
+        <g class="eq-xaxis" aria-hidden="true"></g>
         <path class="eq-area" fill="url(#eqAreaGrad)" d=""></path>
         <path class="eq-line" fill="none" stroke="url(#eqLineGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d=""></path>
+        <line class="eq-cross" x1="0" y1="0" x2="0" y2="0" hidden></line>
+        <circle class="eq-dot" r="4.5" cx="0" cy="0" hidden></circle>
       </svg>
+      <div class="eq-tip" data-eq-tip hidden>
+        <div class="eq-tip-date" data-eq-tip-date></div>
+        <div class="eq-tip-val" data-eq-tip-val></div>
+      </div>
     </div>
   `;
 
+  const wrap = root.querySelector('.eq-canvas-wrap');
   const svg = root.querySelector('.eq-svg');
   const areaEl = root.querySelector('.eq-area');
   const lineEl = root.querySelector('.eq-line');
+  const xAxisEl = root.querySelector('.eq-xaxis');
+  const crossEl = root.querySelector('.eq-cross');
+  const dotEl = root.querySelector('.eq-dot');
+  const tipEl = root.querySelector('[data-eq-tip]');
+  const tipDateEl = root.querySelector('[data-eq-tip-date]');
+  const tipValEl = root.querySelector('[data-eq-tip-val]');
   const metaEl = root.querySelector('[data-eq-meta]');
   const lastEl = root.querySelector('[data-eq-last]');
   const chgEl = root.querySelector('[data-eq-chg]');
   const pills = [...root.querySelectorAll('.eq-pill')];
 
-  const pad = { t: 16, r: 12, b: 28, l: 12 };
+  const pad = { t: 16, r: 16, b: 36, l: 16 };
   const W = 720;
   const H = 280;
 
+  function hideHover() {
+    crossEl.setAttribute('hidden', '');
+    dotEl.setAttribute('hidden', '');
+    tipEl.hidden = true;
+  }
+
   function paint(ys, rawSlice) {
+    currentSlice = rawSlice || [];
     const xs = ys.map((_, i) => i);
-    const { line, area } = toPath(xs, ys, W, H, pad);
-    lineEl.setAttribute('d', line);
-    areaEl.setAttribute('d', area);
+    const geo = toPath(xs, ys, W, H, pad);
+    lineEl.setAttribute('d', geo.line);
+    areaEl.setAttribute('d', geo.area);
+
+    layout = {
+      minY: geo.minY,
+      span: geo.span || 1,
+      n: Math.max(ys.length, 1),
+    };
+
+    // X-axis date labels from real trading days
+    const ticks = pickAxisTicks(currentSlice, currentSlice.length <= 7 ? currentSlice.length : 5);
+    const innerW = W - pad.l - pad.r;
+    xAxisEl.innerHTML = ticks
+      .map(({ i, date }) => {
+        const x =
+          pad.l +
+          (i / Math.max(currentSlice.length - 1, 1)) * innerW;
+        const anchor =
+          i === 0 ? 'start' : i === currentSlice.length - 1 ? 'end' : 'middle';
+        return `<text class="eq-x-label" x="${x.toFixed(1)}" y="${H - 10}" text-anchor="${anchor}">${fmtAxisDate(date)}</text>`;
+      })
+      .join('');
 
     const first = rawSlice[0]?.equity;
     const last = rawSlice[rawSlice.length - 1]?.equity;
-    const chg = first != null && last != null && first !== 0 ? ((last - first) / first) * 100 : null;
+    const chg =
+      first != null && last != null && first !== 0
+        ? ((last - first) / first) * 100
+        : null;
     lastEl.textContent = fmtMoney(last);
     chgEl.textContent = fmtPct(chg);
     chgEl.className = 'val ' + (chg == null ? '' : chg >= 0 ? 'up' : 'down');
     const a = rawSlice[0]?.date || '—';
     const b = rawSlice[rawSlice.length - 1]?.date || '—';
     metaEl.textContent = `${a} → ${b} · ${rawSlice.length} 个交易日样本`;
+    hideHover();
+  }
+
+  function yToPy(equity) {
+    const innerH = H - pad.t - pad.b;
+    return pad.t + (1 - (equity - layout.minY) / layout.span) * innerH;
+  }
+
+  function showHoverAt(clientX) {
+    if (!currentSlice.length || !layout) {
+      hideHover();
+      return;
+    }
+    const rect = svg.getBoundingClientRect();
+    if (!rect.width) return;
+    const svgX = ((clientX - rect.left) / rect.width) * W;
+    const innerW = W - pad.l - pad.r;
+    let t = (svgX - pad.l) / (innerW || 1);
+    t = Math.max(0, Math.min(1, t));
+    const idx = Math.round(t * (currentSlice.length - 1));
+    const pt = currentSlice[idx];
+    const px = pad.l + (idx / Math.max(currentSlice.length - 1, 1)) * innerW;
+    const py = yToPy(pt.equity);
+
+    crossEl.removeAttribute('hidden');
+    crossEl.setAttribute('x1', px.toFixed(1));
+    crossEl.setAttribute('x2', px.toFixed(1));
+    crossEl.setAttribute('y1', String(pad.t));
+    crossEl.setAttribute('y2', String(H - pad.b));
+
+    dotEl.removeAttribute('hidden');
+    dotEl.setAttribute('cx', px.toFixed(1));
+    dotEl.setAttribute('cy', py.toFixed(1));
+
+    tipDateEl.textContent = fmtTipDate(pt.date);
+    tipValEl.textContent = fmtMoney(pt.equity);
+    tipEl.hidden = false;
+
+    // Position tip in the wrap (CSS % of wrap)
+    const leftPct = (px / W) * 100;
+    const topPct = (py / H) * 100;
+    tipEl.style.left = `${leftPct}%`;
+    tipEl.style.top = `${topPct}%`;
+    tipEl.classList.toggle('eq-tip-right', leftPct > 62);
+    tipEl.classList.toggle('eq-tip-left', leftPct <= 62);
   }
 
   function setActivePill() {
@@ -233,7 +351,6 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
 
     cancelAnimationFrame(raf);
     fromYs = displayYs.slice();
-    // align lengths
     while (fromYs.length < ys.length) fromYs.push(fromYs[fromYs.length - 1]);
     while (fromYs.length > ys.length) fromYs.pop();
     toYs = ys;
@@ -243,7 +360,6 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
       const t = Math.min(1, (now - animStart) / ANIM_MS);
       const e = easeOutCubic(t);
       displayYs = fromYs.map((y, i) => y + (toYs[i] - y) * e);
-      // area opacity pulse synced with morph
       const op = 0.55 + 0.45 * Math.sin(Math.PI * e);
       areaEl.style.opacity = String(op);
       paint(displayYs, slice);
@@ -265,7 +381,15 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
     });
   });
 
-  // Prefer month if enough history, else week
+  const onMove = (ev) => {
+    const clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+    showHoverAt(clientX);
+  };
+  wrap.addEventListener('pointermove', onMove);
+  wrap.addEventListener('pointerdown', onMove);
+  wrap.addEventListener('pointerleave', hideHover);
+  wrap.addEventListener('pointercancel', hideHover);
+
   const initial =
     points.length >= 12 ? defaultRange : points.length >= 5 ? 'week' : 'year';
   animateTo(RANGES[initial] ? initial : 'month');
@@ -273,6 +397,10 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
   return {
     destroy() {
       cancelAnimationFrame(raf);
+      wrap.removeEventListener('pointermove', onMove);
+      wrap.removeEventListener('pointerdown', onMove);
+      wrap.removeEventListener('pointerleave', hideHover);
+      wrap.removeEventListener('pointercancel', hideHover);
       root.innerHTML = '';
     },
     setPoints(next) {
