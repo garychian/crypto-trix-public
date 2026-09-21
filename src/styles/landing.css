@@ -522,6 +522,38 @@
   margin-bottom: 4px;
 }
 
+.vix-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 18px 28px;
+  flex-wrap: wrap;
+}
+
+.vix-head-text {
+  min-width: 0;
+}
+
+.vix-readout-top {
+  position: static;
+  left: auto;
+  top: auto;
+  transform: none;
+  text-align: left;
+  margin-top: 2px; /* align with 「恐慌贪婪指数」 baseline area */
+  pointer-events: none;
+}
+
+.vix-readout-top .vix-value {
+  font-size: clamp(32px, 6vw, 44px);
+  line-height: 1;
+}
+
+.vix-readout-top .vix-label {
+  margin-top: 2px;
+}
+
+
 .vix-body {
   display: grid;
   grid-template-columns: minmax(260px, 1.2fr) minmax(160px, 0.8fr);
@@ -533,7 +565,7 @@
 .vix-gauge-visual {
   position: relative;
   max-width: 360px;
-  margin: 0; /* align left edge with 「恐慌贪婪指数」 title */
+  margin: 0;
   width: 100%;
 }
 
@@ -728,8 +760,8 @@
     text-align: center;
   }
   .vix-seg-labels { justify-content: center; }
-  .vix-readout { top: 70%; bottom: auto; }
-  .vix-value { font-size: 40px; }
+  .vix-head { gap: 10px 16px; }
+  .vix-readout-top .vix-value { font-size: 36px; }
 }
 
 /* ── Journey Activity Rings (below heatmap; VIX stays first under nav) ── */

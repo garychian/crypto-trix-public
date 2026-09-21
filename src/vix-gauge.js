@@ -313,16 +313,18 @@ export async function renderVixGauge() {
   root.innerHTML = `
     <div class="vix-card-inner">
       <div class="vix-head">
-        <div class="en">Fear & Greed · VIX</div>
-        <h2 id="vix-title">恐慌贪婪指数</h2>
+        <div class="vix-head-text">
+          <div class="en">Fear & Greed · VIX</div>
+          <h2 id="vix-title">恐慌贪婪指数</h2>
+        </div>
+        <div class="vix-readout vix-readout-top">
+          <div class="vix-value" id="vix-value">${Number.isFinite(value) ? value.toFixed(2) : '—'}</div>
+          <div class="vix-label">VIX</div>
+        </div>
       </div>
       <div class="vix-body">
         <div class="vix-gauge-visual">
           ${buildGaugeSVG()}
-          <div class="vix-readout">
-            <div class="vix-value" id="vix-value">${Number.isFinite(value) ? value.toFixed(2) : '—'}</div>
-            <div class="vix-label">VIX</div>
-          </div>
         </div>
         <div class="vix-meta">
           <div class="vix-asof muted">as of ${escapeAttr(asOf)}</div>
