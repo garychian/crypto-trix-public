@@ -1005,3 +1005,33 @@
   .jr-pct { font-size: 32px; }
   .jr-visual { max-width: 240px; }
 }
+
+
+.jr-body-solo {
+  grid-template-columns: 1fr !important;
+  justify-items: center;
+}
+
+.jr-center-nums {
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.jr-center-nums .jr-nums {
+  gap: 10px;
+  align-items: center;
+  text-align: center;
+}
+
+.jr-center-nums .jr-num {
+  font-size: clamp(18px, 2.8vw, 26px);
+}
+
+.jr-nfa-foot {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 11px;
+}

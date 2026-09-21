@@ -282,9 +282,7 @@ export function renderJourneyRings(data) {
 
   const metrics = buildJourneyMetrics(data);
   const { rings, total, goal, progress, asOf } = metrics;
-  const pct = progress * 100;
-
-  // Three progress figures only — colors match the three rings
+  // Three progress figures in ring center — colors match the three rings
   const numStats = rings
     .map((r, i) => {
       const pct = (Number(r.value) || 0) * 100; // ring fill progress
@@ -303,35 +301,26 @@ export function renderJourneyRings(data) {
         <h2 id="journey-title">财富自由 · 旅程进度</h2>
         <p class="jr-sub muted">$137K → $2M · Activity Rings</p>
       </div>
-      <div class="jr-body">
+      <div class="jr-body jr-body-solo">
         <div class="jr-visual">
           ${buildRingSVG(rings)}
-          <div class="jr-center">
-            <div class="jr-pct" id="jr-pct">0%</div>
-            <div class="jr-assets" id="jr-assets">$0</div>
-            <div class="jr-goal muted">→ ${escapeHTML(usd(goal))}</div>
-            ${asOf ? `<div class="jr-asof muted">as of ${escapeHTML(asOf)}</div>` : ''}
+          <div class="jr-center jr-center-nums">
+            <div class="jr-nums" id="jr-nums">
+              ${numStats
+                .map(
+                  (n) => `
+                <div class="jr-num" data-key="${n.key}" style="color:${n.color};text-shadow:0 0 14px ${n.glow}">
+                  <span class="jr-num-val" data-key="${n.key}">0%</span>
+                </div>`
+                )
+                .join('')}
+            </div>
           </div>
-        </div>
-        <div class="jr-side">
-          <div class="jr-nums" id="jr-nums">
-            ${numStats
-              .map(
-                (n) => `
-              <div class="jr-num" data-key="${n.key}" style="color:${n.color};text-shadow:0 0 14px ${n.glow}">
-                <span class="jr-num-val" data-key="${n.key}">0%</span>
-              </div>`
-              )
-              .join('')}
-          </div>
-          <div class="jr-nfa muted">#NFA · 非投资建议</div>
         </div>
       </div>
+      <div class="jr-nfa muted jr-nfa-foot">#NFA · 非投资建议</div>
     </div>
   `;
-
-  const pctEl = root.querySelector('#jr-pct');
-  const assetsEl = root.querySelector('#jr-assets');
 
   let played = false;
   function play() {
@@ -339,12 +328,6 @@ export function renderJourneyRings(data) {
     played = true;
     root.classList.add('is-lit');
     animateRings(root, rings, 1650);
-    if (pctEl) {
-      animateCountUp(pctEl, 0, pct, 1650, (v) => v.toFixed(2) + '%');
-    }
-    if (assetsEl) {
-      animateCountUp(assetsEl, 0, total, 1650, (v) => usd(v));
-    }
     for (const n of numStats) {
       const el = root.querySelector('.jr-num-val[data-key="' + n.key + '"]');
       if (el) {
