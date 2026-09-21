@@ -73,7 +73,11 @@ Three rings (outer → inner):
 
 - Title: **恐慌贪婪指数** (EN: Fear & Greed · VIX)
 - Flashy half-donut: green→gold→red gradient, glowing needle, spring overshoot
-- Data: `public/data/vix.json` (from local `vix_log.csv`; latest sample **14.81** as of 2026-09-18)
+- Data: **live** — `GET /api/vix` (serverless `api/vix.js`) fetches CBOE's public
+  delayed-quote CDN on each request (5-min edge cache, no key needed); falls back
+  to static `public/data/vix.json` (from local `vix_log.csv`) if the API fails
+- The readout sits **directly under the needle hub** in the tall bottom strip of
+  the SVG canvas (`VIEW_H = 272`, readout absolute bottom-center of `.vix-gauge-visual`)
 - Zones conceptually 0–15 / 15–25 / 25–40
 
 ### Heatmap (`src/landing.js` + checkin UI)

@@ -290,15 +290,32 @@ function buildGaugeSVG() {
     </svg>`;
 }
 
+async function loadVixData() {
+  // Live first (serverless, CBOE), then the static snapshot as fallback.
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 4000);
+    const res = await fetch('/api/vix', { cache: 'no-store', signal: ctrl.signal });
+    clearTimeout(timer);
+    if (res.ok) {
+      const live = await res.json();
+      if (Number.isFinite(Number(live.value))) return live;
+    }
+  } catch {
+    /* fall through to snapshot */
+  }
+  const res = await fetch('/data/vix.json', { cache: 'no-store' });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
 export async function renderVixGauge() {
   const root = document.getElementById('vix-gauge');
   if (!root) return;
 
   let data;
   try {
-    const res = await fetch('/data/vix.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    data = await res.json();
+    data = await loadVixData();
   } catch {
     root.innerHTML = `<div class="vix-error muted">VIX 数据加载失败</div>`;
     return;
