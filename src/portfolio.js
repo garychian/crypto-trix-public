@@ -1,9 +1,10 @@
-import { PORTFOLIO_HOLDINGS } from './data/demo.js';
+import { loadHoldingsData } from './lib/holdings.js';
 import { fetchPrices, priceSourceLabel } from './lib/prices.js';
 import { marketStatus } from './lib/market.js';
 import { pctSigned, moneyCls } from './lib/format.js';
 
-const holdings = PORTFOLIO_HOLDINGS.map((h) => ({ ...h }));
+let holdings = [];
+let cashUSD = null;
 let prices = {};
 
 function setVal(id, v, digits = 2) {
@@ -59,33 +60,69 @@ function computeAndRender() {
     yDen = 0;
   let stockCost = 0;
   let stockVal = 0;
+  let totalMV = 0;
 
   live.forEach(({ h, p }) => {
-    const w = h.weight || 0;
-    const cp = p.changePct || 0;
-    sumW += w;
-    weighted += cp * (w / 100);
-    stockVal += p.price * h.shares;
+    const mv = p.price * h.shares;
+    totalMV += mv;
+    stockVal += mv;
     if (h.cost) stockCost += h.cost * h.shares;
 
     const wr = periodRet(p, 'weeklyRef');
     const mr = periodRet(p, 'monthlyRef');
     const yr = periodRet(p, 'yearlyRef');
+    const cp = p.changePct || 0;
+    // provisional weight from CSV; recompute after we know total+cash
+    weighted += cp * ((h.weight || 0) / 100);
+    sumW += h.weight || 0;
+
     if (wr != null) {
-      wNum += wr * w;
-      wDen += w;
+      wNum += wr * (h.weight || 0);
+      wDen += h.weight || 0;
     }
     if (mr != null) {
-      mNum += mr * w;
-      mDen += w;
+      mNum += mr * (h.weight || 0);
+      mDen += h.weight || 0;
     }
     if (yr != null) {
-      yNum += yr * w;
-      yDen += w;
+      yNum += yr * (h.weight || 0);
+      yDen += h.weight || 0;
     }
   });
 
-  const cashW = Math.max(0, 100 - sumW);
+  const totalAssets = totalMV + (cashUSD != null ? cashUSD : 0);
+  const cashW =
+    cashUSD != null && totalAssets > 0
+      ? (cashUSD / totalAssets) * 100
+      : Math.max(0, 100 - sumW);
+
+  // Prefer live MV-based weights when we have cash; else CSV weights
+  const useLiveW = cashUSD != null && totalAssets > 0;
+  if (useLiveW) {
+    weighted = 0;
+    wNum = wDen = mNum = mDen = yNum = yDen = 0;
+    live.forEach(({ h, p }) => {
+      const w = ((p.price * h.shares) / totalAssets) * 100;
+      const cp = p.changePct || 0;
+      weighted += cp * (w / 100);
+      const wr = periodRet(p, 'weeklyRef');
+      const mr = periodRet(p, 'monthlyRef');
+      const yr = periodRet(p, 'yearlyRef');
+      if (wr != null) {
+        wNum += wr * w;
+        wDen += w;
+      }
+      if (mr != null) {
+        mNum += mr * w;
+        mDen += w;
+      }
+      if (yr != null) {
+        yNum += yr * w;
+        yDen += w;
+      }
+    });
+  }
+
   document.getElementById('cashBadge').textContent =
     cashW > 0 ? '💵 Cash ' + cashW.toFixed(1) + '%' : '💵 Cash —';
 
@@ -97,16 +134,21 @@ function computeAndRender() {
   setVal('c-total', stockCost > 0 ? ((stockVal - stockCost) / stockCost) * 100 : null);
 
   const tiles = live
-    .map(({ h, p }) => ({
-      ticker: h.ticker,
-      weight: h.weight || 0,
-      changePct: p.changePct || 0,
-      price: p.price,
-      weekly: periodRet(p, 'weeklyRef'),
-      monthly: periodRet(p, 'monthlyRef'),
-      yearly: periodRet(p, 'yearlyRef'),
-      costRet: h.cost ? ((p.price - h.cost) / h.cost) * 100 : null,
-    }))
+    .map(({ h, p }) => {
+      const weight = useLiveW
+        ? ((p.price * h.shares) / totalAssets) * 100
+        : h.weight || 0;
+      return {
+        ticker: h.ticker,
+        weight,
+        changePct: p.changePct || 0,
+        price: p.price,
+        weekly: periodRet(p, 'weeklyRef'),
+        monthly: periodRet(p, 'monthlyRef'),
+        yearly: periodRet(p, 'yearlyRef'),
+        costRet: h.cost ? ((p.price - h.cost) / h.cost) * 100 : null,
+      };
+    })
     .sort((a, b) => b.weight - a.weight);
 
   const grid = document.getElementById('weight-grid');
@@ -192,6 +234,9 @@ function computeAndRender() {
 }
 
 async function boot() {
+  const data = await loadHoldingsData();
+  holdings = data.holdings;
+  cashUSD = data.cash_usd;
   const syms = holdings.map((h) => h.ticker);
   prices = await fetchPrices(syms, { hist: true });
   computeAndRender();

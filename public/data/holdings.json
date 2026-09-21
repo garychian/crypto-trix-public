@@ -1,0 +1,143 @@
+{
+  "as_of": "2026-09-19",
+  "day": 66,
+  "goal_usd": 2000000,
+  "cash_usd": 32038,
+  "invested_usd": 93975,
+  "cum_pnl_usd": 47296,
+  "total_assets_usd": 141271,
+  "handle": "CryptoTrix1",
+  "sub": "US EQUITIES",
+  "start": "2026-07-16",
+  "note": "Day 66 snapshot · as_of 2026-09-19 (covers 2026-09-18 US close). Cash anchored at broker baseline $32,038.",
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "shares": 101,
+      "cost": 216.95,
+      "costTotal": 21911.95,
+      "weight": 24.5
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 15,
+      "cost": 566.6,
+      "costTotal": 8499,
+      "weight": 7.9
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 30,
+      "cost": 112.06,
+      "costTotal": 3361.8,
+      "weight": 7.89
+    },
+    {
+      "ticker": "VOO",
+      "shares": 14,
+      "cost": 519.22,
+      "costTotal": 7269.08,
+      "weight": 7.46
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 18,
+      "cost": 360.19,
+      "costTotal": 6483.42,
+      "weight": 6.71
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 36,
+      "cost": 109.23,
+      "costTotal": 3932.28,
+      "weight": 5.95
+    },
+    {
+      "ticker": "AMZN",
+      "shares": 17,
+      "cost": 202.06,
+      "costTotal": 3435.02,
+      "weight": 3.44
+    },
+    {
+      "ticker": "AMD",
+      "shares": 10,
+      "cost": 74.59,
+      "costTotal": 745.9,
+      "weight": 3.57
+    },
+    {
+      "ticker": "META",
+      "shares": 6,
+      "cost": 80.39,
+      "costTotal": 482.34,
+      "weight": 2.64
+    },
+    {
+      "ticker": "SPCX",
+      "shares": 20,
+      "cost": 136.8,
+      "costTotal": 2736,
+      "weight": 1.97
+    },
+    {
+      "ticker": "PLTR",
+      "shares": 15,
+      "cost": 3.59,
+      "costTotal": 53.85,
+      "weight": 1.9
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6,
+      "cost": 145.25,
+      "costTotal": 871.5,
+      "weight": 1.41
+    },
+    {
+      "ticker": "EUV",
+      "shares": 50,
+      "cost": 26.5,
+      "costTotal": 1325,
+      "weight": 0.97
+    },
+    {
+      "ticker": "BB",
+      "shares": 200,
+      "cost": 4.15,
+      "costTotal": 830,
+      "weight": 1.33
+    }
+  ],
+  "options": [
+    {
+      "symbol": "DRAM",
+      "type": "SELL PUT",
+      "strike": 50,
+      "expiry": "2026-11-20",
+      "premium": 789
+    },
+    {
+      "symbol": "RKLB",
+      "type": "SELL PUT",
+      "strike": 60,
+      "expiry": "2027-06-17",
+      "premium": 1740
+    },
+    {
+      "symbol": "SPCX",
+      "type": "SELL PUT",
+      "strike": 100,
+      "expiry": "2027-01-15",
+      "premium": 719
+    },
+    {
+      "symbol": "EUV",
+      "type": "SELL PUT",
+      "strike": 27,
+      "expiry": "2026-10-16",
+      "premium": 260
+    }
+  ]
+}

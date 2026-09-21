@@ -1,10 +1,5 @@
-import {
-  DEMO_HOLDINGS,
-  DEMO_OPTIONS,
-  DEMO_CASH,
-  DEMO_NOTES,
-  FUND_CFG,
-} from './data/demo.js';
+import { DEMO_NOTES } from './data/demo.js';
+import { loadHoldingsData } from './lib/holdings.js';
 import { fetchPrices, priceSourceLabel } from './lib/prices.js';
 import { marketStatus } from './lib/market.js';
 import {
@@ -18,12 +13,18 @@ import {
 } from './lib/format.js';
 
 const MILESTONES = [100_000, 250_000, 500_000, 1_000_000, 2_000_000];
-const CFG = { ...FUND_CFG };
+const CFG = {
+  start: '2026-07-16',
+  goal: 2_000_000,
+  handle: 'CRYPTOTRIX1',
+  sub: 'US EQUITIES',
+};
 
-let holdings = DEMO_HOLDINGS.map((h) => ({ ...h }));
-let options = DEMO_OPTIONS.map((o) => ({ ...o }));
-let cashUSD = DEMO_CASH;
+let holdings = [];
+let options = [];
+let cashUSD = null;
 let notes = { ...DEMO_NOTES };
+let snapshotDay = null;
 let prices = {};
 let volData = { date: null, map: {} };
 
@@ -219,7 +220,7 @@ function computeAndRender() {
   const retPct = totalInvested > 0 ? (cumPnL / totalInvested) * 100 : null;
   const progress = totalAssets > 0 ? (totalAssets / CFG.goal) * 100 : null;
 
-  const dayN = dayNumber(CFG.start);
+  const dayN = snapshotDay != null ? snapshotDay : dayNumber(CFG.start);
   document.getElementById('d-day').textContent =
     dayN != null ? 'Day ' + dayN : 'Day —';
   document.getElementById('d-goal').textContent = usd(CFG.goal);
@@ -545,6 +546,17 @@ async function loadVol() {
 }
 
 async function boot() {
+  const data = await loadHoldingsData();
+  holdings = data.holdings;
+  options = data.options;
+  cashUSD = data.cash_usd;
+  notes = data.notes || { ...DEMO_NOTES };
+  snapshotDay = data.day;
+  CFG.goal = data.goal_usd || CFG.goal;
+  CFG.handle = data.handle || CFG.handle;
+  CFG.sub = data.sub || CFG.sub;
+  CFG.start = data.start || CFG.start;
+
   await loadVol();
   const syms = [
     ...new Set([

@@ -2,18 +2,24 @@
   "name": "crypto-trix-public",
   "version": "1.0.0",
   "private": true,
-  "description": "CryptoTrix Wealth Freedom Fund — public portfolio site ($137K → $2M)",
+  "description": "CryptoTrix Wealth Freedom Fund \u2014 public portfolio site ($137K \u2192 $2M)",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "regen-holdings": "node scripts/regen-holdings.mjs"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/garychian/crypto-trix-public.git"
   },
-  "keywords": ["cryptotrix", "portfolio", "fintech", "public"],
+  "keywords": [
+    "cryptotrix",
+    "portfolio",
+    "fintech",
+    "public"
+  ],
   "author": "CryptoTrix",
   "license": "MIT",
   "devDependencies": {
