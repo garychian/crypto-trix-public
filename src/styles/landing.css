@@ -487,8 +487,8 @@
 
 /* ── VIX semicircle fear gauge ── */
 .vix-section {
-  margin-top: 14px;
-  margin-bottom: 8px;
+  margin-top: 0;
+  margin-bottom: 14px;
   padding: 22px 24px 18px;
   text-align: left;
   position: relative;
@@ -524,16 +524,16 @@
 
 .vix-body {
   display: grid;
-  grid-template-columns: minmax(240px, 1.15fr) minmax(160px, 0.85fr);
+  grid-template-columns: minmax(260px, 1.2fr) minmax(160px, 0.8fr);
   gap: 8px 28px;
-  align-items: center;
-  margin-top: 6px;
+  align-items: start;
+  margin-top: 10px;
 }
 
 .vix-gauge-visual {
   position: relative;
   max-width: 360px;
-  margin: 0 auto;
+  margin: 0; /* align left edge with 「恐慌贪婪指数」 title */
   width: 100%;
 }
 
