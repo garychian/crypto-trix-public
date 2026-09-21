@@ -933,10 +933,13 @@
 
 .jr-leg-item {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 8px;
   font-size: 12.5px;
   font-weight: 600;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .jr-dot {
@@ -948,8 +951,11 @@
 
 .jr-leg-label {
   color: #B7BFCA;
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .jr-leg-val {
@@ -957,6 +963,9 @@
   font-weight: 800;
   color: var(--text);
   letter-spacing: -0.2px;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  margin-left: auto;
 }
 
 .jr-nfa {

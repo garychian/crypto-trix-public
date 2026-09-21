@@ -185,5 +185,6 @@
     "EUV": 23.6
   },
   "annual_return_target_pct": 20,
-  "annual_return_year": 2026
+  "annual_return_year": 2026,
+  "annualized_return_pct": 11.04
 }

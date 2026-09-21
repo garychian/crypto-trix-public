@@ -89,22 +89,30 @@ export function buildJourneyMetrics(data) {
   });
 
   // Middle — progress toward 2026 annual return target (default 20%)
-  const invested = data.invested_usd != null ? Number(data.invested_usd) : null;
-  const cumPnl = data.cum_pnl_usd != null ? Number(data.cum_pnl_usd) : null;
+  // Prefer explicit annualized_return_pct from holdings.json (user-stated YTD/annualized).
   const yearTargetPct =
     data.annual_return_target_pct != null && Number.isFinite(Number(data.annual_return_target_pct))
       ? Number(data.annual_return_target_pct)
       : 20;
   const yearLabel = data.annual_return_year != null ? String(data.annual_return_year) : '2026';
-  if (invested != null && invested > 0 && cumPnl != null && Number.isFinite(cumPnl) && yearTargetPct > 0) {
-    const ret = cumPnl / invested; // current return since book capital
-    const toward = ret / (yearTargetPct / 100); // 1.0 = hit 20% target
+  let retPct = null;
+  if (data.annualized_return_pct != null && Number.isFinite(Number(data.annualized_return_pct))) {
+    retPct = Number(data.annualized_return_pct);
+  } else {
+    const invested = data.invested_usd != null ? Number(data.invested_usd) : null;
+    const cumPnl = data.cum_pnl_usd != null ? Number(data.cum_pnl_usd) : null;
+    if (invested != null && invested > 0 && cumPnl != null && Number.isFinite(cumPnl)) {
+      retPct = (cumPnl / invested) * 100;
+    }
+  }
+  if (retPct != null && yearTargetPct > 0) {
+    const toward = retPct / yearTargetPct; // 1.0 = hit annual target
     rings.push({
       ...RING_DEFS[1],
       value: toward,
-      displayPct: ret * 100, // show realized return %
-      legend: yearLabel + ' 年度目标 ' + yearTargetPct + '%',
-      displayExtra: (ret * 100).toFixed(2) + '% / ' + yearTargetPct + '%',
+      displayPct: retPct,
+      legend: yearLabel + ' 年化 · 目标' + yearTargetPct + '%',
+      displayExtra: retPct.toFixed(2) + '% / ' + yearTargetPct + '%',
     });
   }
 
