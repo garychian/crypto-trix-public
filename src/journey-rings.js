@@ -283,14 +283,12 @@ export function renderJourneyRings(data) {
   const metrics = buildJourneyMetrics(data);
   const { rings, total, goal, progress, asOf } = metrics;
   // Three progress figures in ring center — colors match the three rings
-  // Center figures show the real metric, not the ring fill:
-  // outer/inner fill == metric, but middle ring fill is retPct/target (55.2%)
-  // while the number users expect is the annualized return itself (11.04%).
+  // Center shows displayPct (annualized 11.04%); ring fill still uses r.value toward 20% target
   const numStats = rings.map((r) => ({
     key: r.key,
     color: r.color,
     glow: r.glow,
-    to: Number(r.displayPct != null ? r.displayPct : (Number(r.value) || 0) * 100),
+    to: Number.isFinite(Number(r.displayPct)) ? Number(r.displayPct) : (Number(r.value) || 0) * 100,
   }));
 
   const legend = rings
