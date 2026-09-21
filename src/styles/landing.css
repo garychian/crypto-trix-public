@@ -492,7 +492,7 @@
   padding: 22px 24px 18px;
   text-align: left;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .vix-section::before {
@@ -545,7 +545,6 @@
 }
 
 .vix-arc {
-  filter: url(#vix-glow);
   opacity: 0.95;
 }
 
@@ -586,8 +585,10 @@
 .vix-readout {
   position: absolute;
   left: 50%;
-  bottom: 8px;
-  transform: translateX(-50%);
+  /* Center of upper semicircle (pivot at bottom) */
+  top: 42%;
+  bottom: auto;
+  transform: translate(-50%, -40%);
   text-align: center;
   pointer-events: none;
 }
@@ -675,6 +676,6 @@
     text-align: center;
   }
   .vix-seg-labels { justify-content: center; }
-  .vix-readout { bottom: 4px; }
+  .vix-readout { top: 44%; bottom: auto; }
   .vix-value { font-size: 40px; }
 }

@@ -1,5 +1,5 @@
 /**
- * Semicircle VIX fear gauge — loads /data/vix.json, animates needle on view.
+ * Semicircle VIX fear gauge — thick annular ring (half-donut), needle on view.
  */
 const MAX_VIX = 40;
 const SEGMENTS = [
@@ -7,6 +7,14 @@ const SEGMENTS = [
   { from: 15, to: 25, color: '#F0B90B', label: '中性' },
   { from: 25, to: 40, color: '#F6465D', label: '恐慌' },
 ];
+
+// Geometry (shared by SVG build + needle)
+const CX = 160;
+const CY = 152;
+const R_OUTER = 128;
+const R_INNER = 92;
+const VIEW_W = 320;
+const VIEW_H = 186;
 
 function clamp(n, lo, hi) {
   return Math.min(hi, Math.max(lo, n));
@@ -27,16 +35,24 @@ function polar(cx, cy, r, deg) {
   };
 }
 
-function arcPath(cx, cy, r, startDeg, endDeg) {
-  const s = polar(cx, cy, r, startDeg);
-  const e = polar(cx, cy, r, endDeg);
-  // Sweep from higher deg (left) to lower deg (right) → clockwise in SVG? 
-  // Our angles decrease left→right; large-arc=0, sweep=1 for clockwise in screen coords
-  // From 180→90: going clockwise through top? In SVG with y-down:
-  // cos/sin with our polar: 180→(-r,0), 90→(0,-r), 0→(r,0) — that's counterclockwise visually along the upper arc.
-  // For path A: sweep-flag 0 = CCW in SVG. We want upper semicircle left→right = CCW from 180 to 0.
+/**
+ * Closed annular sector path (filled ring slice).
+ * In SVG (y-down), clockwise sweep=1 from left(180°)→right(0°) travels along the TOP.
+ * Outer: start→end along top (sweep 1); inner: end→start along top (sweep 0).
+ */
+function annularSegment(cx, cy, rOuter, rInner, startDeg, endDeg) {
+  const oS = polar(cx, cy, rOuter, startDeg);
+  const oE = polar(cx, cy, rOuter, endDeg);
+  const iS = polar(cx, cy, rInner, startDeg);
+  const iE = polar(cx, cy, rInner, endDeg);
   const large = Math.abs(startDeg - endDeg) > 180 ? 1 : 0;
-  return `M ${s.x} ${s.y} A ${r} ${r} 0 ${large} 0 ${e.x} ${e.y}`;
+  return [
+    `M ${oS.x.toFixed(3)} ${oS.y.toFixed(3)}`,
+    `A ${rOuter} ${rOuter} 0 ${large} 1 ${oE.x.toFixed(3)} ${oE.y.toFixed(3)}`,
+    `L ${iE.x.toFixed(3)} ${iE.y.toFixed(3)}`,
+    `A ${rInner} ${rInner} 0 ${large} 0 ${iS.x.toFixed(3)} ${iS.y.toFixed(3)}`,
+    'Z',
+  ].join(' ');
 }
 
 function formatChg(chg, chgPct) {
@@ -54,7 +70,7 @@ function setNeedleAngle(el, valueDeg, cx, cy) {
 }
 
 function springNeedle(el, fromDeg, toDeg, cx, cy, durationMs = 1400) {
-  // Overshoot ~10% of travel then rebound (springy ease via rAF)
+  // Overshoot ~10% of travel then rebound
   const travel = toDeg - fromDeg;
   const overshoot = travel * 0.1;
   const peak = toDeg + overshoot;
@@ -87,28 +103,29 @@ function springNeedle(el, fromDeg, toDeg, cx, cy, durationMs = 1400) {
 }
 
 function buildGaugeSVG() {
-  const cx = 160;
-  const cy = 150;
-  const r = 118;
-  const stroke = 18;
+  const cx = CX;
+  const cy = CY;
+  const rO = R_OUTER;
+  const rI = R_INNER;
 
   const arcs = SEGMENTS.map((seg) => {
     const start = valueToDeg(seg.from);
     const end = valueToDeg(seg.to);
-    const d = arcPath(cx, cy, r, start, end);
-    return `<path class="vix-arc" d="${d}" stroke="${seg.color}" stroke-width="${stroke}" fill="none" stroke-linecap="butt" />`;
+    const d = annularSegment(cx, cy, rO, rI, start, end);
+    return `<path class="vix-arc" d="${d}" fill="${seg.color}" stroke="none" />`;
   }).join('');
 
-  // Tick marks at 0, 15, 25, 40
+  // Tick marks at segment boundaries (radial, across the ring)
   const ticks = [0, 15, 25, 40]
     .map((v) => {
       const deg = valueToDeg(v);
-      const outer = polar(cx, cy, r + stroke / 2 + 2, deg);
-      const inner = polar(cx, cy, r - stroke / 2 - 6, deg);
-      return `<line x1="${inner.x}" y1="${inner.y}" x2="${outer.x}" y2="${outer.y}" class="vix-tick" />`;
+      const outer = polar(cx, cy, rO + 2, deg);
+      const inner = polar(cx, cy, rI - 4, deg);
+      return `<line x1="${inner.x.toFixed(2)}" y1="${inner.y.toFixed(2)}" x2="${outer.x.toFixed(2)}" y2="${outer.y.toFixed(2)}" class="vix-tick" />`;
     })
     .join('');
 
+  // Labels just outside the outer radius (clear of the center readout)
   const tickLabels = [
     { v: 0, text: '0' },
     { v: 15, text: '15' },
@@ -117,15 +134,18 @@ function buildGaugeSVG() {
   ]
     .map(({ v, text }) => {
       const deg = valueToDeg(v);
-      const p = polar(cx, cy, r - stroke / 2 - 18, deg);
-      return `<text x="${p.x}" y="${p.y}" class="vix-tick-label" text-anchor="middle" dominant-baseline="middle">${text}</text>`;
+      const p = polar(cx, cy, rO + 16, deg);
+      let x = p.x;
+      let y = p.y;
+      // Keep end labels from escaping the viewBox
+      if (v === 0) { x += 4; y -= 2; }
+      if (v === 40) { x -= 6; y -= 2; }
+      return `<text x="${x.toFixed(2)}" y="${y.toFixed(2)}" class="vix-tick-label" text-anchor="middle" dominant-baseline="middle">${text}</text>`;
     })
     .join('');
 
-  // Needle: pivot at cx,cy; default points left (180°) via transform-origin
-  // We draw needle pointing UP (toward 90°) then rotate: rotate(180-deg) around pivot
-  // At 0 VIX: deg=180, rotate(0) → need needle at left. So draw needle pointing left initially.
-  const needleLen = r - 8;
+  // Needle: drawn pointing left (180°); rotate clockwise as VIX rises
+  const needleLen = (rO + rI) / 2 - 4;
   const needle = `
     <g class="vix-needle" transform="rotate(0 ${cx} ${cy})">
       <line x1="${cx}" y1="${cy}" x2="${cx - needleLen}" y2="${cy}" class="vix-needle-line" />
@@ -134,13 +154,7 @@ function buildGaugeSVG() {
     </g>`;
 
   return `
-    <svg class="vix-svg" viewBox="0 0 320 175" role="img" aria-label="VIX fear gauge">
-      <defs>
-        <filter id="vix-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2.5" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
+    <svg class="vix-svg" viewBox="-8 -8 ${VIEW_W + 16} ${VIEW_H + 8}" role="img" aria-label="VIX fear gauge">
       ${arcs}
       ${ticks}
       ${tickLabels}
@@ -202,8 +216,8 @@ export async function renderVixGauge() {
   const needle = root.querySelector('.vix-needle');
   if (!needle || !Number.isFinite(value)) return;
 
-  const cx = 160;
-  const cy = 150;
+  const cx = CX;
+  const cy = CY;
   const targetDeg = valueToDeg(value);
   setNeedleAngle(needle, 180, cx, cy);
 
@@ -232,7 +246,6 @@ export async function renderVixGauge() {
   requestAnimationFrame(() => {
     const rect = root.getBoundingClientRect();
     if (rect.top < window.innerHeight && rect.bottom > 0) {
-      // small delay so layout paints first
       setTimeout(play, 80);
     }
   });
