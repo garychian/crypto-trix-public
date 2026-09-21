@@ -13,6 +13,7 @@ import {
   fmtExpiry,
 } from './lib/format.js';
 
+
 const MILESTONES = [100_000, 250_000, 500_000, 1_000_000, 2_000_000];
 const CFG = {
   start: '2026-07-16',
@@ -378,7 +379,7 @@ function computeAndRender() {
     })
     .join('');
 
-  renderOptions();
+  renderOptTeaser();
 
   const vn = document.getElementById('vol-note');
   if (vn) {
@@ -409,133 +410,31 @@ function computeAndRender() {
     m.shortZh;
 }
 
-function renderOptions() {
-  const panel = document.getElementById('opt-panel');
-  const tb = document.getElementById('d-opt-rows');
-  const sum = document.getElementById('opt-summary');
+function renderOptTeaser() {
+  const el = document.getElementById('opt-teaser-sum');
+  if (!el) return;
   if (!options.length) {
-    panel.style.display = 'none';
+    el.innerHTML = '暂无合约 · <a href="/options.html">打开期权页</a>';
     return;
   }
-  panel.style.display = '';
+  const totalPrem = options.reduce((s, o) => s + (o.premium || 0), 0);
+  const syms = new Set(options.map((o) => o.symbol));
   const now = Date.now();
-  const dteOf = (o) =>
-    Math.ceil((new Date(o.expiry + 'T23:59:59').getTime() - now) / 86400000);
-  const symPrem = {};
-  options.forEach((o) => {
-    symPrem[o.symbol] = (symPrem[o.symbol] || 0) + (o.premium || 0);
-  });
-  const sorted = options.slice().sort((a, b) => {
-    if (a.symbol !== b.symbol) return a.symbol < b.symbol ? -1 : 1;
-    return dteOf(a) - dteOf(b);
-  });
-  const symShown = {};
-  let itm = 0;
   let nearest = null;
-  const totalPrem = Object.values(symPrem).reduce((s, n) => s + n, 0);
-
-  tb.innerHTML = sorted
-    .map((o) => {
-      const dte = dteOf(o);
-      const isPut = /PUT/.test(o.type);
-      const p = prices[o.symbol];
-      const spot = p && !p.error && p.price != null ? p.price : null;
-      let cush = null;
-      let stCls = 'st-flat';
-      let stTxt = '—';
-      if (spot != null) {
-        cush = isPut
-          ? ((spot - o.strike) / o.strike) * 100
-          : ((o.strike - spot) / spot) * 100;
-        if (dte <= 0) {
-          stTxt = '已到期';
-          stCls = 'st-flat';
-        } else if (cush < 0) {
-          stTxt = '🔴 价内';
-          stCls = 'st-dn';
-          itm++;
-        } else if (cush < 8) {
-          stTxt = '🟡 垫薄';
-          stCls = 'st-warn';
-        } else {
-          stTxt = '🟢 安全';
-          stCls = 'st-up';
-        }
-      } else {
-        stTxt = '行情缺失';
-      }
-      if (dte > 0 && (!nearest || dte < nearest.dte)) {
-        nearest = { sym: o.symbol, dte, expiry: o.expiry };
-      }
-      const rounds = options.filter((x) => x.symbol === o.symbol).length;
-      const first = !symShown[o.symbol];
-      symShown[o.symbol] = true;
-      const premCell = first
-        ? '<td class="up" style="font-weight:700">+$' +
-          symPrem[o.symbol].toLocaleString('en-US') +
-          (rounds > 1
-            ? ' <span class="opt-old">（含前收' + (rounds - 1) + '轮）</span>'
-            : '') +
-          '</td>'
-        : '<td class="muted">+$' +
-          (o.premium || 0).toLocaleString('en-US') +
-          '（并入）</td>';
-      const cushCell =
-        cush == null
-          ? '<td class="muted">—</td>'
-          : '<td class="' +
-            (cush >= 0 ? 'up' : 'down') +
-            '" style="font-weight:700">' +
-            (cush >= 0 ? '+' : '') +
-            cush.toFixed(1) +
-            '% ' +
-            (cush >= 0 ? 'OTM' : 'ITM') +
-            '</td>';
-      const dteCell =
-        dte <= 0
-          ? '<td class="muted">已到期' + -dte + '天</td>'
-          : '<td class="' +
-            (dte <= 14 ? 'down' : dte <= 45 ? 'muted' : 'up') +
-            '" style="font-weight:700">' +
-            dte +
-            '天</td>';
-      return (
-        '<tr>' +
-        '<td class="l"><span class="sym">' +
-        o.symbol +
-        '</span></td>' +
-        '<td class="l opt-contract">' +
-        o.type.replace('SELL ', '卖').replace('BUY ', '买') +
-        ' $' +
-        o.strike +
-        ' · ' +
-        fmtExpiry(o.expiry) +
-        '</td>' +
-        dteCell +
-        premCell +
-        '<td>' +
-        (spot != null ? '$' + spot.toFixed(2) : '—') +
-        '</td>' +
-        cushCell +
-        '<td><span class="st ' +
-        stCls +
-        '">' +
-        stTxt +
-        '</span></td>' +
-        '</tr>'
-      );
-    })
-    .join('');
-
+  options.forEach((o) => {
+    const dte = Math.ceil((new Date(o.expiry + 'T23:59:59').getTime() - now) / 86400000);
+    if (dte > 0 && (!nearest || dte < nearest.dte)) {
+      nearest = { sym: o.symbol, dte, expiry: o.expiry };
+    }
+  });
   let html =
-    '总权利金 <b>+$' +
-    totalPrem.toLocaleString('en-US') +
-    '</b> · ' +
-    Object.keys(symPrem).length +
-    ' 标的 ' +
+    '<b>' +
     options.length +
-    ' 笔';
-  html += itm > 0 ? ' · <span class="down">' + itm + ' 笔价内</span>' : ' · 全部价外 🟢';
+    '</b> 笔 · ' +
+    syms.size +
+    ' 标的 · 权利金合计 <b class="up">+$' +
+    totalPrem.toLocaleString('en-US') +
+    '</b>';
   if (nearest) {
     html +=
       ' · 最近到期 ' +
@@ -546,7 +445,7 @@ function renderOptions() {
       nearest.dte +
       '天）';
   }
-  sum.innerHTML = html;
+  el.innerHTML = html;
 }
 
 async function loadVol() {
@@ -586,12 +485,7 @@ async function boot() {
   CFG.start = data.start || CFG.start;
 
   await loadVol();
-  const syms = [
-    ...new Set([
-      ...holdings.map((h) => h.ticker),
-      ...options.map((o) => o.symbol),
-    ]),
-  ];
+  const syms = [...new Set(holdings.map((h) => h.ticker))];
   const snapshot = pricesFromHoldings(holdings, data.prices);
   prices = await fetchPrices(syms, { hist: true, snapshot });
   computeAndRender();

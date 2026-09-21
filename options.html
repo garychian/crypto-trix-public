@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>期权 · Cash-Secured Puts · CryptoTrix</title>
+  <meta name="description" content="CryptoTrix 期权看板 · Cash-Secured Puts · 行权价 / DTE / 权利金 / 价外内 · #NFA">
+  <meta name="theme-color" content="#0B0D10">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/styles/shared.css">
+  <link rel="stylesheet" href="/src/styles/options.css">
+</head>
+<body>
+  <header data-site-nav></header>
+  <div class="wrap">
+    <div class="toolbar">
+      <span class="badge badge-demo" id="data-badge">Demo data · 示例数据</span>
+      <span class="badge badge-nfa">⚠️ #NFA #DYOR</span>
+      <span class="muted tiny-meta" id="mkt"></span>
+      <span class="muted tiny-meta" id="lastupd">加载中…</span>
+    </div>
+
+    <section class="fund-head">
+      <div>
+        <h1 class="fund-title">期权 · <span class="day">Cash-Secured Puts</span></h1>
+        <p class="fund-sub">卖出备兑现金担保看跌 · 权利金收入与价外/价内状态 · <span id="d-sub">US EQUITIES</span></p>
+      </div>
+      <div class="fund-goal">
+        <div class="lbl">策略</div>
+        <div class="val">CSP</div>
+      </div>
+    </section>
+
+    <section class="stat-cards" id="stat-cards">
+      <div class="card">
+        <div class="label">合约笔数</div>
+        <div class="value flat" id="d-count">—</div>
+        <div class="sub" id="d-count-sub"></div>
+      </div>
+      <div class="card">
+        <div class="label">权利金合计</div>
+        <div class="value up" id="d-prem">—</div>
+        <div class="sub" id="d-prem-sub"></div>
+      </div>
+      <div class="card">
+        <div class="label">最近到期</div>
+        <div class="value flat" id="d-nearest">—</div>
+        <div class="sub" id="d-nearest-sub"></div>
+      </div>
+      <div class="card">
+        <div class="label">标的数</div>
+        <div class="value flat" id="d-syms">—</div>
+        <div class="sub" id="d-syms-sub"></div>
+      </div>
+    </section>
+
+    <section class="panel opt-panel" id="opt-panel">
+      <div class="panel-head">
+        <h2>合约明细</h2>
+        <span class="opt-summary" id="opt-summary">—</span>
+      </div>
+      <div class="table-scroll">
+        <table class="data opt-table">
+          <thead>
+            <tr>
+              <th class="l">标的</th>
+              <th class="l">合约类型</th>
+              <th>行权价</th>
+              <th>到期日</th>
+              <th>DTE</th>
+              <th>收权利金</th>
+              <th>现价</th>
+              <th>价外/价内</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody id="d-opt-rows"></tbody>
+        </table>
+      </div>
+      <p class="vol-note" id="opt-note">数据来自 holdings.json options[] · 现价经 fetchPrices / snapshot · #NFA</p>
+    </section>
+
+    <footer class="site-foot">
+      <div>
+        @<b style="color:var(--accent)" id="d-handle">CRYPTOTRIX1</b>
+        · <a href="https://x.com/CryptoTrix1" target="_blank" rel="noopener">X</a>
+        <div class="nfa">⚠️ Not financial advice · #NFA #DYOR · 公开访客视图</div>
+      </div>
+      <div class="nfa">Cash-Secured Puts · 期权 tab</div>
+    </footer>
+  </div>
+  <script type="module" src="/src/options.js"></script>
+</body>
+</html>

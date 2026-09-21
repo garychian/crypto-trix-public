@@ -2,8 +2,8 @@
 
 **$137K → $2M · 持仓、盈亏与决策，全程公开**
 
-Public visitor site for [CryptoTrix](https://x.com/CryptoTrix1) — Wealth Freedom Fund dashboard + US Equities map + CN (A-share) fund allocation.  
-CryptoTrix 公开访客站点：财富自由基金实时看板 + 美股持仓仪表盘 + A股基金人民币配置。
+Public visitor site for [CryptoTrix](https://x.com/CryptoTrix1) — Wealth Freedom Fund dashboard + Options (CSP) + US Equities map + CN (A-share) fund allocation.  
+CryptoTrix 公开访客站点：财富自由基金实时看板 + 期权（Cash-Secured Puts）+ 美股持仓仪表盘 + A股基金人民币配置。
 
 > ⚠️ **Not financial advice · #NFA #DYOR**  
 > This is a public showcase. Not a private admin tool. No brokerage credentials.
@@ -18,6 +18,7 @@ Live: https://crypto-trix-public.vercel.app/
 |------|------|------|
 | Landing / 首页 | `/` | zh-first |
 | 财富自由基金 · 实时看板 | `/fund.html` | zh |
+| 期权 · Cash-Secured Puts | `/options.html` | zh |
 | US Equities Dashboard | `/portfolio.html` | en |
 | A股基金 · 人民币配置 | `/cn-fund.html` | zh |
 
