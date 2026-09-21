@@ -741,6 +741,14 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Second line of the as-of stamp: the last trade time ("16:15 ET") */
+.vix-asof-time {
+  display: block;
+  margin-top: 2px;
+  font-weight: 500;
+  color: rgba(232, 235, 240, 0.55);
+}
+
 .vix-chg {
   font-size: 20px;
   font-weight: 800;

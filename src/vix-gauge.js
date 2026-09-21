@@ -328,7 +328,7 @@ export async function renderVixGauge() {
   // "2026-09-18T16:15:01" → "16:15 ET" — makes "why not today" obvious when the
   // US market is closed (weekend/holiday shows the last session's final print)
   const ltMatch = /T(\d{2}:\d{2})/.exec(String(data.last_trade || ''));
-  const asOfLine = ltMatch ? `${asOf} ${ltMatch[1]} ET` : asOf;
+  const asOfTime = ltMatch ? `<span class="vix-asof-time">${ltMatch[1]} ET</span>` : '';
   const chgCls = chg > 0 ? 'up' : chg < 0 ? 'down' : 'flat';
   const zone =
     value < 15 ? '冷静 · 低波' : value < 25 ? '升温 · 中性' : '恐慌';
@@ -350,7 +350,7 @@ export async function renderVixGauge() {
           </div>
         </div>
         <div class="vix-meta">
-          <div class="vix-asof muted">as of ${escapeAttr(asOfLine)}</div>
+          <div class="vix-asof muted">as of ${escapeAttr(asOf)}${asOfTime}</div>
           <div class="vix-chg ${chgCls}" id="vix-chg">${formatChg(chg, chgPct)}</div>
           <div class="vix-zone">${escapeAttr(zone)}</div>
           <div class="vix-seg-labels" aria-hidden="true">
