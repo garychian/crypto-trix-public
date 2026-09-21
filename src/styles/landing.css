@@ -732,34 +732,10 @@
   .vix-value { font-size: 40px; }
 }
 
-/* ── Dashboard row: Journey rings + VIX ── */
-.dash-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+/* ── Journey Activity Rings (below heatmap; VIX stays first under nav) ── */
+.journey-section {
   margin-top: 14px;
   margin-bottom: 8px;
-  align-items: stretch;
-}
-
-.dash-row .vix-section {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.dash-row .journey-section {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-@media (max-width: 860px) {
-  .dash-row {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ── Journey Activity Rings ── */
-.journey-section {
   padding: 22px 24px 18px;
   text-align: left;
   position: relative;
@@ -799,11 +775,19 @@
 }
 
 .jr-body {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) 1fr;
+  gap: 20px 32px;
   align-items: center;
-  gap: 14px;
-  margin-top: 8px;
+  margin-top: 10px;
+}
+
+@media (max-width: 640px) {
+  .jr-body {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 14px;
+  }
 }
 
 .jr-visual {
@@ -923,7 +907,11 @@
 .jr-nfa {
   font-size: 10.5px;
   letter-spacing: 0.3px;
-  text-align: center;
+  text-align: left;
+}
+
+@media (max-width: 640px) {
+  .jr-nfa { text-align: center; }
 }
 
 .jr-loading p { margin-top: 8px; font-size: 13px; }
