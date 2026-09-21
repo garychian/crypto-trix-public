@@ -15,6 +15,38 @@
 <body class="landing">
   <header data-site-nav></header>
   <div class="hero-wrap">
+    <section class="checkin-section panel" id="fund-checkin" aria-labelledby="checkin-title">
+      <div class="checkin-head">
+        <div>
+          <div class="en">Daily Check-in Heatmap · 2026</div>
+          <h2 id="checkin-title">财富自由基金 · 2026 打卡热力格</h2>
+          <p class="checkin-sub muted" id="checkin-sub">加载中…</p>
+        </div>
+        <a class="btn btn-ghost checkin-cta" href="/fund.html">进入看板 →</a>
+      </div>
+      <div class="heatmap-wrap" id="heatmap-wrap">
+        <div class="heatmap-with-labels">
+          <div class="heatmap-ydays" id="heatmap-ydays" aria-hidden="true"></div>
+          <div class="heatmap-scroll">
+            <div class="heatmap-months" id="heatmap-months" aria-hidden="true"></div>
+            <div class="heatmap" id="fund-heatmap" role="img" aria-label="基金每日盈亏热力格 2026"></div>
+          </div>
+        </div>
+        <div class="heatmap-legend" id="heatmap-legend">
+          <span class="leg-label">跌</span>
+          <span class="cell down-3" title="大跌"></span>
+          <span class="cell down-2" title="中跌"></span>
+          <span class="cell down-1" title="小跌"></span>
+          <span class="cell empty" title="平 / 无数据"></span>
+          <span class="cell up-1" title="小涨"></span>
+          <span class="cell up-2" title="中涨"></span>
+          <span class="cell up-3" title="大涨"></span>
+          <span class="leg-label">涨</span>
+        </div>
+        <div class="heatmap-tip" id="heatmap-tip" role="tooltip" hidden></div>
+      </div>
+    </section>
+
     <header class="hero">
       <div class="pill">PUBLIC · 全程公开</div>
       <h1>Crypto<em>Trix</em></h1>
@@ -51,34 +83,6 @@
         <a class="btn btn-ghost" href="/cn-fund.html">A股基金 · 人民币配置</a>
       </div>
     </header>
-
-
-    <section class="checkin-section panel" id="fund-checkin" aria-labelledby="checkin-title">
-      <div class="checkin-head">
-        <div>
-          <div class="en">Daily Check-in Heatmap</div>
-          <h2 id="checkin-title">财富自由基金 · 打卡热力格</h2>
-          <p class="checkin-sub muted" id="checkin-sub">加载中…</p>
-        </div>
-        <a class="btn btn-ghost checkin-cta" href="/fund.html">进入看板 →</a>
-      </div>
-      <div class="heatmap-wrap" id="heatmap-wrap">
-        <div class="heatmap-scroll">
-          <div class="heatmap" id="fund-heatmap" role="img" aria-label="基金每日盈亏热力格"></div>
-        </div>
-        <div class="heatmap-legend" id="heatmap-legend">
-          <span class="leg-label">跌</span>
-          <span class="cell down-3" title="大跌"></span>
-          <span class="cell down-2" title="中跌"></span>
-          <span class="cell down-1" title="小跌"></span>
-          <span class="cell empty" title="平 / 无数据"></span>
-          <span class="cell up-1" title="小涨"></span>
-          <span class="cell up-2" title="中涨"></span>
-          <span class="cell up-3" title="大涨"></span>
-          <span class="leg-label">涨</span>
-        </div>
-      </div>
-    </section>
 
     <section class="cards-grid">
       <a class="feature-card panel" href="/fund.html">

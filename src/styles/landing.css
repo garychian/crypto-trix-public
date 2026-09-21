@@ -1,7 +1,7 @@
 .landing .hero-wrap {
-  max-width: 880px;
+  max-width: 980px;
   margin: 0 auto;
-  padding: 28px 22px 56px;
+  padding: 20px 22px 56px;
 }
 
 .landing .hero {
@@ -206,9 +206,11 @@
 
 /* ── Fund daily check-in heatmap ── */
 .checkin-section {
-  margin-top: 36px;
+  margin-top: 8px;
+  margin-bottom: 8px;
   padding: 22px 24px 20px;
   text-align: left;
+  position: relative;
 }
 
 .checkin-head {
@@ -250,12 +252,54 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  position: relative;
 }
 
 .heatmap-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 4px;
+}
+
+.heatmap-months {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 13px;
+  gap: 4px;
+  margin-bottom: 6px;
+  font-size: 10.5px;
+  color: var(--muted-2);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  min-width: min-content;
+  height: 16px;
+}
+
+.heatmap-months .hm-month {
+  display: block;
+  white-space: nowrap;
+  overflow: visible;
+  width: 13px;
+  font-size: 10.5px;
+  line-height: 16px;
+}
+
+.heatmap-with-labels {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.heatmap-ydays {
+  display: grid;
+  grid-template-rows: repeat(7, 13px);
+  gap: 4px;
+  font-size: 10px;
+  color: var(--muted-2);
+  font-weight: 600;
+  line-height: 13px;
+  flex-shrink: 0;
+  padding-top: 22px; /* align under month labels */
 }
 
 .heatmap {
@@ -273,11 +317,19 @@
   background: var(--panel-2);
   border: 1px solid rgba(255, 255, 255, 0.04);
   display: block;
-  cursor: default;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
   transition: transform .12s, box-shadow .12s;
+  box-sizing: border-box;
+  font: inherit;
+  color: inherit;
 }
 
-.heatmap .cell.has-data:hover {
+.heatmap .cell.has-data:hover,
+.heatmap .cell.tip-active {
   transform: scale(1.25);
   box-shadow: 0 0 0 1px rgba(240, 185, 11, 0.55);
   z-index: 1;
@@ -288,6 +340,13 @@
   background: rgba(26, 31, 40, 0.85);
   border-color: rgba(255, 255, 255, 0.03);
   opacity: 0.55;
+  cursor: pointer;
+}
+
+.heatmap .cell.empty.out {
+  opacity: 0.25;
+  pointer-events: none;
+  cursor: default;
 }
 
 .heatmap .cell.flat {
@@ -334,44 +393,94 @@
   margin: 0 2px;
 }
 
-.heatmap-months {
-  display: flex;
-  gap: 0;
-  margin-bottom: 6px;
-  font-size: 10.5px;
-  color: var(--muted-2);
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  padding-left: 28px; /* room for weekday labels */
+/* Custom hover / tap popover */
+.heatmap-tip {
+  position: absolute;
+  z-index: 20;
+  min-width: 132px;
+  max-width: 220px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #12161C;
+  border: 1px solid rgba(240, 185, 11, 0.35);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  color: #E8ECF1;
+  font-size: 12.5px;
+  line-height: 1.45;
+  pointer-events: auto;
+  transform: translateZ(0);
 }
 
-.heatmap-with-labels {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
+.heatmap-tip[hidden] {
+  display: none !important;
 }
 
-.heatmap-ydays {
-  display: grid;
-  grid-template-rows: repeat(7, 13px);
-  gap: 4px;
-  font-size: 10px;
-  color: var(--muted-2);
+.heatmap-tip .tip-date {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  margin-bottom: 2px;
+}
+
+.heatmap-tip .tip-day {
+  color: var(--muted);
+  font-size: 11.5px;
   font-weight: 600;
-  line-height: 13px;
-  flex-shrink: 0;
-  padding-top: 0;
+  margin-bottom: 4px;
+}
+
+.heatmap-tip .tip-muted {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.heatmap-tip .tip-pnl {
+  font-size: 16px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.3px;
+}
+
+.heatmap-tip .tip-pnl.tip-up { color: #0ECB81; }
+.heatmap-tip .tip-pnl.tip-down { color: #F6465D; }
+.heatmap-tip .tip-pnl.tip-flat { color: var(--muted); }
+
+.heatmap-tip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  background: #12161C;
+  border-right: 1px solid rgba(240, 185, 11, 0.35);
+  border-bottom: 1px solid rgba(240, 185, 11, 0.35);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.heatmap-tip.below::after {
+  bottom: auto;
+  top: -6px;
+  border-right: none;
+  border-bottom: none;
+  border-left: 1px solid rgba(240, 185, 11, 0.35);
+  border-top: 1px solid rgba(240, 185, 11, 0.35);
 }
 
 @media (max-width: 720px) {
   .checkin-section { padding: 18px 16px 16px; }
   .heatmap .cell { width: 11px; height: 11px; border-radius: 2px; }
   .heatmap { gap: 3px; }
+  .heatmap-months {
+    grid-auto-columns: 11px;
+    gap: 3px;
+    font-size: 9.5px;
+  }
+  .heatmap-months .hm-month { width: 11px; font-size: 9.5px; }
   .heatmap-ydays {
     grid-template-rows: repeat(7, 11px);
     gap: 3px;
     font-size: 9px;
     line-height: 11px;
+    padding-top: 20px;
   }
-  .heatmap-months { padding-left: 22px; font-size: 9.5px; }
 }

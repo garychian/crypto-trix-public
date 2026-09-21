@@ -11,6 +11,7 @@ const MONTH_LABELS = [
   '7月', '8月', '9月', '10月', '11月', '12月',
 ];
 const DAYS_PER_WEEK = 7;
+const YEAR = 2026;
 
 function msLabel(v) {
   return v >= 1e6 ? '$' + v / 1e6 + 'M' : '$' + v / 1e3 + 'K';
@@ -50,22 +51,44 @@ function intensityLevel(absPnl) {
 function cellClass(entry) {
   if (!entry) return 'empty';
   const pnl = entry.pnl;
-  if (pnl === 0 || pnl == null || !Number.isFinite(pnl)) return 'flat';
+  if (pnl === 0 || pnl == null || !Number.isFinite(pnl)) return 'flat has-data';
   const lvl = intensityLevel(Math.abs(pnl));
   return (pnl > 0 ? 'up-' : 'down-') + lvl + ' has-data';
 }
 
-function cellTitle(iso, entry) {
-  if (!entry) return `${iso} · 无打卡`;
-  const sign = entry.pnl >= 0 ? '+' : '−';
-  const amt = Math.abs(Math.round(entry.pnl)).toLocaleString('en-US');
-  return `${iso} · Day ${entry.day} · ${sign}$${amt}`;
+function formatPnl(pnl) {
+  if (pnl == null || !Number.isFinite(pnl)) return '—';
+  const sign = pnl >= 0 ? '+' : '−';
+  const amt = Math.abs(Math.round(pnl)).toLocaleString('en-US');
+  return `${sign}$${amt}`;
 }
 
-/** Week columns Mon–Sun from fund start through endISO. */
-function buildWeekColumns(startISO, endISO) {
-  const start = parseISODate(startISO);
-  const end = parseISODate(endISO);
+function tipHTML(iso, entry) {
+  const dateLine = escapeHTML(iso);
+  if (!entry) {
+    return `<div class="tip-date">${dateLine}</div><div class="tip-muted">无打卡</div>`;
+  }
+  const dayLine =
+    entry.day != null
+      ? `<div class="tip-day">Day ${escapeHTML(String(entry.day))}</div>`
+      : '';
+  const pnl = entry.pnl;
+  const cls =
+    pnl > 0 ? 'tip-up' : pnl < 0 ? 'tip-down' : 'tip-flat';
+  return (
+    `<div class="tip-date">${dateLine}</div>` +
+    dayLine +
+    `<div class="tip-pnl ${cls}">${escapeHTML(formatPnl(pnl))}</div>`
+  );
+}
+
+/**
+ * Full-year GitHub-style week columns (Mon–Sun) for calendar year `year`.
+ * Cells outside the year are null (muted placeholders).
+ */
+function buildYearWeekColumns(year) {
+  const start = new Date(year, 0, 1);
+  const end = new Date(year, 11, 31);
   const first = new Date(start);
   const monOffset = first.getDay() === 0 ? -6 : 1 - first.getDay();
   first.setDate(first.getDate() + monOffset);
@@ -74,16 +97,16 @@ function buildWeekColumns(startISO, endISO) {
   const cursor = new Date(first);
   while (cursor <= end || weeks.length === 0) {
     const week = [];
-    let anyInRange = false;
+    let anyInYear = false;
     for (let i = 0; i < DAYS_PER_WEEK; i++) {
       const day = new Date(cursor);
       day.setDate(cursor.getDate() + i);
       const iso = formatISODate(day);
-      const inRange = day >= start && day <= end;
-      if (inRange) anyInRange = true;
-      week.push(inRange ? iso : null);
+      const inYear = day.getFullYear() === year;
+      if (inYear) anyInYear = true;
+      week.push(inYear ? iso : null);
     }
-    if (anyInRange) weeks.push(week);
+    if (anyInYear) weeks.push(week);
     else if (weeks.length) break;
     cursor.setDate(cursor.getDate() + 7);
     if (weeks.length > 60) break;
@@ -111,10 +134,96 @@ function monthLabelsForWeeks(weeks) {
   return labels;
 }
 
+function bindHeatmapTip(root, tip) {
+  let activeCell = null;
+  let pinned = false;
+
+  function hide() {
+    tip.hidden = true;
+    tip.classList.remove('visible');
+    if (activeCell) activeCell.classList.remove('tip-active');
+    activeCell = null;
+    pinned = false;
+  }
+
+  function place(cell) {
+    const wrap = tip.parentElement;
+    const wrapRect = wrap.getBoundingClientRect();
+    const cellRect = cell.getBoundingClientRect();
+    tip.hidden = false;
+    tip.classList.add('visible');
+    // Measure after visible
+    const tipW = tip.offsetWidth;
+    const tipH = tip.offsetHeight;
+    let left = cellRect.left - wrapRect.left + cellRect.width / 2 - tipW / 2;
+    let top = cellRect.top - wrapRect.top - tipH - 10;
+    left = Math.max(4, Math.min(left, wrapRect.width - tipW - 4));
+    if (top < 4) {
+      top = cellRect.bottom - wrapRect.top + 10;
+      tip.classList.add('below');
+    } else {
+      tip.classList.remove('below');
+    }
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  }
+
+  function show(cell, { pin = false } = {}) {
+    const iso = cell.dataset.date;
+    if (!iso) return;
+    const entry = cell._entry || null;
+    tip.innerHTML = tipHTML(iso, entry);
+    if (activeCell) activeCell.classList.remove('tip-active');
+    activeCell = cell;
+    cell.classList.add('tip-active');
+    pinned = pin;
+    place(cell);
+  }
+
+  root.addEventListener('mouseover', (e) => {
+    const cell = e.target.closest('.cell[data-date]');
+    if (!cell || !root.contains(cell)) return;
+    if (pinned && activeCell === cell) return;
+    show(cell, { pin: false });
+  });
+
+  root.addEventListener('mouseout', (e) => {
+    if (pinned) return;
+    const to = e.relatedTarget;
+    if (to && root.contains(to) && to.closest?.('.cell[data-date]')) return;
+    if (to === tip || tip.contains(to)) return;
+    hide();
+  });
+
+  root.addEventListener('click', (e) => {
+    const cell = e.target.closest('.cell[data-date]');
+    if (!cell || !root.contains(cell)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (pinned && activeCell === cell) {
+      hide();
+      return;
+    }
+    show(cell, { pin: true });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!pinned) return;
+    if (tip.contains(e.target)) return;
+    if (activeCell && activeCell.contains(e.target)) return;
+    hide();
+  });
+
+  tip.addEventListener('click', (e) => e.stopPropagation());
+}
+
 async function renderHeatmap() {
   const root = document.getElementById('fund-heatmap');
   const sub = document.getElementById('checkin-sub');
   const wrap = document.getElementById('heatmap-wrap');
+  const monthsEl = document.getElementById('heatmap-months');
+  const ydays = document.getElementById('heatmap-ydays');
+  const tip = document.getElementById('heatmap-tip');
   if (!root || !wrap) return;
 
   let data;
@@ -129,12 +238,11 @@ async function renderHeatmap() {
 
   const series = Array.isArray(data.series) ? data.series : [];
   const byDate = new Map(series.map((e) => [e.date, e]));
-  const startISO = data.start || '2026-07-16';
-  const endISO =
-    data.as_of ||
-    (series.length ? series[series.length - 1].date : startISO);
+  const year = YEAR;
+  const startISO = `${year}-01-01`;
+  const endISO = `${year}-12-31`;
 
-  const weeks = buildWeekColumns(startISO, endISO);
+  const weeks = buildYearWeekColumns(year);
   const months = monthLabelsForWeeks(weeks);
 
   const ups = series.filter((e) => e.pnl > 0).length;
@@ -143,48 +251,42 @@ async function renderHeatmap() {
     sub.textContent = `${startISO} → ${endISO} · ${series.length} 个交易日打卡 · 涨 ${ups} / 跌 ${downs}`;
   }
 
-  let monthsEl = wrap.querySelector('.heatmap-months');
-  if (!monthsEl) {
-    monthsEl = document.createElement('div');
-    monthsEl.className = 'heatmap-months';
-    wrap.insertBefore(monthsEl, wrap.firstChild);
+  if (monthsEl) {
+    monthsEl.innerHTML = months
+      .map(
+        (lab) =>
+          `<span class="hm-month">${escapeHTML(lab)}</span>`
+      )
+      .join('');
   }
-  monthsEl.innerHTML = months
-    .map(
-      (lab) =>
-        `<span style="display:inline-block;width:17px;min-width:17px;overflow:visible;white-space:nowrap">${escapeHTML(lab)}</span>`
-    )
-    .join('');
 
-  let labeled = wrap.querySelector('.heatmap-with-labels');
-  if (!labeled) {
-    labeled = document.createElement('div');
-    labeled.className = 'heatmap-with-labels';
-    const scroll = wrap.querySelector('.heatmap-scroll');
-    wrap.insertBefore(labeled, scroll);
-    labeled.appendChild(
-      Object.assign(document.createElement('div'), { className: 'heatmap-ydays' })
-    );
-    labeled.appendChild(scroll);
+  if (ydays) {
+    ydays.innerHTML = WEEKDAY_LABELS.map((d) => `<span>${d}</span>`).join('');
   }
-  const ydays = labeled.querySelector('.heatmap-ydays');
-  ydays.innerHTML = WEEKDAY_LABELS.map((d) => `<span>${d}</span>`).join('');
 
   const cells = [];
   for (const week of weeks) {
     for (let i = 0; i < DAYS_PER_WEEK; i++) {
       const iso = week[i];
       if (!iso) {
-        cells.push('<span class="cell empty" aria-hidden="true"></span>');
+        cells.push('<span class="cell empty out" aria-hidden="true"></span>');
         continue;
       }
       const entry = byDate.get(iso);
       const cls = cellClass(entry);
-      const title = escapeHTML(cellTitle(iso, entry));
-      cells.push(`<span class="cell ${cls}" title="${title}"></span>`);
+      cells.push(
+        `<button type="button" class="cell ${cls}" data-date="${escapeHTML(iso)}" aria-label="${escapeHTML(iso)}"></button>`
+      );
     }
   }
   root.innerHTML = cells.join('');
+
+  // Attach entry payloads for tip (avoid huge data-* attrs)
+  root.querySelectorAll('.cell[data-date]').forEach((el) => {
+    el._entry = byDate.get(el.dataset.date) || null;
+  });
+
+  if (tip) bindHeatmapTip(root, tip);
 }
 
 async function boot() {
