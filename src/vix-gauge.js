@@ -17,7 +17,9 @@ const CY = 152;
 const R_OUTER = 128;
 const R_INNER = 92;
 const VIEW_W = 320;
-const VIEW_H = 186;
+// Extra bottom canvas (vs the 186 the semicircle needs) so the readout
+// under the hub clears the needle hub glow instead of touching it.
+const VIEW_H = 208;
 
 function clamp(n, lo, hi) {
   return Math.min(hi, Math.max(lo, n));
