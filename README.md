@@ -2,8 +2,8 @@
 
 **$137K → $2M · 持仓、盈亏与决策，全程公开**
 
-Public visitor site for [CryptoTrix](https://x.com/CryptoTrix1) — Wealth Freedom Fund dashboard + US Equities map.  
-CryptoTrix 公开访客站点：财富自由基金实时看板 + 美股持仓仪表盘。
+Public visitor site for [CryptoTrix](https://x.com/CryptoTrix1) — Wealth Freedom Fund dashboard + US Equities map + CN (A-share) fund allocation.  
+CryptoTrix 公开访客站点：财富自由基金实时看板 + 美股持仓仪表盘 + A股基金人民币配置。
 
 > ⚠️ **Not financial advice · #NFA #DYOR**  
 > This is a public showcase. Not a private admin tool. No brokerage credentials.
@@ -19,6 +19,7 @@ Live: https://crypto-trix-public.vercel.app/
 | Landing / 首页 | `/` | zh-first |
 | 财富自由基金 · 实时看板 | `/fund.html` | zh |
 | US Equities Dashboard | `/portfolio.html` | en |
+| A股基金 · 人民币配置 | `/cn-fund.html` | zh |
 
 **Brand:** CryptoTrix · accent gold `#F0B90B` on dark `#0B0D10` · panels `#12151B` · up `#0ECB81` · down `#F6465D`
 
@@ -32,6 +33,7 @@ The site loads holdings at runtime from:
 public/data/holdings.json   ← canonical (fetched by fund / portfolio / landing)
 public/data/holdings.csv    ← editable copy of equity positions
 public/data/options.csv     ← editable copy of CSP options
+public/data/cn-fund.json    ← A股基金 / 人民币配置快照 (cn-fund.html)
 public/vol_data.json        ← IV/HV overlay for the fund board
 ```
 
@@ -74,10 +76,25 @@ AS_OF=2026-09-20 DAY=67 INVESTED_USD=93975 \
 
 3. Commit + push / redeploy.
 
+
+### A股基金 / Update CN fund allocation
+
+Edit `public/data/cn-fund.json` directly:
+
+1. Set `as_of` (Asia/Shanghai date), keep `currency: "CNY"` and `unit: "万元"`.
+2. Update `holdings[]`: `{ name, amount_wan, category }` where category is one of `固收` / `商品` / `A股` / `海外` / `港股`.
+3. Recompute `weight_pct` for each holding (`amount_wan / total_wan * 100`), `total_wan` = sum of amounts, and optionally refresh `categories[]` aggregates the same way.
+4. Commit, push, and redeploy.
+
+Page: https://crypto-trix-public.vercel.app/cn-fund.html · Raw: `/data/cn-fund.json`
+
+This is an **allocation snapshot** (no live quotes / options / IV).
+
 ### After deploy
 
 - Fund board: https://crypto-trix-public.vercel.app/fund.html  
-- Raw data: https://crypto-trix-public.vercel.app/data/holdings.json  
+- CN fund: https://crypto-trix-public.vercel.app/cn-fund.html  
+- Raw data: https://crypto-trix-public.vercel.app/data/holdings.json · `/data/cn-fund.json`  
 
 Refresh `public/vol_data.json` separately when you want updated IV/HV columns.
 

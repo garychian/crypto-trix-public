@@ -7,6 +7,7 @@ const TABS = [
   { id: 'home', label: '首页', href: '/' },
   { id: 'fund', label: '财富自由基金', href: '/fund.html' },
   { id: 'portfolio', label: '美股仪表盘', href: '/portfolio.html' },
+  { id: 'cn-fund', label: 'A股基金', href: '/cn-fund.html' },
 ];
 
 function resolveActive() {
@@ -14,6 +15,7 @@ function resolveActive() {
   const file = path.split('/').pop() || '';
   if (file === 'fund.html' || path.endsWith('/fund')) return 'fund';
   if (file === 'portfolio.html' || path.endsWith('/portfolio')) return 'portfolio';
+  if (file === 'cn-fund.html' || path.endsWith('/cn-fund')) return 'cn-fund';
   return 'home';
 }
 

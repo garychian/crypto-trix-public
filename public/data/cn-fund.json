@@ -1,0 +1,92 @@
+{
+  "as_of": "2026-09-21",
+  "currency": "CNY",
+  "unit": "万元",
+  "title": "A股基金",
+  "subtitle": "人民币国内配置 · 资产配置快照",
+  "total_wan": 107.16,
+  "note": "配置快照（非实时行情）· 数据来自仓库 cn-fund.json · #NFA",
+  "categories": [
+    {
+      "name": "固收",
+      "amount_wan": 46.27,
+      "weight_pct": 43.18
+    },
+    {
+      "name": "A股",
+      "amount_wan": 36.18,
+      "weight_pct": 33.76
+    },
+    {
+      "name": "海外",
+      "amount_wan": 15.45,
+      "weight_pct": 14.42
+    },
+    {
+      "name": "港股",
+      "amount_wan": 5.38,
+      "weight_pct": 5.02
+    },
+    {
+      "name": "商品",
+      "amount_wan": 3.88,
+      "weight_pct": 3.62
+    }
+  ],
+  "holdings": [
+    {
+      "name": "债券",
+      "amount_wan": 46.27,
+      "weight_pct": 43.18,
+      "category": "固收"
+    },
+    {
+      "name": "黄金",
+      "amount_wan": 3.88,
+      "weight_pct": 3.62,
+      "category": "商品"
+    },
+    {
+      "name": "红利低波",
+      "amount_wan": 22.16,
+      "weight_pct": 20.68,
+      "category": "A股"
+    },
+    {
+      "name": "标普500",
+      "amount_wan": 5.6,
+      "weight_pct": 5.23,
+      "category": "海外"
+    },
+    {
+      "name": "纳指100",
+      "amount_wan": 9.85,
+      "weight_pct": 9.19,
+      "category": "海外"
+    },
+    {
+      "name": "中证A500",
+      "amount_wan": 7.73,
+      "weight_pct": 7.21,
+      "category": "A股"
+    },
+    {
+      "name": "沪深300",
+      "amount_wan": 5.08,
+      "weight_pct": 4.74,
+      "category": "A股"
+    },
+    {
+      "name": "恒生科技",
+      "amount_wan": 5.38,
+      "weight_pct": 5.02,
+      "category": "港股"
+    },
+    {
+      "name": "科创和创业板",
+      "amount_wan": 1.21,
+      "weight_pct": 1.13,
+      "category": "A股"
+    }
+  ]
+}
