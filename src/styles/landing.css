@@ -921,7 +921,27 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: center;
+  gap: 14px;
+}
+
+.jr-nums {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+.jr-num {
+  font-size: clamp(28px, 4.2vw, 40px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.jr-num-val {
+  display: block;
 }
 
 .jr-legend {

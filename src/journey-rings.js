@@ -284,16 +284,17 @@ export function renderJourneyRings(data) {
   const { rings, total, goal, progress, asOf } = metrics;
   const pct = progress * 100;
 
-  const legend = rings
-    .map(
-      (r) => `
-      <div class="jr-leg-item">
-        <span class="jr-dot" style="background:${r.color};box-shadow:0 0 8px ${r.glow}"></span>
-        <span class="jr-leg-label">${escapeHTML(r.legend)}</span>
-        <span class="jr-leg-val">${r.displayExtra ? escapeHTML(r.displayExtra) : r.displayPct.toFixed(2) + '%'}</span>
-      </div>`
-    )
-    .join('');
+  // Three progress figures only — colors match the three rings
+  const numStats = rings
+    .map((r, i) => {
+      const pct = (Number(r.value) || 0) * 100; // ring fill progress
+      return {
+        key: r.key,
+        color: r.color,
+        glow: r.glow,
+        to: pct,
+      };
+    });
 
   root.innerHTML = `
     <div class="jr-card-inner">
@@ -313,7 +314,16 @@ export function renderJourneyRings(data) {
           </div>
         </div>
         <div class="jr-side">
-          <div class="jr-legend">${legend}</div>
+          <div class="jr-nums" id="jr-nums">
+            ${numStats
+              .map(
+                (n) => `
+              <div class="jr-num" data-key="${n.key}" style="color:${n.color};text-shadow:0 0 14px ${n.glow}">
+                <span class="jr-num-val" data-key="${n.key}">0%</span>
+              </div>`
+              )
+              .join('')}
+          </div>
           <div class="jr-nfa muted">#NFA · 非投资建议</div>
         </div>
       </div>
@@ -334,6 +344,12 @@ export function renderJourneyRings(data) {
     }
     if (assetsEl) {
       animateCountUp(assetsEl, 0, total, 1650, (v) => usd(v));
+    }
+    for (const n of numStats) {
+      const el = root.querySelector('.jr-num-val[data-key="' + n.key + '"]');
+      if (el) {
+        animateCountUp(el, 0, n.to, 1650, (v) => v.toFixed(2) + '%');
+      }
     }
   }
 
