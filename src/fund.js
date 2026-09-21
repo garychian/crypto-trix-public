@@ -12,6 +12,7 @@ import {
   dayNumber,
   fmtExpiry,
 } from './lib/format.js';
+import { initEquityChart } from './equity-chart.js';
 
 
 const MILESTONES = [100_000, 250_000, 500_000, 1_000_000, 2_000_000];
@@ -489,6 +490,9 @@ async function boot() {
   const snapshot = pricesFromHoldings(holdings, data.prices);
   prices = await fetchPrices(syms, { hist: true, snapshot });
   computeAndRender();
+  await initEquityChart(document.getElementById('equity-chart'), {
+    anchorTotal: snapshotTotal ?? data.total_assets_usd,
+  });
 }
 
 boot();
