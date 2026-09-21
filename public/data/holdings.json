@@ -2,14 +2,14 @@
   "as_of": "2026-09-20",
   "day": 67,
   "goal_usd": 2000000,
-  "cash_usd": 32038,
+  "cash_usd": 34188.41,
   "invested_usd": 93975,
-  "cum_pnl_usd": 47403,
-  "total_assets_usd": 141378,
+  "cum_pnl_usd": 49553,
+  "total_assets_usd": 143528,
   "handle": "CryptoTrix1",
   "sub": "US EQUITIES",
   "start": "2026-07-16",
-  "note": "Source: my-portfolio.csv · as_of 2026-09-20 · cash broker baseline $32,038 · BB removed, BRK.B added, EUV 60 shares",
+  "note": "Source: my-portfolio.csv · as_of 2026-09-20 · cash reverse-inferred from weights (holdings 76.18% → cash 23.82%)",
   "holdings": [
     {
       "ticker": "TSLA",

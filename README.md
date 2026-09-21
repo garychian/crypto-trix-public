@@ -38,7 +38,9 @@ public/vol_data.json        ← IV/HV overlay for the fund board
 Prices still come from `/api/prices` (with demo fallback in `src/data/demo.js`).  
 Holdings list / cash / day / goal come from `holdings.json` — demo.js is only used if that fetch fails.
 
-Current snapshot: **as_of 2026-09-19 · Day 66 · 14 tickers · cash $32,038**.
+**现金按权重反推：** when CSV rows include `Weight`, `regen-holdings.mjs` sets `cash_usd` / `total_assets_usd` / `cum_pnl_usd` from `total = holdings_mv / (weight_sum/100)` (not a fixed broker cash baseline). The fund board reads `cash_usd` from `holdings.json`.
+
+Current snapshot: **as_of 2026-09-20 · Day 67 · cash ≈ $34,188**（现金按权重反推；非旧 broker $32,038）。
 
 ---
 
@@ -61,9 +63,13 @@ Whenever positions change, update the repo data and redeploy:
 2. Regenerate JSON (keeps meta fields from the existing JSON unless overridden):
 
 ```bash
-# optional env overrides
-AS_OF=2026-09-20 DAY=67 CASH_USD=32038 INVESTED_USD=93975 \
+# default: 现金按权重反推 (CASH_MODE=weight when holdings have Weight)
+#   total = holdings_mv / (weight_sum/100); cash = total - holdings_mv
+AS_OF=2026-09-20 DAY=67 INVESTED_USD=93975 \
   node scripts/regen-holdings.mjs
+
+# force a fixed cash instead of weight reverse-inference:
+# CASH_MODE=env CASH_USD=32038 node scripts/regen-holdings.mjs
 ```
 
 3. Commit + push / redeploy.
