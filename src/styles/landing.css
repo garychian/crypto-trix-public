@@ -444,6 +444,17 @@
 .heatmap-tip .tip-pnl.tip-down { color: #F6465D; }
 .heatmap-tip .tip-pnl.tip-flat { color: var(--muted); }
 
+/* Click affordance: check-in cells deep-link to that day's X post */
+.heatmap-tip .tip-link {
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 11px;
+  font-weight: 600;
+  color: #F0B90B;
+  white-space: nowrap;
+}
+
 .heatmap-tip::after {
   content: '';
   position: absolute;

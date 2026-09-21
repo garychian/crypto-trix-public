@@ -65,6 +65,18 @@ function formatPnl(pnl) {
   return `${sign}$${amt}`;
 }
 
+/**
+ * Where a check-in cell click should land: the exact X post when we have it
+ * (entry.tweet in fund-checkins.json), else X search scoped to that day —
+ * for a logged-in X user that is precisely that day's post(s).
+ */
+function tweetLinkFor(iso, entry) {
+  if (entry && entry.tweet) return entry.tweet;
+  const next = formatISODate(new Date(parseISODate(iso).getTime() + 86400000));
+  const q = encodeURIComponent(`from:CryptoTrix1 since:${iso} until:${next}`);
+  return `https://x.com/search?q=${q}&src=typed_query&f=live`;
+}
+
 function tipHTML(iso, entry) {
   const dateLine = escapeHTML(iso);
   if (!entry) {
@@ -80,7 +92,8 @@ function tipHTML(iso, entry) {
   return (
     `<div class="tip-date">${dateLine}</div>` +
     dayLine +
-    `<div class="tip-pnl ${cls}">${escapeHTML(formatPnl(pnl))}</div>`
+    `<div class="tip-pnl ${cls}">${escapeHTML(formatPnl(pnl))}</div>` +
+    `<div class="tip-link">点击打开当日 X 帖子 ↗</div>`
   );
 }
 
@@ -202,6 +215,12 @@ function bindHeatmapTip(root, tip) {
     if (!cell || !root.contains(cell)) return;
     e.preventDefault();
     e.stopPropagation();
+    // Check-in days link out to that day's X post (exact URL or day-scoped search)
+    if (cell._entry) {
+      hide();
+      window.open(tweetLinkFor(cell.dataset.date, cell._entry), '_blank', 'noopener');
+      return;
+    }
     if (pinned && activeCell === cell) {
       hide();
       return;
@@ -250,7 +269,7 @@ async function renderHeatmap() {
   const ups = series.filter((e) => e.pnl > 0).length;
   const downs = series.filter((e) => e.pnl < 0).length;
   if (sub) {
-    sub.textContent = `${startISO} → ${endISO} · ${series.length} 个交易日打卡 · 涨 ${ups} / 跌 ${downs}`;
+    sub.textContent = `${startISO} → ${endISO} · ${series.length} 个交易日打卡 · 涨 ${ups} / 跌 ${downs} · 点击色块看当日帖`;
   }
 
   if (monthsEl) {

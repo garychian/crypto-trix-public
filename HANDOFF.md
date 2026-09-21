@@ -88,6 +88,12 @@ Three rings (outer → inner):
   by parsing lines like `当日盈亏：+$95` / `−$647`
 - ~38 trading days so far (~2026-07-28 → 2026-09-19); empty cells for rest of 2026
 - Hover/tap popover shows date, Day N, pnl
+- **Click → that day's X post.** Each series entry may carry `"tweet": "<status-url>"`;
+  when present the cell opens that exact post. When absent (default today — X API
+  was down on 2026-09-21 so exact IDs couldn't be backfilled), the click opens an
+  X search scoped `from:CryptoTrix1 since:<date> until:<date+1>`. To upgrade to
+  direct links: fetch tweet IDs (mcp x-post `get_user_tweets`, match
+  `[每日持仓速览] · Day N | MM-DD`), add `"tweet"` per date, redeploy.
 
 ## Canonical data files
 
