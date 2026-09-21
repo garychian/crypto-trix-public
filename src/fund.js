@@ -1,7 +1,7 @@
 import './nav.js';
 import { DEMO_NOTES } from './data/demo.js';
-import { loadHoldingsData } from './lib/holdings.js';
-import { fetchPrices, priceSourceLabel } from './lib/prices.js';
+import { loadHoldingsData, holdingsSourceBadge } from './lib/holdings.js';
+import { fetchPrices, priceSourceLabel, priceSourceBadge, pricesFromHoldings } from './lib/prices.js';
 import { marketStatus } from './lib/market.js';
 import {
   usd,
@@ -26,6 +26,10 @@ let options = [];
 let cashUSD = null;
 let notes = { ...DEMO_NOTES };
 let snapshotDay = null;
+let snapshotTotal = null;
+let snapshotCumPnl = null;
+let snapshotInvested = null;
+let holdingsMeta = null;
 let prices = {};
 let volData = { date: null, map: {} };
 
@@ -211,14 +215,32 @@ function computeAndRender() {
     }
   });
 
-  const totalAssets = holdingsMV + (cashUSD != null ? cashUSD : 0);
-  const cashW = cashUSD != null && totalAssets > 0 ? (cashUSD / totalAssets) * 100 : 0;
-  const totalInvested = hasCost
+  const srcLabel = priceSourceLabel(prices);
+  const useSnapshotTotals =
+    (srcLabel === 'snapshot' || srcLabel === 'demo') &&
+    snapshotTotal != null;
+
+  let totalAssets = holdingsMV + (cashUSD != null ? cashUSD : 0);
+  let displayCumPnL = hasCost ? cumPnL : null;
+  let totalInvested = hasCost
     ? cumCost + (cashUSD != null ? cashUSD : 0)
     : cumPnL != 0
       ? totalAssets - cumPnL
       : null;
-  const retPct = totalInvested > 0 ? (cumPnL / totalInvested) * 100 : null;
+
+  if (useSnapshotTotals) {
+    totalAssets = snapshotTotal;
+    if (snapshotCumPnl != null) displayCumPnL = snapshotCumPnl;
+    // invested_usd is already the portfolio cost basis (total − cum_pnl); do not add cash again
+    if (snapshotInvested != null) {
+      totalInvested = snapshotInvested;
+    } else if (snapshotCumPnl != null) {
+      totalInvested = totalAssets - snapshotCumPnl;
+    }
+  }
+
+  const cashW = cashUSD != null && totalAssets > 0 ? (cashUSD / totalAssets) * 100 : 0;
+  const retPct = totalInvested > 0 && displayCumPnL != null ? (displayCumPnL / totalInvested) * 100 : null;
   const progress = totalAssets > 0 ? (totalAssets / CFG.goal) * 100 : null;
 
   const dayN = snapshotDay != null ? snapshotDay : dayNumber(CFG.start);
@@ -244,7 +266,7 @@ function computeAndRender() {
       : '持仓市值';
   setMoney('d-daypnl', dailyPnL);
   document.getElementById('d-daypnl-sub').textContent = holdings.length + ' 只持仓';
-  setMoney('d-cumpnl', hasCost ? cumPnL : null);
+  setMoney('d-cumpnl', displayCumPnL);
   document.getElementById('d-cumpnl-sub').textContent =
     totalInvested != null ? '本金 ' + usd(totalInvested) : '';
   setPct('d-ret', retPct);
@@ -366,9 +388,10 @@ function computeAndRender() {
       ' · HV=30日历史波动率 · 绿=IV比HV高5点以上，权利金偏厚';
   }
 
-  const src = priceSourceLabel(prices);
+  const holdBadge = holdingsSourceBadge(holdingsMeta);
+  const priceBadge = priceSourceBadge(prices);
   document.getElementById('data-badge').textContent =
-    src === 'live' ? 'Live quotes · 实时行情' : 'Demo data · 示例数据';
+    holdBadge + ' · ' + priceBadge;
   document.getElementById('lastupd').textContent =
     '更新于 ' +
     new Date().toLocaleString('zh-CN', {
@@ -548,11 +571,15 @@ async function loadVol() {
 
 async function boot() {
   const data = await loadHoldingsData();
+  holdingsMeta = data;
   holdings = data.holdings;
   options = data.options;
   cashUSD = data.cash_usd;
   notes = data.notes || { ...DEMO_NOTES };
   snapshotDay = data.day;
+  snapshotTotal = data.total_assets_usd;
+  snapshotCumPnl = data.cum_pnl_usd;
+  snapshotInvested = data.invested_usd;
   CFG.goal = data.goal_usd || CFG.goal;
   CFG.handle = data.handle || CFG.handle;
   CFG.sub = data.sub || CFG.sub;
@@ -565,7 +592,8 @@ async function boot() {
       ...options.map((o) => o.symbol),
     ]),
   ];
-  prices = await fetchPrices(syms, { hist: true });
+  const snapshot = pricesFromHoldings(holdings, data.prices);
+  prices = await fetchPrices(syms, { hist: true, snapshot });
   computeAndRender();
 }
 

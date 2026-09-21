@@ -16,98 +16,126 @@
       "shares": 101,
       "cost": 216.95,
       "costTotal": 21911.95,
-      "weight": 24.5
+      "weight": 24.5,
+      "price": 328.58,
+      "mv": 33186.58
     },
     {
       "ticker": "QQQ",
       "shares": 15,
       "cost": 566.6,
       "costTotal": 8499,
-      "weight": 7.9
+      "weight": 7.9,
+      "price": 723.03,
+      "mv": 10845.45
     },
     {
       "ticker": "GOOGL",
       "shares": 30,
       "cost": 112.06,
       "costTotal": 3361.8,
-      "weight": 7.89
+      "weight": 7.89,
+      "price": 354.3,
+      "mv": 10629
     },
     {
       "ticker": "VOO",
       "shares": 14,
       "cost": 519.22,
       "costTotal": 7269.08,
-      "weight": 7.46
+      "weight": 7.46,
+      "price": 710.71,
+      "mv": 9949.94
     },
     {
       "ticker": "MSFT",
       "shares": 18,
       "cost": 360.19,
       "costTotal": 6483.42,
-      "weight": 6.71
+      "weight": 6.71,
+      "price": 499.99,
+      "mv": 8999.82
     },
     {
       "ticker": "NVDA",
       "shares": 36,
       "cost": 109.23,
       "costTotal": 3932.28,
-      "weight": 5.95
+      "weight": 5.95,
+      "price": 223.96,
+      "mv": 8062.56
     },
     {
       "ticker": "AMZN",
       "shares": 17,
       "cost": 202.06,
       "costTotal": 3435.02,
-      "weight": 3.44
+      "weight": 3.44,
+      "price": 262.65,
+      "mv": 4465.05
     },
     {
       "ticker": "AMD",
       "shares": 10,
       "cost": 74.59,
       "costTotal": 745.9,
-      "weight": 3.57
+      "weight": 3.57,
+      "price": 483.36,
+      "mv": 4833.6
     },
     {
       "ticker": "META",
       "shares": 6,
       "cost": 80.39,
       "costTotal": 482.34,
-      "weight": 2.64
+      "weight": 2.64,
+      "price": 592.1,
+      "mv": 3552.6
     },
     {
       "ticker": "SPCX",
       "shares": 20,
       "cost": 136.8,
       "costTotal": 2736,
-      "weight": 1.97
+      "weight": 1.97,
+      "price": 133.11,
+      "mv": 2662.2
     },
     {
       "ticker": "PLTR",
       "shares": 15,
       "cost": 3.59,
       "costTotal": 53.85,
-      "weight": 1.9
+      "weight": 1.9,
+      "price": 172.01,
+      "mv": 2580.15
     },
     {
       "ticker": "AAPL",
       "shares": 6,
       "cost": 145.25,
       "costTotal": 871.5,
-      "weight": 1.41
+      "weight": 1.41,
+      "price": 313.33,
+      "mv": 1879.98
     },
     {
       "ticker": "EUV",
       "shares": 50,
       "cost": 26.5,
       "costTotal": 1325,
-      "weight": 0.97
+      "weight": 0.97,
+      "price": 26.32,
+      "mv": 1316
     },
     {
       "ticker": "BB",
       "shares": 200,
       "cost": 4.15,
       "costTotal": 830,
-      "weight": 1.33
+      "weight": 1.33,
+      "price": 8.98,
+      "mv": 1796
     }
   ],
   "options": [
@@ -139,5 +167,21 @@
       "expiry": "2026-10-16",
       "premium": 260
     }
-  ]
+  ],
+  "prices": {
+    "TSLA": 328.58,
+    "QQQ": 723.03,
+    "GOOGL": 354.3,
+    "VOO": 710.71,
+    "MSFT": 499.99,
+    "NVDA": 223.96,
+    "AMZN": 262.65,
+    "AMD": 483.36,
+    "META": 592.1,
+    "SPCX": 133.11,
+    "PLTR": 172.01,
+    "AAPL": 313.33,
+    "EUV": 26.32,
+    "BB": 8.98
+  }
 }

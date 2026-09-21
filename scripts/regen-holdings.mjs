@@ -28,6 +28,11 @@ function parseCsv(text) {
   });
 }
 
+function num(v) {
+  if (v == null || v === '') return NaN;
+  return Number(String(v).replace(/,/g, ''));
+}
+
 const holdingsCsv = readFileSync(resolve(root, 'public/data/holdings.csv'), 'utf8');
 const optionsCsv = readFileSync(resolve(root, 'public/data/options.csv'), 'utf8');
 
@@ -38,13 +43,25 @@ try {
   /* first run */
 }
 
+const priceColCandidates = ['实时价格', 'Price', 'price', 'Last', 'last'];
+
 const holdings = parseCsv(holdingsCsv)
   .filter((r) => r.Ticker && r.Ticker.toUpperCase() !== 'CASH')
   .map((r) => {
-    const shares = Number(String(r.Shares).replace(/,/g, ''));
-    const cost = Number(String(r.CostBasis).replace(/,/g, ''));
+    const shares = num(r.Shares);
+    const cost = num(r.CostBasis);
     const rawW = r.Weight;
-    const weight = rawW ? Number(String(rawW).replace(/,/g, '')) : undefined;
+    const weight = rawW ? num(rawW) : undefined;
+    let price;
+    for (const col of priceColCandidates) {
+      if (r[col] != null && r[col] !== '') {
+        const p = num(r[col]);
+        if (Number.isFinite(p)) {
+          price = p;
+          break;
+        }
+      }
+    }
     const row = {
       ticker: r.Ticker.toUpperCase(),
       shares: Number.isInteger(shares) ? shares : shares,
@@ -52,6 +69,10 @@ const holdings = parseCsv(holdingsCsv)
       costTotal: Math.round(cost * shares * 100) / 100,
     };
     if (weight != null && Number.isFinite(weight)) row.weight = weight;
+    if (price != null && Number.isFinite(price)) {
+      row.price = price;
+      row.mv = Math.round(price * shares * 100) / 100;
+    }
     return row;
   });
 
@@ -64,6 +85,13 @@ const options = parseCsv(optionsCsv)
     expiry: r.Expiry,
     premium: Number(r.Premium),
   }));
+
+const prices = {};
+for (const h of holdings) {
+  if (h.price != null && Number.isFinite(h.price)) {
+    prices[h.ticker] = h.price;
+  }
+}
 
 const data = {
   as_of: process.env.AS_OF || existing.as_of || new Date().toISOString().slice(0, 10),
@@ -79,6 +107,7 @@ const data = {
   note: existing.note || '',
   holdings,
   options,
+  prices,
 };
 
 if (data.invested_usd == null) delete data.invested_usd;
@@ -88,5 +117,5 @@ if (data.total_assets_usd == null) delete data.total_assets_usd;
 const out = resolve(root, 'public/data/holdings.json');
 writeFileSync(out, JSON.stringify(data, null, 2) + '\n');
 console.log(
-  `Wrote ${out} (${holdings.length} holdings, ${options.length} options, as_of=${data.as_of}, day=${data.day})`
+  `Wrote ${out} (${holdings.length} holdings, ${options.length} options, as_of=${data.as_of}, day=${data.day}, prices=${Object.keys(prices).length})`
 );

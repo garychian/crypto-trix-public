@@ -43,13 +43,13 @@ function normalizeOption(o) {
 
 function demoFallback() {
   return {
-    as_of: null,
-    day: null,
+    as_of: '2026-09-19',
+    day: 66,
     goal_usd: FUND_CFG.goal,
     cash_usd: DEMO_CASH,
-    invested_usd: null,
-    cum_pnl_usd: null,
-    total_assets_usd: null,
+    invested_usd: 93975,
+    cum_pnl_usd: 47296,
+    total_assets_usd: 141271,
     handle: FUND_CFG.handle,
     sub: FUND_CFG.sub,
     start: FUND_CFG.start,
@@ -57,6 +57,9 @@ function demoFallback() {
     holdings: DEMO_HOLDINGS.map((h) => ({ ...h })),
     options: DEMO_OPTIONS.map((o) => ({ ...o })),
     notes: { ...DEMO_NOTES },
+    prices: Object.fromEntries(
+      DEMO_HOLDINGS.filter((h) => h.price != null).map((h) => [h.ticker, h.price])
+    ),
     source: 'demo',
   };
 }
@@ -68,12 +71,15 @@ function demoFallback() {
  *   goal_usd: number,
  *   cash_usd: number,
  *   invested_usd: number|null,
+ *   cum_pnl_usd: number|null,
+ *   total_assets_usd: number|null,
  *   handle: string,
  *   sub: string,
  *   start: string,
  *   holdings: object[],
  *   options: object[],
  *   notes: object,
+ *   prices: Record<string, number>|null,
  *   source: 'live'|'demo'
  * }>}
  */
@@ -102,9 +108,19 @@ export async function loadHoldingsData() {
       holdings: j.holdings.map(normalizeHolding),
       options: Array.isArray(j.options) ? j.options.map(normalizeOption) : [],
       notes: j.notes && typeof j.notes === 'object' ? { ...j.notes } : { ...DEMO_NOTES },
+      prices: j.prices && typeof j.prices === 'object' ? { ...j.prices } : null,
       source: 'live',
     };
   } catch {
     return demoFallback();
   }
+}
+
+/** Badge text for holdings source */
+export function holdingsSourceBadge(data) {
+  if (data?.source === 'live' && data.as_of) {
+    return '仓库持仓 · ' + data.as_of;
+  }
+  if (data?.source === 'live') return '仓库持仓';
+  return '示例持仓';
 }

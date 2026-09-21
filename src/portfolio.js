@@ -1,11 +1,12 @@
 import './nav.js';
-import { loadHoldingsData } from './lib/holdings.js';
-import { fetchPrices, priceSourceLabel } from './lib/prices.js';
+import { loadHoldingsData, holdingsSourceBadge } from './lib/holdings.js';
+import { fetchPrices, priceSourceBadge, pricesFromHoldings } from './lib/prices.js';
 import { marketStatus } from './lib/market.js';
 import { pctSigned, moneyCls } from './lib/format.js';
 
 let holdings = [];
 let cashUSD = null;
+let holdingsMeta = null;
 let prices = {};
 
 function setVal(id, v, digits = 2) {
@@ -220,9 +221,10 @@ function computeAndRender() {
     })
     .join('');
 
-  const src = priceSourceLabel(prices);
+  const holdBadge = holdingsSourceBadge(holdingsMeta);
+  const priceBadge = priceSourceBadge(prices);
   document.getElementById('data-badge').textContent =
-    src === 'live' ? 'Live quotes' : 'Demo data';
+    holdBadge + ' · ' + priceBadge;
   document.getElementById('lastupd').textContent =
     'Updated ' + new Date().toLocaleTimeString('en-US');
 
@@ -236,10 +238,12 @@ function computeAndRender() {
 
 async function boot() {
   const data = await loadHoldingsData();
+  holdingsMeta = data;
   holdings = data.holdings;
   cashUSD = data.cash_usd;
   const syms = holdings.map((h) => h.ticker);
-  prices = await fetchPrices(syms, { hist: true });
+  const snapshot = pricesFromHoldings(holdings, data.prices);
+  prices = await fetchPrices(syms, { hist: true, snapshot });
   computeAndRender();
 }
 
