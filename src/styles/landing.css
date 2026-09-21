@@ -484,3 +484,197 @@
     padding-top: 20px;
   }
 }
+
+/* ── VIX semicircle fear gauge ── */
+.vix-section {
+  margin-top: 14px;
+  margin-bottom: 8px;
+  padding: 22px 24px 18px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.vix-section::before {
+  content: '';
+  position: absolute;
+  inset: auto -20% -40% 40%;
+  height: 70%;
+  background: radial-gradient(ellipse, rgba(14, 203, 129, 0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.vix-card-inner { position: relative; z-index: 1; }
+
+.vix-head .en {
+  color: var(--accent);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.vix-head h2 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  margin-bottom: 4px;
+}
+
+.vix-body {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.15fr) minmax(160px, 0.85fr);
+  gap: 8px 28px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.vix-gauge-visual {
+  position: relative;
+  max-width: 360px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.vix-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.vix-arc {
+  filter: url(#vix-glow);
+  opacity: 0.95;
+}
+
+.vix-tick {
+  stroke: rgba(232, 235, 240, 0.35);
+  stroke-width: 1.5;
+}
+
+.vix-tick-label {
+  fill: var(--muted-2);
+  font-size: 10px;
+  font-weight: 600;
+  font-family: var(--font);
+}
+
+.vix-needle {
+  transition: none;
+  will-change: transform;
+}
+
+.vix-needle-line {
+  stroke: #E8EBF0;
+  stroke-width: 3;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgba(240, 185, 11, 0.55));
+}
+
+.vix-needle-hub {
+  fill: #F0B90B;
+  stroke: #0B0D10;
+  stroke-width: 2;
+}
+
+.vix-needle-hub-inner {
+  fill: #0B0D10;
+}
+
+.vix-readout {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.vix-value {
+  font-size: clamp(36px, 7vw, 48px);
+  font-weight: 800;
+  letter-spacing: -1.2px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--text);
+  text-shadow: 0 0 24px rgba(14, 203, 129, 0.25);
+}
+
+.vix-label {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.vix-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0 4px;
+}
+
+.vix-asof {
+  font-size: 12.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.vix-chg {
+  font-size: 20px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.3px;
+}
+
+.vix-chg.up { color: var(--up); }
+.vix-chg.down { color: var(--down); }
+.vix-chg.flat { color: var(--muted); }
+
+.vix-zone {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #B7BFCA;
+}
+
+.vix-seg-labels {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.vix-seg-labels .seg-g { color: #0ECB81; }
+.vix-seg-labels .seg-a { color: #F0B90B; }
+.vix-seg-labels .seg-r { color: #F6465D; }
+
+.vix-nfa {
+  margin-top: 8px;
+  font-size: 10.5px;
+  letter-spacing: 0.3px;
+}
+
+.vix-error { padding: 12px 0; font-size: 13px; }
+
+.vix-loading p { margin-top: 8px; font-size: 13px; }
+
+@media (max-width: 720px) {
+  .vix-section { padding: 18px 16px 14px; }
+  .vix-body {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .vix-meta {
+    align-items: center;
+    text-align: center;
+  }
+  .vix-seg-labels { justify-content: center; }
+  .vix-readout { bottom: 4px; }
+  .vix-value { font-size: 40px; }
+}

@@ -1,4 +1,5 @@
 import './nav.js';
+import { renderVixGauge } from './vix-gauge.js';
 import { DEMO_PRICES } from './data/demo.js';
 import { loadHoldingsData } from './lib/holdings.js';
 import { usd, escapeHTML } from './lib/format.js';
@@ -310,6 +311,7 @@ async function boot() {
   }).join('');
 
   await renderHeatmap();
+  await renderVixGauge();
 }
 
 boot();
