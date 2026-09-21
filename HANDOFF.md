@@ -130,8 +130,12 @@ npm run regen-holdings
 ## Prices
 
 - Client: `src/lib/prices.js` — live `/api/prices` → else snapshot from holdings → else demo
-- Badge on fund page: holdings source + price source (e.g. 仓库持仓 · as_of · 快照价)
-- Live Finnhub/Tiingo not wired; no secrets in repo (see `.env.example`)
+- **Live is wired (2026-09-21)**: `api/prices.js` fetches Finnhub `/quote` when
+  `FINNHUB_TOKEN` is set in Vercel env (Production, encrypted; token injected via
+  `vercel env add` from the owner's local key file — never committed). Edge cache
+  60s; hv30/weekly refs still come from the snapshot merge. No token or upstream
+  failure → snapshot fallback (`__source: 'snapshot'`)
+- Badge on fund page: holdings source + price source (live shows 实时行情)
 
 ## What was already decided / don’t reopen unless asked
 
