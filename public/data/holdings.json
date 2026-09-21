@@ -183,5 +183,7 @@
     "AAPL": 336.13,
     "BRK.B": 509.77,
     "EUV": 23.6
-  }
+  },
+  "annual_return_target_pct": 20,
+  "annual_return_year": 2026
 }

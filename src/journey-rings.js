@@ -1,7 +1,7 @@
 /**
  * Apple Activity–style concentric journey progress rings.
  * Outer: total / goal → $2M
- * Middle: cum_pnl / invested (收益率) when available
+ * Middle: current return / 2026 annual target (default 20%)
  * Inner: cash / total (现金占比) when available
  */
 import { usd, escapeHTML } from './lib/format.js';
@@ -27,7 +27,7 @@ const RING_DEFS = [
     color: '#0ECB81',
     overfill: '#0A8F5A',
     glow: 'rgba(14, 203, 129, 0.45)',
-    label: '收益率',
+    label: '年度目标',
   },
   {
     key: 'cash',
@@ -88,16 +88,23 @@ export function buildJourneyMetrics(data) {
     legend: '旅程 · → $2M',
   });
 
-  // Middle — return vs invested
+  // Middle — progress toward 2026 annual return target (default 20%)
   const invested = data.invested_usd != null ? Number(data.invested_usd) : null;
   const cumPnl = data.cum_pnl_usd != null ? Number(data.cum_pnl_usd) : null;
-  if (invested != null && invested > 0 && cumPnl != null && Number.isFinite(cumPnl)) {
-    const ret = cumPnl / invested;
+  const yearTargetPct =
+    data.annual_return_target_pct != null && Number.isFinite(Number(data.annual_return_target_pct))
+      ? Number(data.annual_return_target_pct)
+      : 20;
+  const yearLabel = data.annual_return_year != null ? String(data.annual_return_year) : '2026';
+  if (invested != null && invested > 0 && cumPnl != null && Number.isFinite(cumPnl) && yearTargetPct > 0) {
+    const ret = cumPnl / invested; // current return since book capital
+    const toward = ret / (yearTargetPct / 100); // 1.0 = hit 20% target
     rings.push({
       ...RING_DEFS[1],
-      value: ret,
-      displayPct: ret * 100,
-      legend: '收益率 · PnL/投入',
+      value: toward,
+      displayPct: ret * 100, // show realized return %
+      legend: yearLabel + ' 年度目标 ' + yearTargetPct + '%',
+      displayExtra: (ret * 100).toFixed(2) + '% / ' + yearTargetPct + '%',
     });
   }
 
@@ -275,7 +282,7 @@ export function renderJourneyRings(data) {
       <div class="jr-leg-item">
         <span class="jr-dot" style="background:${r.color};box-shadow:0 0 8px ${r.glow}"></span>
         <span class="jr-leg-label">${escapeHTML(r.legend)}</span>
-        <span class="jr-leg-val">${r.displayPct.toFixed(2)}%</span>
+        <span class="jr-leg-val">${r.displayExtra ? escapeHTML(r.displayExtra) : r.displayPct.toFixed(2) + '%'}</span>
       </div>`
     )
     .join('');
