@@ -45,9 +45,11 @@ export default async function handler(req, res) {
     const chg = Number(d && d.price_change);
     const chgPct = Number(d && d.price_change_percent);
     const asOf = toDateOnly(d && d.last_trade_time);
+    const lastTrade = String((d && d.last_trade_time) || '').trim() || null;
 
     res.status(200).json({
       as_of: asOf,
+      last_trade: lastTrade,
       value: round2(value),
       chg: Number.isFinite(chg) ? round2(chg) : null,
       chg_pct: Number.isFinite(chgPct) ? round2(chgPct) : null,
