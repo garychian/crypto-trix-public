@@ -731,3 +731,205 @@
   .vix-readout { top: 70%; bottom: auto; }
   .vix-value { font-size: 40px; }
 }
+
+/* ── Dashboard row: Journey rings + VIX ── */
+.dash-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 14px;
+  margin-bottom: 8px;
+  align-items: stretch;
+}
+
+.dash-row .vix-section {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.dash-row .journey-section {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+@media (max-width: 860px) {
+  .dash-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Journey Activity Rings ── */
+.journey-section {
+  padding: 22px 24px 18px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.journey-section::before {
+  content: '';
+  position: absolute;
+  inset: -30% -20% auto 20%;
+  height: 70%;
+  background: radial-gradient(ellipse, rgba(240, 185, 11, 0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.jr-card-inner { position: relative; z-index: 1; }
+
+.jr-head .en {
+  color: var(--accent);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.jr-head h2 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  margin-bottom: 4px;
+}
+
+.jr-sub {
+  font-size: 12.5px;
+  margin-top: 2px;
+}
+
+.jr-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.jr-visual {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.jr-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.jr-progress {
+  filter: drop-shadow(0 0 6px var(--jr-glow, rgba(240, 185, 11, 0.5)));
+  transition: none;
+}
+
+.journey-section.is-lit .jr-progress {
+  /* glow settles after enter */
+}
+
+.jr-overfill {
+  transition: opacity 0.3s ease;
+}
+
+.jr-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+  padding: 0 28px;
+}
+
+.jr-pct {
+  font-size: clamp(28px, 6vw, 36px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.05;
+  color: var(--accent);
+  text-shadow: 0 0 20px rgba(240, 185, 11, 0.4);
+}
+
+.jr-assets {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  letter-spacing: -0.2px;
+}
+
+.jr-goal {
+  margin-top: 2px;
+  font-size: 11.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.jr-asof {
+  margin-top: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.jr-side {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.jr-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.jr-leg-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.jr-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.jr-leg-label {
+  color: #B7BFCA;
+  flex: 1;
+  min-width: 0;
+}
+
+.jr-leg-val {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.2px;
+}
+
+.jr-nfa {
+  font-size: 10.5px;
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+
+.jr-loading p { margin-top: 8px; font-size: 13px; }
+
+@media (max-width: 720px) {
+  .journey-section { padding: 18px 16px 14px; }
+  .jr-pct { font-size: 32px; }
+  .jr-visual { max-width: 240px; }
+}
