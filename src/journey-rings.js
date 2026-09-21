@@ -283,16 +283,23 @@ export function renderJourneyRings(data) {
   const metrics = buildJourneyMetrics(data);
   const { rings, total, goal, progress, asOf } = metrics;
   // Three progress figures in ring center — colors match the three rings
-  const numStats = rings
-    .map((r, i) => {
-      const pct = (Number(r.value) || 0) * 100; // ring fill progress
-      return {
-        key: r.key,
-        color: r.color,
-        glow: r.glow,
-        to: pct,
-      };
-    });
+  const numStats = rings.map((r) => ({
+    key: r.key,
+    color: r.color,
+    glow: r.glow,
+    to: (Number(r.value) || 0) * 100,
+  }));
+
+  const legend = rings
+    .map(
+      (r) => `
+      <div class="jr-leg-item">
+        <span class="jr-dot" style="background:${r.color};box-shadow:0 0 8px ${r.glow}"></span>
+        <span class="jr-leg-label">${escapeHTML(r.legend)}</span>
+        <span class="jr-leg-val">${r.displayExtra ? escapeHTML(r.displayExtra) : r.displayPct.toFixed(2) + '%'}</span>
+      </div>`
+    )
+    .join('');
 
   root.innerHTML = `
     <div class="jr-card-inner">
@@ -301,7 +308,7 @@ export function renderJourneyRings(data) {
         <h2 id="journey-title">财富自由 · 旅程进度</h2>
         <p class="jr-sub muted">$137K → $2M · Activity Rings</p>
       </div>
-      <div class="jr-body jr-body-solo">
+      <div class="jr-body">
         <div class="jr-visual">
           ${buildRingSVG(rings)}
           <div class="jr-center jr-center-nums">
@@ -317,8 +324,11 @@ export function renderJourneyRings(data) {
             </div>
           </div>
         </div>
+        <div class="jr-side">
+          <div class="jr-legend">${legend}</div>
+          <div class="jr-nfa muted">#NFA · 非投资建议</div>
+        </div>
       </div>
-      <div class="jr-nfa muted jr-nfa-foot">#NFA · 非投资建议</div>
     </div>
   `;
 
