@@ -47,7 +47,7 @@ Under site nav, inside `.hero-wrap`:
    - Right: **恐慌贪婪指数** VIX gauge `#vix-gauge`
 3. Then hero / feature cards / footer
 
-Do **not** move the whole Fear & Greed block above the heatmap. Only the **14.81 readout** sits in the gauge header next to the title (not overlapping the needle).
+Do **not** move the whole Fear & Greed block above the heatmap. The **14.81 readout** (value + VIX label, one row) sits **directly under the needle hub** — absolute, bottom-center of `.vix-gauge-visual` (`.vix-readout-under`), not in the card header.
 
 ### Journey rings (`src/journey-rings.js`)
 
@@ -131,7 +131,7 @@ npm run regen-holdings
 4. Annual ring uses **11.04% / 20%**, not total-return ~50%  
 5. Options are their **own tab**, not only embedded in fund page  
 6. Homepage: heatmap on top; journey + fear/greed **same row** below  
-7. Fear/greed **number** beside title (top of that card), not whole card above heatmap  
+7. Fear/greed **number** directly **under the needle hub** (bottom-center of the gauge), not whole card above heatmap  
 8. Journey: **center = 3 colored progress numbers**; **right = legend intro** (both)
 
 ## Suggested next tasks (if user continues)

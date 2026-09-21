@@ -558,22 +558,31 @@
 }
 
 .vix-readout-top {
-  position: static;
-  left: auto;
-  top: auto;
-  transform: none;
-  text-align: left;
-  margin-top: 2px; /* align with 「恐慌贪婪指数」 baseline area */
-  pointer-events: none;
+  display: none; /* legacy: readout moved under the needle */
 }
 
-.vix-readout-top .vix-value {
-  font-size: clamp(32px, 6vw, 44px);
+/* Readout sits directly under the needle hub, centered on the gauge axis,
+   tucked into the empty strip below the semicircle baseline (no tilt vs needle). */
+.vix-readout-under {
+  position: absolute;
+  left: 50%;
+  top: auto;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.vix-readout-under .vix-value {
+  font-size: clamp(22px, 4.6vw, 27px);
   line-height: 1;
 }
 
-.vix-readout-top .vix-label {
-  margin-top: 2px;
+.vix-readout-under .vix-label {
+  margin-top: 0;
+  font-size: 11px;
 }
 
 
@@ -784,7 +793,6 @@
   }
   .vix-seg-labels { justify-content: center; }
   .vix-head { gap: 10px 16px; }
-  .vix-readout-top .vix-value { font-size: 36px; }
 }
 
 /* ── Journey Activity Rings (below heatmap; VIX stays first under nav) ── */
