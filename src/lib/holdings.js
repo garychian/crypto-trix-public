@@ -73,6 +73,9 @@ function demoFallback() {
  *   invested_usd: number|null,
  *   cum_pnl_usd: number|null,
  *   total_assets_usd: number|null,
+ *   annualized_return_pct: number|null,
+ *   annual_return_target_pct: number|null,
+ *   annual_return_year: number|null,
  *   handle: string,
  *   sub: string,
  *   start: string,
@@ -101,6 +104,11 @@ export async function loadHoldingsData() {
       invested_usd: j.invested_usd != null ? Number(j.invested_usd) : null,
       cum_pnl_usd: j.cum_pnl_usd != null ? Number(j.cum_pnl_usd) : null,
       total_assets_usd: j.total_assets_usd != null ? Number(j.total_assets_usd) : null,
+      annualized_return_pct:
+        j.annualized_return_pct != null ? Number(j.annualized_return_pct) : null,
+      annual_return_target_pct:
+        j.annual_return_target_pct != null ? Number(j.annual_return_target_pct) : null,
+      annual_return_year: j.annual_return_year != null ? Number(j.annual_return_year) : null,
       handle: (j.handle || FUND_CFG.handle).toUpperCase().replace(/^@/, ''),
       sub: j.sub || FUND_CFG.sub,
       start: j.start || FUND_CFG.start,
