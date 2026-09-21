@@ -43,13 +43,13 @@ function normalizeOption(o) {
 
 function demoFallback() {
   return {
-    as_of: '2026-09-19',
-    day: 66,
+    as_of: '2026-09-20',
+    day: 67,
     goal_usd: FUND_CFG.goal,
     cash_usd: DEMO_CASH,
     invested_usd: 93975,
-    cum_pnl_usd: 47296,
-    total_assets_usd: 141271,
+    cum_pnl_usd: 47403,
+    total_assets_usd: 141378,
     handle: FUND_CFG.handle,
     sub: FUND_CFG.sub,
     start: FUND_CFG.start,
