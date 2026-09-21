@@ -1037,13 +1037,14 @@
 }
 
 .jr-center-nums .jr-nums {
-  gap: 10px;
+  gap: 5px;
   align-items: center;
   text-align: center;
 }
 
+/* Small enough that all three stack inside the innermost ring's hole */
 .jr-center-nums .jr-num {
-  font-size: clamp(18px, 2.8vw, 26px);
+  font-size: clamp(13px, 1.9vw, 17px);
 }
 
 .jr-nfa-foot {

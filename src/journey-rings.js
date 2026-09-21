@@ -306,7 +306,7 @@ export function renderJourneyRings(data) {
     <div class="jr-card-inner">
       <div class="jr-head">
         <div class="en">Wealth Freedom · Journey</div>
-        <h2 id="journey-title">财富自由 · 旅程进度</h2>
+        <h2 id="journey-title">财富自由进度</h2>
         <p class="jr-sub muted">$137K → $2M · Activity Rings</p>
       </div>
       <div class="jr-body">
