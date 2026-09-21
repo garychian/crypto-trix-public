@@ -1,14 +1,16 @@
 /**
- * Vercel serverless stub for GET /api/prices?symbols=TSLA,NVDA,BRK.B&hist=1
+ * Vercel serverless for GET /api/prices?symbols=TSLA,NVDA,BRK.B&hist=1
  *
- * Default: returns 2026-09-20 snapshot-aligned quotes (no brokerage credentials).
- * To go live: set FINNHUB_TOKEN or TIINGO_TOKEN in Vercel env and implement
- * the provider branch below. Never commit secrets.
+ * Live mode: set FINNHUB_TOKEN in Vercel env (Project → Settings → Environment
+ * Variables). Quotes come from Finnhub /quote (free tier, ~real-time US equities)
+ * and are merged over the static snapshot so hv30 / weeklyRef / … stay available.
+ * No token or upstream failure → snapshot quotes (source: 'snapshot').
  *
+ * Never commit the token; it is injected via Vercel env only.
  * ESM export — package.json has "type": "module".
  */
 
-const DEMO = {
+const SNAPSHOT = {
   TSLA:  { price: 364.27, changePct: 0, hv30: 59.94, weeklyRef: 328.4, monthlyRef: 315.2, yearlyRef: 248.5 },
   QQQ:   { price: 721.45, changePct: 0, hv30: 18.06, weeklyRef: 708.1, monthlyRef: 692.0, yearlyRef: 520.0 },
   GOOGL: { price: 349.54, changePct: 0, hv30: 37.00, weeklyRef: 348.2, monthlyRef: 332.5, yearlyRef: 175.0 },
@@ -29,9 +31,25 @@ const DEMO = {
   RKLB:  { price: 72.15, changePct: 0, hv30: 98, weeklyRef: 68.0, monthlyRef: 55.0, yearlyRef: 18.0 },
 };
 
+const round2 = (n) => Math.round(n * 100) / 100;
+
+async function finnhubQuote(symbol, token) {
+  const r = await fetch(
+    `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(symbol)}&token=${token}`,
+    { headers: { accept: 'application/json' } }
+  );
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  const q = await r.json();
+  const price = Number(q && q.c);
+  if (!Number.isFinite(price) || price <= 0) throw new Error('no quote');
+  const dp = Number(q && q.dp);
+  return { price: round2(price), changePct: Number.isFinite(dp) ? round2(dp) : 0 };
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate=120');
+  // Quotes tick during US hours; 60s at the edge keeps Finnhub free-tier usage tiny
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
   if (req.method === 'OPTIONS') {
     res.status(204).end();
     return;
@@ -41,15 +59,41 @@ export default async function handler(req, res) {
     .split(',')
     .map((s) => s.trim().toUpperCase())
     .filter(Boolean);
+  const keys = symbols.length ? symbols : Object.keys(SNAPSHOT);
 
-  // Live provider hook (optional). Implement when tokens are set in Vercel env.
-  // const token = process.env.FINNHUB_TOKEN || process.env.TIINGO_TOKEN;
-
-  const keys = symbols.length ? symbols : Object.keys(DEMO);
+  const token = process.env.FINNHUB_TOKEN;
   const out = {};
+
+  if (token) {
+    const results = await Promise.allSettled(
+      keys.map((sym) => finnhubQuote(sym, token))
+    );
+    let hits = 0;
+    keys.forEach((sym, i) => {
+      const base = SNAPSHOT[sym]
+        ? Object.assign({}, SNAPSHOT[sym])
+        : { price: null, changePct: null };
+      const r = results[i];
+      if (r.status === 'fulfilled') {
+        out[sym] = Object.assign(base, r.value);
+        hits++;
+      } else {
+        out[sym] = SNAPSHOT[sym]
+          ? base
+          : { error: 'no quote', price: null, changePct: null };
+      }
+    });
+    if (hits > 0) {
+      out.__source = 'live';
+      res.status(200).json(out);
+      return;
+    }
+    // Finnhub fully down → fall through to snapshot
+  }
+
   for (const sym of keys) {
-    out[sym] = DEMO[sym]
-      ? Object.assign({}, DEMO[sym])
+    out[sym] = SNAPSHOT[sym]
+      ? Object.assign({}, SNAPSHOT[sym])
       : { error: 'unknown symbol', price: null, changePct: null };
   }
   out.__source = 'snapshot';
