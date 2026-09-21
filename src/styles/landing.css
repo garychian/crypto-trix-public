@@ -500,7 +500,7 @@
   position: absolute;
   inset: auto -20% -40% 40%;
   height: 70%;
-  background: radial-gradient(ellipse, rgba(14, 203, 129, 0.07) 0%, transparent 65%);
+  background: radial-gradient(ellipse, rgba(14, 203, 129, 0.1) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -544,12 +544,38 @@
   overflow: visible;
 }
 
-.vix-arc {
-  opacity: 0.95;
+/* Dark rail behind the active gradient band */
+.vix-rail {
+  fill: rgba(232, 235, 240, 0.06);
+  stroke: rgba(232, 235, 240, 0.08);
+  stroke-width: 1;
+}
+
+/* Soft outer glow band — fades in on enter */
+.vix-glow-band {
+  opacity: 0;
+  transition: opacity 0.9s ease-out;
+}
+
+.vix-band-group.is-lit .vix-glow-band {
+  opacity: 0.35;
+}
+
+.vix-arc-band {
+  opacity: 0;
+  transition: opacity 0.85s ease-out 0.05s;
+}
+
+.vix-band-group.is-lit .vix-arc-band {
+  opacity: 1;
+}
+
+.vix-arc-slice {
+  /* continuous gradient slices; slight overlap handled by adjacent fills */
 }
 
 .vix-tick {
-  stroke: rgba(232, 235, 240, 0.35);
+  stroke: rgba(232, 235, 240, 0.4);
   stroke-width: 1.5;
 }
 
@@ -565,21 +591,44 @@
   will-change: transform;
 }
 
-.vix-needle-line {
-  stroke: #E8EBF0;
-  stroke-width: 3;
+.vix-needle-blade {
+  fill: #FFF6D0;
+  stroke: #F0B90B;
+  stroke-width: 0.6;
+  filter: drop-shadow(0 0 8px rgba(240, 185, 11, 0.85))
+          drop-shadow(0 0 16px rgba(240, 185, 11, 0.45));
+}
+
+.vix-needle-core {
+  stroke: #FFFFFF;
+  stroke-width: 1.4;
   stroke-linecap: round;
-  filter: drop-shadow(0 0 6px rgba(240, 185, 11, 0.55));
+  opacity: 0.9;
+}
+
+.vix-needle-hub-halo {
+  fill: rgba(240, 185, 11, 0.45);
+  opacity: 0.7;
 }
 
 .vix-needle-hub {
-  fill: #F0B90B;
   stroke: #0B0D10;
-  stroke-width: 2;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 10px rgba(240, 185, 11, 0.75));
 }
 
 .vix-needle-hub-inner {
   fill: #0B0D10;
+}
+
+/* Soft pulse on hub after needle settles */
+.vix-needle.is-settled .vix-needle-hub-halo {
+  animation: vix-hub-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes vix-hub-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.95; }
 }
 
 .vix-readout {
@@ -600,7 +649,9 @@
   font-variant-numeric: tabular-nums;
   line-height: 1;
   color: var(--text);
-  text-shadow: 0 0 24px rgba(14, 203, 129, 0.25);
+  text-shadow:
+    0 0 18px rgba(240, 185, 11, 0.35),
+    0 0 36px rgba(14, 203, 129, 0.28);
 }
 
 .vix-label {
