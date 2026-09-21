@@ -91,7 +91,7 @@ Three rings (outer → inner):
 - **Click → that day's X post.** Each series entry may carry `"tweet": "<status-url>"`;
   when present the cell opens that exact post. When absent (default today — X API
   was down on 2026-09-21 so exact IDs couldn't be backfilled), the click opens an
-  X search scoped `from:CryptoTrix1 since:<date> until:<date+1>`. To upgrade to
+  X search scoped `from:CryptoTrix1 "财富自由基金每日持仓速览" since:<date> until:<date+1>`. To upgrade to
   direct links: fetch tweet IDs (mcp x-post `get_user_tweets`, match
   `[每日持仓速览] · Day N | MM-DD`), add `"tweet"` per date, redeploy.
 

@@ -67,13 +67,15 @@ function formatPnl(pnl) {
 
 /**
  * Where a check-in cell click should land: the exact X post when we have it
- * (entry.tweet in fund-checkins.json), else X search scoped to that day —
- * for a logged-in X user that is precisely that day's post(s).
+ * (entry.tweet in fund-checkins.json), else X search scoped to that day AND
+ * the daily-tweet keyword — which pins it to precisely that day's 持仓速览 post.
  */
 function tweetLinkFor(iso, entry) {
   if (entry && entry.tweet) return entry.tweet;
   const next = formatISODate(new Date(parseISODate(iso).getTime() + 86400000));
-  const q = encodeURIComponent(`from:CryptoTrix1 since:${iso} until:${next}`);
+  const q = encodeURIComponent(
+    `from:CryptoTrix1 "财富自由基金每日持仓速览" since:${iso} until:${next}`
+  );
   return `https://x.com/search?q=${q}&src=typed_query&f=live`;
 }
 
