@@ -313,8 +313,8 @@ export async function renderVixGauge() {
   root.innerHTML = `
     <div class="vix-card-inner">
       <div class="vix-head">
-        <div class="en">CBOE Volatility Index</div>
-        <h2 id="vix-title">VIX · 恐惧指数</h2>
+        <div class="en">Fear & Greed · VIX</div>
+        <h2 id="vix-title">恐慌贪婪指数</h2>
       </div>
       <div class="vix-body">
         <div class="vix-gauge-visual">

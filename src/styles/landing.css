@@ -634,12 +634,13 @@
 .vix-readout {
   position: absolute;
   left: 50%;
-  /* Center of upper semicircle (pivot at bottom) */
-  top: 42%;
+  /* Sit low in the open semicircle so the needle does not cover the number */
+  top: 68%;
   bottom: auto;
-  transform: translate(-50%, -40%);
+  transform: translate(-50%, 0);
   text-align: center;
   pointer-events: none;
+  z-index: 2;
 }
 
 .vix-value {
@@ -727,6 +728,6 @@
     text-align: center;
   }
   .vix-seg-labels { justify-content: center; }
-  .vix-readout { top: 44%; bottom: auto; }
+  .vix-readout { top: 70%; bottom: auto; }
   .vix-value { font-size: 40px; }
 }
