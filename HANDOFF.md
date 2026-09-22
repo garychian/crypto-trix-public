@@ -65,12 +65,15 @@ Three rings (outer → inner):
 
 **User metrics (do not “fix” differently without asking):**
 
-- `annualized_return_pct`: **11.69** (recomputed 2026-09-22 on the same implied account
+- `annualized_return_pct`: **12.14** (recomputed 2026-09-22 on the same implied account
   period as the old user-stated 11.04 → T ≈ 3.89y; formula: (1+cum/invested)^(1/T)−1)
 - `annual_return_target_pct`: **20** (2026 target)
-- Cash (2026-09-22): **broker-anchored** — baseline $32,038 (2026-08-23) adjusted for
-  known trades (BB sold → BRK.B 2sh in, EUV +10sh) ≈ **$31,674**; total ≈ **$144,284.6**.
-  Weight reverse-inference retired — it had drifted ~$1.2k from broker reality.
+- Cash (2026-09-22): **broker-anchored to user's real total $146,799** → cash =
+  146,799 − mv(9/21) = **$34,188.45**; cum_pnl = 52,824; return 56.21%.
+  The $32,038 (8/23) baseline is RETIRED — real cash was ~$34,188 through September
+  (weight reverse-inference happened to match it; the "anchor + trade adjustments"
+  chain understated totals by ~$2.2k). From now on: ask for the broker total after
+  any deposit/withdrawal/trade batch and set it directly.
 
 ### Equity curve (`src/equity-chart.js`, fund tab)
 

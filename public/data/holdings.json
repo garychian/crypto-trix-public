@@ -2,14 +2,14 @@
   "as_of": "2026-09-22",
   "day": 69,
   "goal_usd": 2000000,
-  "cash_usd": 31674.02,
+  "cash_usd": 34188.45,
   "invested_usd": 93975,
-  "cum_pnl_usd": 50566.81,
-  "total_assets_usd": 144284.6,
+  "cum_pnl_usd": 52824,
+  "total_assets_usd": 146799,
   "handle": "CryptoTrix1",
   "sub": "US EQUITIES",
   "start": "2026-07-16",
-  "note": "Source: my-portfolio.csv · as_of 2026-09-22 · cash anchored to broker baseline $32,038 (2026-08-23), adjusted for BB→BRK.B swap + EUV +10 (est. ±$30) · annualized kept on the same implied period as the former 11.04%",
+  "note": "Source: my-portfolio.csv · as_of 2026-09-22 · cash = broker total $146,799 (user 2026-09-22) − mv; the $32,038 (8/23) baseline is retired — real cash ~$34,188 · annualized on the implied period of the former 11.04% (T≈3.89y)",
   "holdings": [
     {
       "ticker": "TSLA",
@@ -184,5 +184,5 @@
     "BRK.B": 502.01,
     "EUV": 24.4
   },
-  "annualized_return_pct": 11.69
+  "annualized_return_pct": 12.14
 }
