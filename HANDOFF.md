@@ -65,15 +65,15 @@ Three rings (outer → inner):
 
 **User metrics (do not “fix” differently without asking):**
 
-- `annualized_return_pct`: **12.14** (recomputed 2026-09-22 on the same implied account
-  period as the old user-stated 11.04 → T ≈ 3.89y; formula: (1+cum/invested)^(1/T)−1)
+- `annualized_return_pct`: **12.23** (same implied account period T ≈ 3.89y;
+  formula: (1+cum/invested)^(1/T)−1, recomputed on each daily chain)
 - `annual_return_target_pct`: **20** (2026 target)
-- Cash (2026-09-22): **broker-anchored to user's real total $146,799** → cash =
-  146,799 − mv(9/21) = **$34,188.45**; cum_pnl = 52,824; return 56.21%.
-  The $32,038 (8/23) baseline is RETIRED — real cash was ~$34,188 through September
-  (weight reverse-inference happened to match it; the "anchor + trade adjustments"
-  chain understated totals by ~$2.2k). From now on: ask for the broker total after
-  any deposit/withdrawal/trade batch and set it directly.
+- Cash (as of 9/22 close): broker-anchored chain — real total $146,799.22 (user,
+  2026-09-22) + Tue pnl +$439.81 → total $147,239.03; cash = **$34,188.67**
+  (unchanged, no trades); cum_pnl = 53,264; return 56.68%.
+  The $32,038 (8/23) baseline is RETIRED — real cash was ~$34,188 through September.
+  From now on: chain daily pnl from the last broker-anchored total, and ask for the
+  broker total after any deposit/withdrawal/trade batch to re-anchor.
 
 ### Equity curve (`src/equity-chart.js`, fund tab)
 
