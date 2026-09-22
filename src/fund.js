@@ -10,7 +10,6 @@ import {
   moneyCls,
   escapeHTML,
   dayNumber,
-  fmtExpiry,
 } from './lib/format.js';
 import { initEquityChart } from './equity-chart.js';
 
@@ -380,8 +379,6 @@ function computeAndRender() {
     })
     .join('');
 
-  renderOptTeaser();
-
   const vn = document.getElementById('vol-note');
   if (vn) {
     vn.textContent =
@@ -409,44 +406,6 @@ function computeAndRender() {
     (m.open ? 'dot-open' : 'dot-closed') +
     '"></span>' +
     m.shortZh;
-}
-
-function renderOptTeaser() {
-  const el = document.getElementById('opt-teaser-sum');
-  if (!el) return;
-  if (!options.length) {
-    el.innerHTML = '暂无合约 · <a href="/options.html">打开期权页</a>';
-    return;
-  }
-  const totalPrem = options.reduce((s, o) => s + (o.premium || 0), 0);
-  const syms = new Set(options.map((o) => o.symbol));
-  const now = Date.now();
-  let nearest = null;
-  options.forEach((o) => {
-    const dte = Math.ceil((new Date(o.expiry + 'T23:59:59').getTime() - now) / 86400000);
-    if (dte > 0 && (!nearest || dte < nearest.dte)) {
-      nearest = { sym: o.symbol, dte, expiry: o.expiry };
-    }
-  });
-  let html =
-    '<b>' +
-    options.length +
-    '</b> 笔 · ' +
-    syms.size +
-    ' 标的 · 权利金合计 <b class="up">+$' +
-    totalPrem.toLocaleString('en-US') +
-    '</b>';
-  if (nearest) {
-    html +=
-      ' · 最近到期 ' +
-      nearest.sym +
-      ' ' +
-      fmtExpiry(nearest.expiry) +
-      '（' +
-      nearest.dte +
-      '天）';
-  }
-  el.innerHTML = html;
 }
 
 async function loadVol() {
