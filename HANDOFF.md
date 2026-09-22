@@ -65,9 +65,19 @@ Three rings (outer → inner):
 
 **User metrics (do not “fix” differently without asking):**
 
-- `annualized_return_pct`: **11.04** (user-stated; not cum_pnl/invested)
+- `annualized_return_pct`: **11.69** (recomputed 2026-09-22 on the same implied account
+  period as the old user-stated 11.04 → T ≈ 3.89y; formula: (1+cum/invested)^(1/T)−1)
 - `annual_return_target_pct`: **20** (2026 target)
-- Cash: **reverse from weights** — `total = holdings_mv / (weight_sum/100); cash = total - holdings_mv` (~$34,188). Not the old $32,038 broker baseline.
+- Cash (2026-09-22): **broker-anchored** — baseline $32,038 (2026-08-23) adjusted for
+  known trades (BB sold → BRK.B 2sh in, EUV +10sh) ≈ **$31,674**; total ≈ **$144,284.6**.
+  Weight reverse-inference retired — it had drifted ~$1.2k from broker reality.
+
+### Equity curve (`src/equity-chart.js`, fund tab)
+
+- Rebuilds the curve from `fund-checkins.json` daily pnl; **last point anchored to
+  `holdings.json.total_assets_usd`** (日频回放，非实时 — live quotes live in the cards above)
+- SVG viewBox tracks the container's real pixel size via ResizeObserver — do **not**
+  reintroduce `preserveAspectRatio="none"` (it stretched the x-axis date labels)
 
 ### Fear & Greed / VIX (`src/vix-gauge.js`)
 
@@ -141,7 +151,7 @@ npm run regen-holdings
 
 1. Public remake in **new** repo + Vercel project; leave old `crypto-trix.vercel.app` alone  
 2. Holdings from **repo JSON**, periodically updated from local CSV  
-3. Cash from **weight reverse-inference**, not fixed 32038  
+3. Cash **broker-anchored** (baseline 32,038 + trade adjustments); weight reverse-inference retired 2026-09-22  
 4. Annual ring uses **11.04% / 20%**, not total-return ~50%  
 5. Options are their **own tab**, not only embedded in fund page  
 6. Homepage: heatmap on top; journey + fear/greed **same row** below  

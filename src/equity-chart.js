@@ -186,7 +186,7 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
       </div>
     </div>
     <div class="eq-canvas-wrap">
-      <svg class="eq-svg" viewBox="0 0 720 280" preserveAspectRatio="none" role="img" aria-label="基金净值折线图">
+      <svg class="eq-svg" viewBox="0 0 720 280" role="img" aria-label="基金净值折线图">
         <defs>
           <linearGradient id="eqAreaGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#F0B90B" stop-opacity="0.35"/>
@@ -226,8 +226,22 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
   const pills = [...root.querySelectorAll('.eq-pill')];
 
   const pad = { t: 16, r: 16, b: 36, l: 16 };
-  const W = 720;
-  const H = 280;
+  // ViewBox tracks the real pixel size so text/strokes render 1:1 — the old
+  // preserveAspectRatio="none" stretch distorted the x-axis date labels.
+  let W = 720;
+  let H = 280;
+  let lastPaintArgs = null;
+
+  function syncSize() {
+    const rect = wrap.getBoundingClientRect();
+    const w = Math.max(1, Math.round(rect.width));
+    const h = Math.max(1, Math.round(rect.height));
+    if (w === W && h === H) return false;
+    W = w;
+    H = h;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    return true;
+  }
 
   function hideHover() {
     crossEl.setAttribute('hidden', '');
@@ -237,6 +251,7 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
 
   function paint(ys, rawSlice) {
     currentSlice = rawSlice || [];
+    lastPaintArgs = { ys: ys.slice(), slice: currentSlice };
     const xs = ys.map((_, i) => i);
     const geo = toPath(xs, ys, W, H, pad);
     lineEl.setAttribute('d', geo.line);
@@ -390,6 +405,16 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
   wrap.addEventListener('pointerleave', hideHover);
   wrap.addEventListener('pointercancel', hideHover);
 
+  syncSize();
+
+  let ro = null;
+  if (typeof ResizeObserver !== 'undefined') {
+    ro = new ResizeObserver(() => {
+      if (syncSize() && lastPaintArgs) paint(lastPaintArgs.ys, lastPaintArgs.slice);
+    });
+    ro.observe(wrap);
+  }
+
   const initial =
     points.length >= 12 ? defaultRange : points.length >= 5 ? 'week' : 'year';
   animateTo(RANGES[initial] ? initial : 'month');
@@ -397,6 +422,7 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
   return {
     destroy() {
       cancelAnimationFrame(raf);
+      if (ro) ro.disconnect();
       wrap.removeEventListener('pointermove', onMove);
       wrap.removeEventListener('pointerdown', onMove);
       wrap.removeEventListener('pointerleave', hideHover);
