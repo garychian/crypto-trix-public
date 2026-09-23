@@ -99,13 +99,16 @@ Three rings (outer → inner):
 
 ### US 10Y Treasury yield card (`src/yield10-card.js`, homepage next to VIX)
 
-- Data: **live** — `GET /api/yield10` (serverless `api/yield10.js`) fetches FRED's
-  public `DGS10` CSV (no key), falls back to Treasury.gov's daily yield-curve CSV;
-  static `public/data/yield10.json` is the final client fallback. Daily series —
-  edge cache 10 min. As-of date shown on the card (FRED publishes same-day in the
-  US evening, so during Beijing daytime it typically shows the previous session)
-- Card: big `4.96%` readout + `▲/▼ chg（chg_pct%）` + 90-obs sparkline (blue
-  gradient area, hi/lo labels) + `近90日 lo–hi%` range line + FRED source note
+- Data: **intraday first** — `GET /api/yield10` (serverless `api/yield10.js`)
+  fetches CBOE's public TNX index (10Y yield × 10, delayed ~15 min; same free CDN
+  as /api/vix) for the ticking value, and FRED's public `DGS10` CSV for the daily
+  series (sparkline + 52w range + previous-close reference for the change).
+  Fallbacks: FRED → Treasury.gov daily CSV → static `public/data/yield10.json`
+- Chg calc: CBOE `price_change` when usable, else live tick − last FRED daily
+  close before the trade date. Card shows a pulsing **LIVE** badge + `HH:MM ET`
+  when intraday, `日频` badge when it degraded to the daily close
+- Edge cache 2 min (intraday). Card: big readout + `▲/▼ chg（chg_pct%）较上日收盘`
+  + 90-obs sparkline (blue gradient, hi/lo labels) + `近90日 lo–hi%` range
 
 ### Heatmap (`src/landing.js` + checkin UI)
 

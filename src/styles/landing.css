@@ -534,7 +534,9 @@
 
 /* ── VIX semicircle fear gauge ── */
 
-/* Journey rings + Fear/Greed gauge + 10Y yield on one row (wide) */
+/* Journey rings + Fear/Greed gauge on row 1; 10Y yield strip spans row 2.
+   The ~936px container can't fit three cards across without clipping the
+   journey rings / VIX gauge inner grids — verified via overflow QC. */
 .dash-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -544,25 +546,17 @@
 }
 
 .dash-row > .journey-section,
-.dash-row > .vix-section,
-.dash-row > .y10-section {
+.dash-row > .vix-section {
   margin-top: 0;
   margin-bottom: 0;
   height: 100%;
 }
 
-/* Below the wide breakpoint the yield card spans the full row (horizontal layout) */
+/* Yield card: full-width horizontal strip under the two gauge cards */
 .dash-row > .y10-section {
   grid-column: 1 / -1;
-}
-
-@media (min-width: 1101px) {
-  .dash-row {
-    grid-template-columns: 1.15fr 1.15fr 0.72fr;
-  }
-  .dash-row > .y10-section {
-    grid-column: auto;
-  }
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 @media (max-width: 900px) {
@@ -650,7 +644,8 @@
 
 .vix-body {
   display: grid;
-  grid-template-columns: minmax(260px, 1.2fr) minmax(160px, 0.8fr);
+  /* minmax(0,…) lets the gauge/meta shrink gracefully instead of overflowing */
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
   gap: 8px 28px;
   align-items: start;
   margin-top: 10px;
@@ -888,27 +883,20 @@
   margin-bottom: 4px;
 }
 
+/* Horizontal strip: readout left, sparkline stretching to the right */
 .y10-body {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: 10px;
+  display: grid;
+  grid-template-columns: minmax(200px, auto) minmax(0, 1fr);
+  gap: 10px 36px;
+  align-items: center;
+  margin-top: 12px;
 }
 
-/* Wide-but-short spanned layout: readout left, sparkline right */
-@media (max-width: 1100px) {
-  .y10-body {
-    display: grid;
-    grid-template-columns: minmax(180px, auto) minmax(0, 1fr);
-    gap: 10px 28px;
-    align-items: center;
-  }
-}
-
-@media (max-width: 560px) {
+@media (max-width: 640px) {
   .y10-body {
     display: flex;
     flex-direction: column;
+    gap: 6px;
   }
 }
 
@@ -939,6 +927,39 @@
   font-size: 20px;
   font-weight: 800;
   color: #7FA3FF;
+}
+
+/* LIVE / 日频 badge next to the big number */
+.y10-live {
+  margin-left: 6px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-4px);
+}
+
+.y10-live.is-on {
+  border-color: rgba(14, 203, 129, 0.45);
+  color: #35E5A0;
+  background: rgba(14, 203, 129, 0.09);
+  animation: y10-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes y10-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(14, 203, 129, 0.25); }
+  50% { box-shadow: 0 0 10px 1px rgba(14, 203, 129, 0.35); }
+}
+
+.y10-chg-ref {
+  margin-left: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
 }
 
 .y10-chg {
@@ -1071,8 +1092,10 @@
 
 .jr-body {
   display: grid;
-  grid-template-columns: minmax(220px, 300px) 1fr;
-  gap: 20px 32px;
+  /* min 0 (not the old 220px floor) so rings + legend shrink instead of
+     clipping past the card edge on narrow columns */
+  grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+  gap: 20px 28px;
   align-items: center;
   margin-top: 10px;
 }

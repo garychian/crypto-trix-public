@@ -370,5 +370,7 @@
  "hi_52w": 5.01,
  "lo_90d": 4.38,
  "hi_90d": 5.01,
- "source": "FRED · DGS10 (daily)"
+ "source": "FRED · DGS10 (daily)",
+ "live": false,
+ "trade_time": null
 }

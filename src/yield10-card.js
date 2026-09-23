@@ -91,10 +91,15 @@ export async function renderYield10Card() {
   const chg = Number(data.chg);
   const chgPct = Number(data.chg_pct);
   const asOf = data.as_of || '—';
+  const isLive = Boolean(data.live);
   const chgCls = chg > 0 ? 'up' : chg < 0 ? 'down' : 'flat';
   const arrow = chg > 0 ? '▲' : chg < 0 ? '▼' : '—';
   const lo90 = Number(data.lo_90d);
   const hi90 = Number(data.hi_90d);
+  // Intraday: "09-22 13:59 ET"; daily: the as-of date
+  const asOfLine = isLive
+    ? `as of ${String(asOf).slice(5)} ${data.trade_time || ''} ET · 盘中延时≈15分`
+    : `as of ${asOf} · 日频收盘`;
 
   root.innerHTML = `
     <div class="y10-card-inner">
@@ -107,9 +112,10 @@ export async function renderYield10Card() {
           <div class="y10-value-row">
             <span class="y10-value">${Number.isFinite(value) ? value.toFixed(2) : '—'}</span>
             <span class="y10-unit">%</span>
+            <span class="y10-live ${isLive ? 'is-on' : ''}">${isLive ? 'LIVE' : '日频'}</span>
           </div>
-          <div class="y10-chg ${chgCls}">${arrow} ${signed(chg)}（${signed(chgPct)}%）</div>
-          <div class="y10-asof muted">as of ${asOf} · 日频</div>
+          <div class="y10-chg ${chgCls}">${arrow} ${signed(chg)}（${signed(chgPct)}%）<span class="y10-chg-ref muted">较上日收盘</span></div>
+          <div class="y10-asof muted">${asOfLine}</div>
         </div>
         <div class="y10-spark-wrap">
           ${sparkSVG(data.history)}
@@ -120,7 +126,7 @@ export async function renderYield10Card() {
           }
         </div>
       </div>
-      <div class="y10-nfa muted">#NFA · 数据源 FRED 日频</div>
+      <div class="y10-nfa muted">#NFA · CBOE TNX 盘中 · FRED 日频走势</div>
     </div>
   `;
 }
