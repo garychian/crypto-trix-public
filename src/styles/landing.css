@@ -50,96 +50,6 @@
   line-height: 1.7;
 }
 
-.progress-card {
-  margin: 32px auto 0;
-  padding: 22px 22px 18px;
-  text-align: left;
-  max-width: 640px;
-}
-
-.progress-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  align-items: flex-end;
-  margin-bottom: 16px;
-}
-
-.tiny {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-
-.progress-nums {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.progress-nums strong {
-  font-size: 36px;
-  font-weight: 800;
-  color: var(--accent);
-  letter-spacing: -0.8px;
-  font-variant-numeric: tabular-nums;
-}
-
-.goal-val {
-  font-size: 20px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.bar-track {
-  position: relative;
-  height: 14px;
-  background: var(--panel-2);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-}
-
-.bar-fill {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 0;
-  background: linear-gradient(90deg, #F0B90B, #FFD75E);
-  border-radius: 999px;
-  box-shadow: 0 0 14px rgba(240, 185, 11, 0.55);
-  transition: width .9s cubic-bezier(.2, .7, .2, 1);
-}
-
-.bar-knob {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #FFF4CF, #F0B90B);
-  border: 2.5px solid #0B0D10;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 12px rgba(255, 216, 94, 0.95);
-  transition: left .9s cubic-bezier(.2, .7, .2, 1);
-}
-
-.milestones {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 12px;
-  flex-wrap: wrap;
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.milestones .hit { color: var(--accent); }
-
 .cta-row {
   display: flex;
   justify-content: center;
@@ -198,10 +108,6 @@
 
 @media (max-width: 900px) {
   .cards-grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 720px) {
-  .progress-nums strong { font-size: 28px; }
 }
 
 /* ── Fund daily check-in heatmap ── */
