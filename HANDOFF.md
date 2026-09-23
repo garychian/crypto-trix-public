@@ -65,8 +65,11 @@ Three rings (outer → inner):
 
 **User metrics (do not “fix” differently without asking):**
 
-- `annualized_return_pct`: **12.23** (same implied account period T ≈ 3.89y;
-  formula: (1+cum/invested)^(1/T)−1, recomputed on each daily chain)
+- `annualized_return_pct`: **15.12** — user-provided anchor (2026-09-22, alongside the
+  $146,799 total). Implies equivalent compounding period **T ≈ 3.19y**
+  (T = ln(1+53,264/93,975)/ln(1.1512) = 3.189). Chain daily with locked T:
+  annualized = (1+cum/invested)^(1/3.189)−1. The old T≈3.89 (backed out of the
+  even older 11.04% figure) is retired.
 - `annual_return_target_pct`: **20** (2026 target)
 - Cash (as of 9/22 close): broker-anchored chain — real total $146,799.22 (user,
   2026-09-22) + Tue pnl +$439.81 → total $147,239.03; cash = **$34,188.67**
