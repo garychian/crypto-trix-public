@@ -42,9 +42,10 @@ Top nav (`src/nav.js`):
 Under site nav, inside `.hero-wrap`:
 
 1. **打卡热力格** `#fund-checkin` — full-year 2026 GitHub-style P&L heatmap  
-2. **`.dash-row`** (CSS grid, 2 cols desktop / 1 col mobile):
-   - Left: **财富自由 · 旅程进度** concentric Activity rings `#journey-rings`
-   - Right: **恐慌贪婪指数** VIX gauge `#vix-gauge`
+2. **`.dash-row`** (CSS grid, 3 cols ≥1101px / journey+VIX with yield card spanning below at 560–1100px / 1 col mobile):
+   - **财富自由 · 旅程进度** concentric Activity rings `#journey-rings`
+   - **恐慌贪婪指数** VIX gauge `#vix-gauge`
+   - **美债十年期收益率** 10Y yield card `#yield10` (big readout + 90-day sparkline)
 3. Then hero / feature cards / footer
 
 Do **not** move the whole Fear & Greed block above the heatmap. The **14.81 readout** (value + VIX label, one row) sits **directly under the needle hub** — absolute, bottom-center of `.vix-gauge-visual` (`.vix-readout-under`), not in the card header.
@@ -96,6 +97,16 @@ Three rings (outer → inner):
   the SVG canvas (`VIEW_H = 272`, readout absolute bottom-center of `.vix-gauge-visual`)
 - Zones conceptually 0–15 / 15–25 / 25–40
 
+### US 10Y Treasury yield card (`src/yield10-card.js`, homepage next to VIX)
+
+- Data: **live** — `GET /api/yield10` (serverless `api/yield10.js`) fetches FRED's
+  public `DGS10` CSV (no key), falls back to Treasury.gov's daily yield-curve CSV;
+  static `public/data/yield10.json` is the final client fallback. Daily series —
+  edge cache 10 min. As-of date shown on the card (FRED publishes same-day in the
+  US evening, so during Beijing daytime it typically shows the previous session)
+- Card: big `4.96%` readout + `▲/▼ chg（chg_pct%）` + 90-obs sparkline (blue
+  gradient area, hi/lo labels) + `近90日 lo–hi%` range line + FRED source note
+
 ### Heatmap (`src/landing.js` + checkin UI)
 
 - Data: `public/data/fund-checkins.json`
@@ -120,6 +131,7 @@ public/data/options.csv       # CSP rows (from my-options.csv)
 public/data/cn-fund.json      # A-share / RMB allocation (万元)
 public/data/fund-checkins.json
 public/data/vix.json
+public/data/yield10.json
 public/vol_data.json
 ```
 

@@ -58,57 +58,187 @@
   margin-top: 28px;
 }
 
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  margin-top: 40px;
+/* ── Public track-record timeline (BigShort-inspired) ── */
+.timeline-section {
+  margin-top: 44px;
+  text-align: left;
 }
 
-.feature-card {
-  display: block;
-  padding: 22px 24px;
-  transition: border-color .18s, transform .18s;
+.timeline-head {
+  margin-bottom: 22px;
+  max-width: 640px;
 }
 
-.feature-card:hover {
-  border-color: rgba(240, 185, 11, 0.55);
-  transform: translateY(-2px);
-}
-
-.feature-card .en {
+.timeline-head .en {
   color: var(--accent);
   font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 1.6px;
   text-transform: uppercase;
-  margin-bottom: 8px;
 }
 
-.feature-card h2 {
-  font-size: 18px;
+.timeline-head h2 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  margin-top: 6px;
+}
+
+.timeline-intro {
+  margin-top: 8px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  max-width: 58ch;
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.tl-item {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 0 16px;
+  position: relative;
+}
+
+.tl-rail {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.tl-rail::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    rgba(240, 185, 11, 0.35) 0%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+}
+
+.tl-item:first-child .tl-rail::before {
+  top: 18px;
+}
+
+.tl-item:last-child .tl-rail::before {
+  bottom: calc(100% - 22px);
+}
+
+.tl-dot {
+  position: relative;
+  z-index: 1;
+  margin-top: 18px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #FFF4CF, #F0B90B);
+  border: 2px solid #0B0D10;
+  box-shadow: 0 0 0 1px rgba(240, 185, 11, 0.45), 0 0 10px rgba(240, 185, 11, 0.35);
+  flex-shrink: 0;
+}
+
+.tl-item.tl-current .tl-dot {
+  box-shadow: 0 0 0 1px rgba(240, 185, 11, 0.65), 0 0 14px rgba(240, 185, 11, 0.55);
+}
+
+.tl-card {
+  padding: 18px 20px 16px;
+  margin-bottom: 14px;
+  transition: border-color .18s;
+}
+
+.tl-item:last-child .tl-card {
+  margin-bottom: 0;
+}
+
+.tl-item.tl-current .tl-card {
+  border-color: rgba(240, 185, 11, 0.28);
+  background: linear-gradient(180deg, rgba(240, 185, 11, 0.06) 0%, var(--panel) 48%);
+}
+
+.tl-date {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  line-height: 1.2;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tl-asof {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.tl-headline {
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.2px;
+  line-height: 1.4;
   margin-bottom: 8px;
 }
 
-.feature-card p {
+.tl-body {
   color: var(--muted);
   font-size: 13.5px;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
-.feature-card .go {
-  display: inline-block;
-  margin-top: 14px;
+.tl-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tl-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: border-color .15s, color .15s, background .15s;
+}
+
+.tl-chip:hover {
+  border-color: rgba(240, 185, 11, 0.45);
   color: var(--accent);
-  font-size: 12.5px;
-  font-weight: 700;
+  background: rgba(240, 185, 11, 0.08);
 }
 
-@media (max-width: 900px) {
-  .cards-grid { grid-template-columns: 1fr; }
+@media (max-width: 560px) {
+  .tl-item {
+    grid-template-columns: 20px 1fr;
+    gap: 0 12px;
+  }
+  .tl-date { font-size: 18px; }
+  .tl-headline { font-size: 15px; }
+  .tl-card { padding: 16px 14px 14px; }
 }
+
 
 /* ── Fund daily check-in heatmap ── */
 .checkin-section {
@@ -404,7 +534,7 @@
 
 /* ── VIX semicircle fear gauge ── */
 
-/* Journey rings + Fear/Greed gauge on one row */
+/* Journey rings + Fear/Greed gauge + 10Y yield on one row (wide) */
 .dash-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -414,10 +544,25 @@
 }
 
 .dash-row > .journey-section,
-.dash-row > .vix-section {
+.dash-row > .vix-section,
+.dash-row > .y10-section {
   margin-top: 0;
   margin-bottom: 0;
   height: 100%;
+}
+
+/* Below the wide breakpoint the yield card spans the full row (horizontal layout) */
+.dash-row > .y10-section {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 1101px) {
+  .dash-row {
+    grid-template-columns: 1.15fr 1.15fr 0.72fr;
+  }
+  .dash-row > .y10-section {
+    grid-column: auto;
+  }
 }
 
 @media (max-width: 900px) {
@@ -705,6 +850,168 @@
 .vix-error { padding: 12px 0; font-size: 13px; }
 
 .vix-loading p { margin-top: 8px; font-size: 13px; }
+
+/* ── US 10Y Treasury yield card (next to the VIX gauge) ── */
+.y10-section {
+  margin-top: 0;
+  margin-bottom: 14px;
+  padding: 22px 24px 18px;
+  text-align: left;
+  position: relative;
+  overflow: visible;
+}
+
+.y10-section::before {
+  content: '';
+  position: absolute;
+  inset: auto -20% -40% 40%;
+  height: 70%;
+  background: radial-gradient(ellipse, rgba(91, 140, 255, 0.11) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.y10-card-inner { position: relative; z-index: 1; }
+
+.y10-head .en {
+  color: var(--accent);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.y10-head h2 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  margin-bottom: 4px;
+}
+
+.y10-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* Wide-but-short spanned layout: readout left, sparkline right */
+@media (max-width: 1100px) {
+  .y10-body {
+    display: grid;
+    grid-template-columns: minmax(180px, auto) minmax(0, 1fr);
+    gap: 10px 28px;
+    align-items: center;
+  }
+}
+
+@media (max-width: 560px) {
+  .y10-body {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.y10-readout {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.y10-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.y10-value {
+  font-size: clamp(36px, 5vw, 46px);
+  font-weight: 800;
+  letter-spacing: -1.2px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--text);
+  text-shadow: 0 0 18px rgba(91, 140, 255, 0.35);
+}
+
+.y10-unit {
+  font-size: 20px;
+  font-weight: 800;
+  color: #7FA3FF;
+}
+
+.y10-chg {
+  font-size: 15px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.2px;
+}
+
+.y10-chg.up { color: var(--up); }
+.y10-chg.down { color: var(--down); }
+.y10-chg.flat { color: var(--muted); }
+
+.y10-asof {
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.y10-spark-wrap {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.y10-spark {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.y10-spark-line {
+  stroke: #5B8CFF;
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 5px rgba(91, 140, 255, 0.5));
+}
+
+.y10-spark-dot {
+  fill: #AFC6FF;
+  stroke: #5B8CFF;
+  stroke-width: 1.6;
+  filter: drop-shadow(0 0 5px rgba(143, 176, 255, 0.8));
+}
+
+.y10-spark-extreme {
+  font-size: 9.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  fill: rgba(232, 235, 240, 0.45);
+}
+
+.y10-range {
+  font-size: 11.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.y10-nfa {
+  margin-top: 10px;
+  font-size: 10.5px;
+  letter-spacing: 0.3px;
+}
+
+.y10-error { padding: 12px 0; font-size: 13px; }
+
+.y10-loading p { margin-top: 8px; font-size: 13px; }
+
+@media (max-width: 720px) {
+  .y10-section { padding: 18px 16px 14px; }
+}
 
 @media (max-width: 720px) {
   .vix-section { padding: 18px 16px 14px; }
