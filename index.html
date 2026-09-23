@@ -103,36 +103,65 @@
 
       <div class="cta-row">
         <a class="btn btn-primary" href="/fund.html">进入财富自由基金看板 →</a>
-        <a class="btn btn-ghost" href="/portfolio.html">Open US Equities Dashboard</a>
-        <a class="btn btn-ghost" href="/cn-fund.html">A股基金 · 人民币配置</a>
+        <a class="btn btn-ghost" href="/options.html">期权 · Cash-Secured Puts</a>
       </div>
     </header>
 
-    <section class="cards-grid">
-      <a class="feature-card panel" href="/fund.html">
-        <div class="en">Wealth Freedom Fund</div>
-        <h2>财富自由基金 · 实时看板</h2>
-        <p>Day N、目标进度、总资产、当日/累计盈亏、收益率、现金占比、持仓现价与 IV/HV。</p>
-        <span class="go">进入看板 →</span>
-      </a>
-      <a class="feature-card panel" href="/portfolio.html">
-        <div class="en">US Equities Dashboard</div>
-        <h2>美股持仓仪表盘（EN）</h2>
-        <p>Holdings, weights, and weekly / monthly / YTD performance for every position — clean public view.</p>
-        <span class="go">Open dashboard →</span>
-      </a>
-      <a class="feature-card panel" href="/options.html">
-        <div class="en">Options · Cash-Secured Puts</div>
-        <h2>期权 · Cash-Secured Puts</h2>
-        <p>卖出备兑现金担保看跌 · 行权价 / DTE / 权利金 / 价外内状态 · 与基金同源 holdings.json。</p>
-        <span class="go">查看期权 →</span>
-      </a>
-      <a class="feature-card panel" href="/cn-fund.html">
-        <div class="en">CN Fund · RMB Allocation</div>
-        <h2>A股基金 · 人民币配置</h2>
-        <p>国内配置快照：固收 / A股 / 海外 / 港股 / 商品 · 金额（万元）与占比 · 非实时行情。</p>
-        <span class="go">查看配置 →</span>
-      </a>
+    <section class="timeline-section" id="track-record" aria-labelledby="timeline-title">
+      <div class="timeline-head">
+        <div class="en" id="timeline-eyebrow">Track Record</div>
+        <h2 id="timeline-title">公开历程</h2>
+        <p class="timeline-intro muted" id="timeline-intro">公开旅程日志，不是经审计的券商年度 PDF。里程碑来自本站 holdings / 打卡数据与上线记录；更早年份若无公开证据，不臆造。</p>
+      </div>
+      <ol class="timeline" id="timeline-list">
+        <!-- filled by landing.js from /data/timeline.json -->
+        <li class="tl-item" data-id="origin">
+          <div class="tl-rail" aria-hidden="true"><span class="tl-dot"></span></div>
+          <div class="tl-card panel">
+            <div class="tl-date">起步</div>
+            <h3 class="tl-headline">起点资本 $137K · 长期目标 $2,000,000</h3>
+            <p class="tl-body">账户从约 $137K 起步，长期目标 $2,000,000。按年化回推，这段旅程大约对应数年量级；具体起始年份暂不标注，以免无公开证据时编造年表。</p>
+          </div>
+        </li>
+        <li class="tl-item" data-id="public-checkin-2026-07">
+          <div class="tl-rail" aria-hidden="true"><span class="tl-dot"></span></div>
+          <div class="tl-card panel">
+            <div class="tl-date">2026-07</div>
+            <h3 class="tl-headline">财富自由基金开始公开日更打卡</h3>
+            <p class="tl-body">holdings.json / fund-checkins.json 自 2026-07-16 起记录；首批日更打卡约自 2026-07-28。仓位、当日盈亏与现金占比面向公众可见。</p>
+            <div class="tl-chips">
+              <a class="tl-chip" href="/fund.html">财富自由基金</a>
+            </div>
+          </div>
+        </li>
+        <li class="tl-item" data-id="public-site-2026-09">
+          <div class="tl-rail" aria-hidden="true"><span class="tl-dot"></span></div>
+          <div class="tl-card panel">
+            <div class="tl-date">2026-09</div>
+            <h3 class="tl-headline">公开站重做上线 · crypto-trix-public</h3>
+            <p class="tl-body">公开站（crypto-trix-public.vercel.app）重做上线。顶栏：首页 / 财富自由基金 / 期权 / 美股仪表盘 / A股基金；首页加入旅程同心环、恐慌贪婪指数与打卡热力格。Cash-Secured Puts 在期权页公开跟踪。</p>
+            <div class="tl-chips">
+              <a class="tl-chip" href="/fund.html">基金看板</a>
+              <a class="tl-chip" href="/options.html">期权 CSP</a>
+              <a class="tl-chip" href="/portfolio.html">美股仪表盘</a>
+              <a class="tl-chip" href="/cn-fund.html">A股基金</a>
+            </div>
+          </div>
+        </li>
+        <li class="tl-item tl-current" data-id="current">
+          <div class="tl-rail" aria-hidden="true"><span class="tl-dot"></span></div>
+          <div class="tl-card panel">
+            <div class="tl-date">当前 <span class="tl-asof muted" id="tl-asof">as_of 2026-09-22</span></div>
+            <h3 class="tl-headline" id="tl-current-headline">Day 69 · 总资产约 $146,799 · 累计盈亏 +$52,824 · 年化约 12.14%</h3>
+            <p class="tl-body" id="tl-current-body">2026 年化目标 20%。A股基金约 107 万人民币配置另页公开；数字会随 holdings.json 刷新。</p>
+            <div class="tl-chips">
+              <a class="tl-chip" href="/fund.html">基金看板</a>
+              <a class="tl-chip" href="/cn-fund.html">A股基金</a>
+              <a class="tl-chip" href="/options.html">期权 CSP</a>
+            </div>
+          </div>
+        </li>
+      </ol>
     </section>
 
     <section class="social-section" id="social" aria-labelledby="social-title">
