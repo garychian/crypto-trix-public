@@ -1,0 +1,188 @@
+{
+  "as_of": "2026-09-22",
+  "day": 69,
+  "goal_usd": 2000000,
+  "cash_usd": 34188.45,
+  "invested_usd": 93975,
+  "cum_pnl_usd": 52824,
+  "total_assets_usd": 146799,
+  "handle": "CryptoTrix1",
+  "sub": "US EQUITIES",
+  "start": "2026-07-16",
+  "note": "Source: my-portfolio.csv · as_of 2026-09-22 · cash = broker total $146,799 (user 2026-09-22) − mv; the $32,038 (8/23) baseline is retired — real cash ~$34,188 · annualized on the implied period of the former 11.04% (T≈3.89y)",
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "shares": 101,
+      "cost": 216.95,
+      "costTotal": 21911.95,
+      "weight": 25.63,
+      "price": 375.3,
+      "mv": 37905.3
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 15.14,
+      "cost": 600.44,
+      "costTotal": 9090.66,
+      "weight": 7.61,
+      "price": 741.47,
+      "mv": 11225.86
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 30.17,
+      "cost": 112.06,
+      "costTotal": 3380.85,
+      "weight": 7.35,
+      "price": 354.97,
+      "mv": 10709.44
+    },
+    {
+      "ticker": "VOO",
+      "shares": 14.22,
+      "cost": 519.22,
+      "costTotal": 7383.31,
+      "weight": 6.95,
+      "price": 712.78,
+      "mv": 10135.73
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 18.17,
+      "cost": 360.19,
+      "costTotal": 6544.65,
+      "weight": 6.25,
+      "price": 501.61,
+      "mv": 9114.25
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 36,
+      "cost": 109.23,
+      "costTotal": 3932.28,
+      "weight": 5.57,
+      "price": 227.38,
+      "mv": 8185.68
+    },
+    {
+      "ticker": "AMD",
+      "shares": 10,
+      "cost": 74.59,
+      "costTotal": 745.9,
+      "weight": 3.9,
+      "price": 615.52,
+      "mv": 6155.2
+    },
+    {
+      "ticker": "AMZN",
+      "shares": 17,
+      "cost": 202.06,
+      "costTotal": 3435.02,
+      "weight": 3,
+      "price": 258.45,
+      "mv": 4393.65
+    },
+    {
+      "ticker": "META",
+      "shares": 6.03,
+      "cost": 80.39,
+      "costTotal": 484.75,
+      "weight": 2.8,
+      "price": 741.24,
+      "mv": 4469.68
+    },
+    {
+      "ticker": "SPCX",
+      "shares": 20,
+      "cost": 136.8,
+      "costTotal": 2736,
+      "weight": 2.13,
+      "price": 151.85,
+      "mv": 3037
+    },
+    {
+      "ticker": "PLTR",
+      "shares": 15,
+      "cost": 3.59,
+      "costTotal": 53.85,
+      "weight": 1.86,
+      "price": 183.09,
+      "mv": 2746.35
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6.09,
+      "cost": 145.25,
+      "costTotal": 884.57,
+      "weight": 1.43,
+      "price": 338.98,
+      "mv": 2064.39
+    },
+    {
+      "ticker": "BRK.B",
+      "shares": 2,
+      "cost": 515,
+      "costTotal": 1030,
+      "weight": 0.71,
+      "price": 502.01,
+      "mv": 1004.02
+    },
+    {
+      "ticker": "EUV",
+      "shares": 60,
+      "cost": 25.85,
+      "costTotal": 1551,
+      "weight": 0.99,
+      "price": 24.4,
+      "mv": 1464
+    }
+  ],
+  "options": [
+    {
+      "symbol": "DRAM",
+      "type": "SELL PUT",
+      "strike": 50,
+      "expiry": "2026-11-20",
+      "premium": 789
+    },
+    {
+      "symbol": "RKLB",
+      "type": "SELL PUT",
+      "strike": 60,
+      "expiry": "2027-06-17",
+      "premium": 1740
+    },
+    {
+      "symbol": "SPCX",
+      "type": "SELL PUT",
+      "strike": 100,
+      "expiry": "2027-01-15",
+      "premium": 719
+    },
+    {
+      "symbol": "EUV",
+      "type": "SELL PUT",
+      "strike": 27,
+      "expiry": "2026-10-16",
+      "premium": 260
+    }
+  ],
+  "prices": {
+    "TSLA": 375.3,
+    "QQQ": 741.47,
+    "GOOGL": 354.97,
+    "VOO": 712.78,
+    "MSFT": 501.61,
+    "NVDA": 227.38,
+    "AMD": 615.52,
+    "AMZN": 258.45,
+    "META": 741.24,
+    "SPCX": 151.85,
+    "PLTR": 183.09,
+    "AAPL": 338.98,
+    "BRK.B": 502.01,
+    "EUV": 24.4
+  },
+  "annualized_return_pct": 12.14
+}

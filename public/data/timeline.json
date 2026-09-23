@@ -1,0 +1,55 @@
+{
+  "eyebrow": "Track Record",
+  "title": "公开历程",
+  "intro": "公开旅程日志，不是经审计的券商年度 PDF。里程碑来自本站 holdings / 打卡数据与上线记录；更早年份若无公开证据，不臆造。",
+  "entries": [
+    {
+      "id": "origin",
+      "date_label": "起步",
+      "headline": "起点资本 $137K · 长期目标 $2,000,000",
+      "body": "账户从约 $137K 起步，长期目标 $2,000,000。按年化回推，这段旅程大约对应数年量级；具体起始年份暂不标注，以免无公开证据时编造年表。",
+      "chips": []
+    },
+    {
+      "id": "public-checkin-2026-07",
+      "date_label": "2026-07",
+      "headline": "财富自由基金开始公开日更打卡",
+      "body": "holdings.json / fund-checkins.json 自 2026-07-16 起记录；首批日更打卡约自 2026-07-28。仓位、当日盈亏与现金占比面向公众可见。",
+      "chips": [
+        { "label": "财富自由基金", "href": "/fund.html" }
+      ]
+    },
+    {
+      "id": "public-site-2026-09",
+      "date_label": "2026-09",
+      "headline": "公开站重做上线 · crypto-trix-public",
+      "body": "公开站（crypto-trix-public.vercel.app）重做上线。顶栏：首页 / 财富自由基金 / 期权 / 美股仪表盘 / A股基金；首页加入旅程同心环、恐慌贪婪指数与打卡热力格。Cash-Secured Puts 在期权页公开跟踪。",
+      "chips": [
+        { "label": "基金看板", "href": "/fund.html" },
+        { "label": "期权 CSP", "href": "/options.html" },
+        { "label": "美股仪表盘", "href": "/portfolio.html" },
+        { "label": "A股基金", "href": "/cn-fund.html" }
+      ]
+    },
+    {
+      "id": "current",
+      "date_label": "当前",
+      "live": true,
+      "as_of": "2026-09-22",
+      "headline": "Day 69 · 总资产约 $146,799 · 累计盈亏 +$52,824 · 年化约 12.14%",
+      "body": "as_of 2026-09-22。2026 年化目标 20%。A股基金约 107 万人民币配置另页公开；数字会随 holdings.json 刷新。",
+      "fallback": {
+        "day": 69,
+        "total_assets_usd": 146799,
+        "cum_pnl_usd": 52824,
+        "annualized_return_pct": 12.14,
+        "as_of": "2026-09-22"
+      },
+      "chips": [
+        { "label": "基金看板", "href": "/fund.html" },
+        { "label": "A股基金", "href": "/cn-fund.html" },
+        { "label": "期权 CSP", "href": "/options.html" }
+      ]
+    }
+  ]
+}

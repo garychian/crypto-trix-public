@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>US Equities Dashboard · CryptoTrix</title>
+  <meta name="description" content="CryptoTrix US Equities Dashboard — holdings, weights, weekly / monthly / YTD · #NFA">
+  <meta name="theme-color" content="#0B0D10">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/styles/shared.css">
+  <link rel="stylesheet" href="/src/styles/portfolio.css">
+</head>
+<body>
+  <header data-site-nav></header>
+  <div class="wrap wide">
+    <div class="toolbar">
+      <span class="badge badge-demo" id="data-badge">Demo data</span>
+      <span class="badge badge-nfa">⚠️ #NFA #DYOR</span>
+      <span class="muted tiny-meta" id="mkt"></span>
+      <span class="muted tiny-meta" id="lastupd">Loading…</span>
+    </div>
+
+    <header class="page-head">
+      <div>
+        <h1>Portfolio <span class="accent">Map</span></h1>
+        <p class="sub">US EQUITIES · Weights · Weekly / Monthly / YTD</p>
+      </div>
+      <div class="handle">@<b>CRYPTOTRIX1</b></div>
+    </header>
+
+    <section class="stat-cards" id="stat-cards">
+      <div class="card"><div class="label">Positions</div><div class="value flat" id="c-count">—</div></div>
+      <div class="card"><div class="label">Today</div><div class="value flat" id="c-today">—</div></div>
+      <div class="card"><div class="label">WTD (ex-cash)</div><div class="value flat" id="c-week">—</div></div>
+      <div class="card"><div class="label">MTD (ex-cash)</div><div class="value flat" id="c-month">—</div></div>
+      <div class="card"><div class="label">YTD (ex-cash)</div><div class="value flat" id="c-year">—</div></div>
+      <div class="card"><div class="label">Total Return</div><div class="value flat" id="c-total">—</div></div>
+    </section>
+
+    <section class="panel map-panel">
+      <div class="panel-head">
+        <h2>Holdings by Weight</h2>
+        <span class="cash-badge" id="cashBadge">💵 Cash —</span>
+      </div>
+      <div class="weight-grid" id="weight-grid"></div>
+      <p class="hint">Tile size ≈ portfolio weight · color = today's change</p>
+    </section>
+
+    <section class="panel holdings-panel">
+      <div class="panel-head">
+        <h2>Holdings Detail</h2>
+        <span class="muted" id="holdings-count">—</span>
+      </div>
+      <div class="table-scroll">
+        <table class="data">
+          <thead>
+            <tr>
+              <th class="l">Ticker</th>
+              <th>Weight</th>
+              <th>Price</th>
+              <th>Today</th>
+              <th>WTD</th>
+              <th>MTD</th>
+              <th>YTD</th>
+              <th>vs Cost</th>
+            </tr>
+          </thead>
+          <tbody id="d-rows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="site-foot">
+      <div>
+        X · <a href="https://x.com/CryptoTrix1" target="_blank" rel="noopener">@CryptoTrix1</a>
+        <div class="nfa">⚠️ Not financial advice · #NFA #DYOR</div>
+      </div>
+      <div class="nfa">Public visitor view · demo data by default</div>
+    </footer>
+  </div>
+  <script type="module" src="/src/portfolio.js"></script>
+</body>
+</html>
