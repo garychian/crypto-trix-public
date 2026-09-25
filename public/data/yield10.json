@@ -1,14 +1,10 @@
 {
-  "as_of": "2026-09-23",
-  "value": 5.11,
-  "prev": 4.96,
-  "chg": 0.15,
-  "chg_pct": 3.02,
+  "as_of": "2026-09-24",
+  "value": 5.16,
+  "prev": 5.11,
+  "chg": 0.05,
+  "chg_pct": 0.98,
   "history": [
-    {
-      "date": "2026-05-14",
-      "v": 4.47
-    },
     {
       "date": "2026-05-15",
       "v": 4.59
@@ -364,13 +360,17 @@
     {
       "date": "2026-09-23",
       "v": 5.11
+    },
+    {
+      "date": "2026-09-24",
+      "v": 5.16
     }
   ],
   "lo_52w": 4.38,
-  "hi_52w": 5.11,
+  "hi_52w": 5.16,
   "lo_90d": 4.38,
-  "hi_90d": 5.11,
-  "source": "MarketWatch/WSJ 9/23 close (FRED DGS10 lagging); CBOE TNX intraday rolls over on /api/yield10",
+  "hi_90d": 5.16,
+  "source": "CBOE TNX 9/24 13:59 ET intraday (FRED 9/24 official pending; 9/23=5.11)",
   "live": false,
-  "trade_time": null
+  "trade_time": "13:59"
 }
