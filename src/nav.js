@@ -18,6 +18,7 @@ function resolveActive() {
   if (file === 'options.html' || path.endsWith('/options')) return 'options';
   if (file === 'portfolio.html' || path.endsWith('/portfolio')) return 'portfolio';
   if (file === 'cn-fund.html' || path.endsWith('/cn-fund')) return 'cn-fund';
+  if (file === 'articles.html' || path.endsWith('/articles')) return 'articles';
   return 'home';
 }
 
@@ -34,6 +35,7 @@ function buildNavHtml(active) {
       <div class="nav-tabs" role="tablist" aria-label="站点导航">
         ${tabs}
       </div>
+      <a class="nav-article${active === 'articles' ? ' active' : ''}" href="/articles.html">📄 Article</a>
     </div>
   `.trim();
 }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文章 · Articles · CryptoTrix</title>
+  <meta name="description" content="CryptoTrix 文章集 · 深度研究 / 科普 / 系列长文 · #NFA #DYOR">
+  <meta name="theme-color" content="#0B0D10">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/styles/shared.css">
+  <link rel="stylesheet" href="/src/styles/articles.css">
+</head>
+<body>
+  <header data-site-nav></header>
+  <div class="wrap">
+    <section class="art-head">
+      <div>
+        <h1 class="art-title">文章 · <span class="day">Articles</span></h1>
+        <p class="art-sub" id="art-intro">深度、科普与系列长文。</p>
+      </div>
+      <div class="art-goal">
+        <div class="lbl">更新</div>
+        <div class="val" id="art-updated">—</div>
+      </div>
+    </section>
+
+    <section class="art-list" id="article-list" aria-live="polite">
+      <div class="art-empty muted">加载中…</div>
+    </section>
+
+    <div class="art-cta-row" id="art-cta-row"></div>
+
+    <p class="art-nfa muted">#NFA #DYOR · CryptoTrix · AI 不难懂，关注我把握时代脉动</p>
+  </div>
+  <script type="module" src="/src/articles.js"></script>
+</body>
+</html>

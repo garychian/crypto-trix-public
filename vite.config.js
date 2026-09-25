@@ -14,6 +14,7 @@ export default defineConfig({
         portfolio: resolve(__dirname, 'portfolio.html'),
         'cn-fund': resolve(__dirname, 'cn-fund.html'),
         options: resolve(__dirname, 'options.html'),
+        articles: resolve(__dirname, 'articles.html'),
       },
     },
   },
