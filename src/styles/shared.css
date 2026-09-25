@@ -125,6 +125,15 @@ img { max-width: 100%; display: block; }
   font-weight: 700;
 }
 
+/* Right-side nav group: tabs + Article kept adjacent */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
 /* Far-right Article link (all pages, outside the tab row) */
 .nav-article {
   display: inline-flex;

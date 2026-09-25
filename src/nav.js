@@ -32,10 +32,12 @@ function buildNavHtml(active) {
   return `
     <div class="top-nav-inner">
       <a class="brand" href="/" aria-label="CryptoTrix home">Crypto<em>Trix</em></a>
-      <div class="nav-tabs" role="tablist" aria-label="站点导航">
-        ${tabs}
+      <div class="nav-right">
+        <div class="nav-tabs" role="tablist" aria-label="站点导航">
+          ${tabs}
+        </div>
+        <a class="nav-article${active === 'articles' ? ' active' : ''}" href="/articles.html">📄 Article</a>
       </div>
-      <a class="nav-article${active === 'articles' ? ' active' : ''}" href="/articles.html">📄 Article</a>
     </div>
   `.trim();
 }
