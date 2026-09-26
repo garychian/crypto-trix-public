@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-09-24",
-  "value": 5.16,
-  "prev": 5.11,
-  "chg": 0.05,
-  "chg_pct": 0.98,
+  "as_of": "2026-09-25",
+  "value": 5.18,
+  "prev": 5.16,
+  "chg": 0.02,
+  "chg_pct": 0.39,
   "history": [
     {
       "date": "2026-05-15",
@@ -364,13 +364,17 @@
     {
       "date": "2026-09-24",
       "v": 5.16
+    },
+    {
+      "date": "2026-09-25",
+      "v": 5.18
     }
   ],
   "lo_52w": 4.38,
-  "hi_52w": 5.16,
+  "hi_52w": 5.18,
   "lo_90d": 4.38,
-  "hi_90d": 5.16,
-  "source": "CBOE TNX 9/24 13:59 ET intraday (FRED 9/24 official pending; 9/23=5.11)",
+  "hi_90d": 5.18,
+  "source": "CBOE TNX 13:59 ET snapshot 2026-09-25; FRED DGS10 official 9/24 = 5.18 互证",
   "live": false,
-  "trade_time": "13:59"
+  "trade_time": "2026-09-25 13:59 ET (snapshot); 16:15 close per WSJ 5.18"
 }
