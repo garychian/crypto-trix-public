@@ -187,6 +187,8 @@ npm run regen-holdings
 - Merge `feat/public-site` → `main` when ready  
 - Optional: connect GitHub repo to Vercel for push-to-deploy  
 
+- **Latest article card (homepage):** edit `public/data/latest-article.json` (`url`, `title`, `date`, `platform`, optional `excerpt`; strip `?s=` tracking) — rendered by `renderLatestArticle()` in `src/landing.js`; also update the static fallback in `index.html` `#latest-article` if you want no-JS parity.
+
 ## Key source files
 
 | Area | Files |

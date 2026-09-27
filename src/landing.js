@@ -397,7 +397,45 @@ async function renderTimeline(holdings) {
   list.innerHTML = data.entries.map((e) => entryHTML(e, holdings)).join('');
 }
 
+/**
+ * Latest article card: /data/latest-article.json { url, title, date, platform, excerpt? }.
+ * Static HTML in index.html is the fallback if fetch fails.
+ */
+async function renderLatestArticle() {
+  const sec = document.getElementById('latest-article');
+  if (!sec) return;
+  let a = null;
+  try {
+    const res = await fetch('/data/latest-article.json', { cache: 'no-store' });
+    if (res.ok) a = await res.json();
+  } catch {
+    /* keep static fallback */
+  }
+  if (!a || !a.url || !/^https?:/i.test(a.url)) return;
+  const platform = a.platform || 'X';
+  const eyebrow = document.getElementById('latest-article-eyebrow');
+  const title = document.getElementById('latest-article-title');
+  const excerpt = document.getElementById('latest-article-excerpt');
+  const date = document.getElementById('latest-article-date');
+  const link = document.getElementById('latest-article-link');
+  if (eyebrow) eyebrow.textContent = `最新文章 · Latest Article · ${platform}`;
+  if (title) title.textContent = a.title || `最新文章 · 在 ${platform} 上阅读`;
+  if (excerpt) {
+    excerpt.textContent = a.excerpt || '';
+    excerpt.hidden = !a.excerpt;
+  }
+  if (date) {
+    date.textContent = a.date || '';
+    date.hidden = !a.date;
+  }
+  if (link) {
+    link.href = a.url;
+    link.textContent = `在 ${platform} 上阅读 →`;
+  }
+}
+
 async function boot() {
+  renderLatestArticle(); // independent of other cards
   const data = await loadHoldingsData();
 
   await renderHeatmap();
