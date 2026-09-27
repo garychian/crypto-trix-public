@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-27",
-  "intro": "深度、科普与系列长文。已发布的会挂原文链接，整理中的可以先去 X 主页蹲更新。",
+  "intro": "深度、科普与系列长文，点标题看原文。",
   "cta": {
     "label": "去 X 看 @CryptoTrix1 的全部文章",
     "href": "https://x.com/CryptoTrix1/articles"
@@ -13,30 +13,6 @@
       "date": "2026-09-27",
       "desc": "马斯克接受央视采访，值得关注。但更值得关注的是：为什么偏偏选在这个时候播？",
       "url": "https://x.com/CryptoTrix1/status/2104045313455464505"
-    },
-    {
-      "title": "英伟达深度：万亿帝国的增长引擎与三档估值",
-      "tag": "深度",
-      "status": "coming",
-      "date": "",
-      "desc": "19 页行业级研究的精华版：业务拆解、三档估值（165 / 280 / 360）、假设证伪树与警报线。",
-      "url": ""
-    },
-    {
-      "title": "HBM：AI 算力镇的硬通货",
-      "tag": "科普",
-      "status": "coming",
-      "date": "",
-      "desc": "HBM 是什么、为什么被卡脖子、谁在吃下订单——配 8 分钟动画解读。",
-      "url": ""
-    },
-    {
-      "title": "SpaceX 周报",
-      "tag": "系列",
-      "status": "coming",
-      "date": "",
-      "desc": "Starship 试飞进度、星链发射节奏、SPCX 解禁日历，每周更新。",
-      "url": ""
     }
   ]
 }
