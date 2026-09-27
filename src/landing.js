@@ -370,6 +370,62 @@ function entryHTML(entry, holdings) {
   );
 }
 
+/**
+ * Minimal built-in timeline used only when /data/timeline.json fails to load
+ * and index.html has no static <li> items. Mirrors the first + "current"
+ * entries of public/data/timeline.json (the "current" one is live-patched).
+ */
+const FALLBACK_TIMELINE_ENTRIES = [
+  {
+    id: 'origin',
+    date_label: '起步',
+    headline: '起点资本 $137K · 长期目标 $2,000,000',
+    body: '账户从约 $137K 起步，长期目标 $2,000,000。',
+    chips: [],
+  },
+  {
+    id: 'current',
+    date_label: '当前',
+    live: true,
+    chips: [{ label: '基金看板', href: '/fund.html' }],
+  },
+];
+
+/**
+ * Failure path of renderTimeline(): timeline.json unavailable.
+ * - If the page already has a rendered/static "current" entry, refresh its
+ *   headline/body/as_of from holdings (same formatters as the success path).
+ * - Otherwise render FALLBACK_TIMELINE_ENTRIES so the section is not empty.
+ */
+function patchCurrentTimeline(holdings) {
+  const list = document.getElementById('timeline-list');
+  if (!list) return;
+
+  const headlineEl = document.getElementById('tl-current-headline');
+  if (headlineEl) {
+    if (!holdings) return;
+    const stats = {
+      day: holdings.day,
+      total_assets_usd: holdings.total_assets_usd,
+      cum_pnl_usd: holdings.cum_pnl_usd,
+      annualized_return_pct: holdings.annualized_return_pct,
+      as_of: holdings.as_of,
+    };
+    headlineEl.textContent = formatCurrentHeadline(stats);
+    const bodyEl = document.getElementById('tl-current-body');
+    if (bodyEl) bodyEl.textContent = formatCurrentBody(stats);
+    const asofEl = document.getElementById('tl-asof');
+    if (asofEl && stats.as_of) asofEl.textContent = `as_of ${stats.as_of}`;
+    return;
+  }
+
+  if (list.querySelector('li')) return; // static items present; leave as-is
+  const entries = holdings
+    ? FALLBACK_TIMELINE_ENTRIES
+    : FALLBACK_TIMELINE_ENTRIES.filter((e) => !e.live);
+  list.innerHTML = entries.map((e) => entryHTML(e, holdings)).join('');
+}
+
 async function renderTimeline(holdings) {
   const list = document.getElementById('timeline-list');
   if (!list) return;
