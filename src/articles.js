@@ -50,7 +50,8 @@ async function boot() {
     const sorted = [...items].sort((a, b) => {
       const pa = a.status === 'published' && a.url ? 0 : 1;
       const pb = b.status === 'published' && b.url ? 0 : 1;
-      return pa - pb;
+      if (pa !== pb) return pa - pb;
+      return String(b.date || '').localeCompare(String(a.date || ''));
     });
     list.innerHTML = sorted.map(cardHTML).join('');
   }
