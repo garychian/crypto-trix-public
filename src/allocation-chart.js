@@ -257,7 +257,7 @@ export function renderAllocation(el, data, opts = {}) {
       draw(0);
       const t0 = performance.now();
       const step = (now) => {
-        const k = Math.min(1, (now - t0) / ANIM_MS);
+        const k = Math.max(0, Math.min(1, (now - t0) / ANIM_MS)); // rAF ts can precede t0
         draw(easeOutCubic(k));
         if (k < 1) requestAnimationFrame(step);
       };
