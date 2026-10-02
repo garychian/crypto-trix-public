@@ -49,6 +49,28 @@ function parsePnl(text) {
   return m[1] && m[1] !== '+' ? -amt : amt;
 }
 
+/**
+ * Market date the report's prices are "as of" — first ISO date on the
+ * 价格截止 header line (e.g. "> 价格截止: 2026-09-25 美股收盘 …"). null when the
+ * report uses a non-ISO form ("Aug 5 close", "8/6 收盘") or has no such line.
+ */
+function priceAsOf(text) {
+  const line = /价格截止[^\n]*/.exec(text);
+  const m = line && /(\d{4}-\d{2}-\d{2})/.exec(line[0]);
+  return m ? m[1] : null;
+}
+
+/**
+ * Header lines (类型 / 备注) that say the report just repeats the previous
+ * session's numbers (weekend / holiday carry-forward).
+ */
+function declaresCarryForward(text) {
+  return text
+    .split('\n')
+    .slice(0, 15)
+    .some((l) => /^>\s*(类型|备注)/.test(l) && /周末休市·|沿用|无新成交|无周末交易/.test(l));
+}
+
 function parseDay(text) {
   const m = /\bDay\s*(\d+)\b/.exec(text);
   return m ? Number(m[1]) : null;
@@ -65,10 +87,23 @@ const files = fs
 
 let added = 0;
 const skipped = [];
+// RULE: one series row per NEW US-market settlement. A daily report that only
+// repeats an already-recorded close (weekend / holiday / pre-open Monday —
+// same 价格截止 date as an earlier report, or header says 沿用/周末休市) must
+// NOT create a row; it would copy the previous pnl and double-count it in the
+// equity curve. See HANDOFF.md "Check-in series rule".
+const seenAsOf = new Set();
 for (const f of files) {
   const iso = dateFromFilename(f);
-  if (known.has(iso)) continue;
   const text = fs.readFileSync(path.join(MDS_DIR, f), 'utf8');
+  const asOf = priceAsOf(text);
+  const dupClose = asOf != null && seenAsOf.has(asOf);
+  if (asOf != null) seenAsOf.add(asOf);
+  if (known.has(iso)) continue;
+  if (dupClose || declaresCarryForward(text)) {
+    console.log(`~ ${iso}  skipped: no new settlement (${dupClose ? `prices still as of ${asOf}` : 'report declares carry-forward'})`);
+    continue;
+  }
   const pnl = parsePnl(text);
   if (pnl == null) {
     skipped.push(f);

@@ -125,6 +125,16 @@ Three rings (outer → inner):
   direct links: fetch tweet IDs (mcp x-post `get_user_tweets`, match
   `[每日持仓速览] · Day N | MM-DD`), add `"tweet"` per date, redeploy.
 
+### Check-in series rule (for Claude Code / any daily routine) — READ BEFORE TOUCHING `fund-checkins.json`
+
+**Never append a `series` row for a day with no NEW US-market settlement** (US weekends/holidays, and the Sun/Mon-before-open 发稿 days). One row = one new US close.
+
+- `date` = 发稿 day (Beijing). Tue–Sat posts cover Mon–Fri US closes; a Saturday row is legit (Friday close). **Sunday and Monday rows are never legit** unless the US market actually traded and the post covers a new close.
+- A `Portfolio_Daily_*.md` that only repeats the last close (header says `周末休市` / `沿用` / `无新成交`, or `价格截止` is the same date as the previous report, e.g. 9/27 & 9/28 both "as of 9/25") **still gets posted to X, but gets NO series row** — otherwise the old pnl is copied and double-counted in the 净值走势 curve (pnl is summed to rebuild equity) and in the heatmap / "N 个交易日打卡" count.
+- Check before committing: (1) the new row's `pnl` ≠ previous row's `pnl` unless genuinely coincident; (2) the report's `价格截止` date is later than the previous row's; (3) `date` weekday is Tue–Sat; (4) `scripts/sync-checkins.mjs --dry-run` prints no `+` line for carry-forward days (it now skips them and logs `~ … skipped`).
+- `day` is a calendar counter (today − 2026-07-16 + 1), so it legitimately jumps over skipped days (73 → 76). Do not renumber or fill the gap.
+- Root cause history: 2026-09-29 commit `0ad143c` hand-added 9/27 (Day 74) and 9/28 (Day 75) rows copied from 9/26 (−193) because the daily routine ran on the weekend and the memory rule "每次日报同步当日盈亏进 fund-checkins.json" was applied mechanically. Removed 2026-10-02. The same rule should be added to `~/.claude/skills/portfolio-daily-tweet/SKILL.md` / the `cryptotrix-site-sync-in-daily-flow` memory.
+
 ## Canonical data files
 
 ```
@@ -223,3 +233,4 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 - 2026-09-30: Synced 6 X long-form articles into `public/data/articles.json` (newest first; AMD 2026-09-28 is newest); `latest-article.json` + `index.html` fallback now point at the AMD article; `src/articles.js` now sorts by date desc within published/coming groups.
 - 2026-10-02: fund.html now has a 仓位分布 Allocation donut (new `src/allocation-chart.js`, styles in `fund.css`) between the equity chart and holdings table: top 6 holdings + 其他 (8 small) + 现金 slice, values from the same `mvOf()`/`cash_usd` as the page total; hover/tap swaps the center to slice name/%/$, legend shows % per slice.
 - 2026-10-02: Redesigned 净值走势 chart (`src/equity-chart.js` + equity block in `fund.css`): monotone-cubic gold line on real points (no resample), gradient area, dashed grid + $K y-axis, glowing end dot + latest value label, crosshair + tooltip card (date / NAV / 当日 Δ / 较区间起点 Δ, from checkin `pnl`), left→right clip draw-in. Range pills are now 一周/一月/全部 (old 一年 was identical to 全部 with ~49 pts). Same data source (`fund-checkins.json` anchored to holdings total).
+- 2026-10-02: Removed filler rows 9/27 (Day 74) and 9/28 (Day 75) from `fund-checkins.json` (copied −193 from 9/26; no new US settlement) and made `scripts/sync-checkins.mjs` skip carry-forward reports (same `价格截止` date as an earlier report, or 类型/备注 says 周末休市·/沿用/无新成交). See "Check-in series rule". Note: launchd `sync-site.sh` has been failing with "Operation not permitted" (macOS privacy on ~/Downloads) so that job is not what wrote these rows.
