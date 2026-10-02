@@ -88,23 +88,13 @@ export function buildJourneyMetrics(data) {
     legend: '2M进度',
   });
 
-  // Middle — progress toward 2026 annual return target (default 20%)
-  // Prefer explicit annualized_return_pct from holdings.json (user-stated YTD/annualized).
+  // Middle — 2026 year-to-date return (incl. deposits: profit / (start-of-year + deposits))
+  // toward the annual target (default 20%). Source: data.ytd from lib/capital.js.
   const yearTargetPct =
     data.annual_return_target_pct != null && Number.isFinite(Number(data.annual_return_target_pct))
       ? Number(data.annual_return_target_pct)
       : 20;
-  const yearLabel = data.annual_return_year != null ? String(data.annual_return_year) : '2026';
-  let retPct = null;
-  if (data.annualized_return_pct != null && Number.isFinite(Number(data.annualized_return_pct))) {
-    retPct = Number(data.annualized_return_pct);
-  } else {
-    const invested = data.invested_usd != null ? Number(data.invested_usd) : null;
-    const cumPnl = data.cum_pnl_usd != null ? Number(data.cum_pnl_usd) : null;
-    if (invested != null && invested > 0 && cumPnl != null && Number.isFinite(cumPnl)) {
-      retPct = (cumPnl / invested) * 100;
-    }
-  }
+  const retPct = data.ytd && Number.isFinite(data.ytd.pct) ? data.ytd.pct : null;
   if (retPct != null && yearTargetPct > 0) {
     const toward = retPct / yearTargetPct; // 1.0 = hit annual target
     rings.push({
@@ -283,7 +273,7 @@ export function renderJourneyRings(data) {
   const metrics = buildJourneyMetrics(data);
   const { rings, total, goal, progress, asOf } = metrics;
   // Three progress figures in ring center — colors match the three rings
-  // Center shows displayPct (annualized 11.04%); ring fill still uses r.value toward 20% target
+  // Center shows displayPct (YTD return); ring fill still uses r.value toward 20% target
   const numStats = rings.map((r) => ({
     key: r.key,
     color: r.color,

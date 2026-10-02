@@ -320,6 +320,7 @@ img { max-width: 100%; display: block; }
   letter-spacing: -0.3px;
 }
 
+.card .value small { font-size: .6em; font-weight: 700; margin-left: 8px; opacity: .95; }
 .card .value.up { color: var(--up); }
 .card .value.down { color: var(--down); }
 .card .value.flat { color: var(--text); }

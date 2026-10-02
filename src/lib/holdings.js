@@ -9,6 +9,7 @@ import {
   DEMO_NOTES,
   FUND_CFG,
 } from '../data/demo.js';
+import { loadCapital, computeYtd } from './capital.js';
 
 function normalizeHolding(h) {
   const shares = Number(h.shares);
@@ -60,6 +61,8 @@ function demoFallback() {
     prices: Object.fromEntries(
       DEMO_HOLDINGS.filter((h) => h.price != null).map((h) => [h.ticker, h.price])
     ),
+    capital: null,
+    ytd: null,
     source: 'demo',
   };
 }
@@ -73,7 +76,6 @@ function demoFallback() {
  *   invested_usd: number|null,
  *   cum_pnl_usd: number|null,
  *   total_assets_usd: number|null,
- *   annualized_return_pct: number|null,
  *   annual_return_target_pct: number|null,
  *   annual_return_year: number|null,
  *   handle: string,
@@ -83,6 +85,8 @@ function demoFallback() {
  *   options: object[],
  *   notes: object,
  *   prices: Record<string, number>|null,
+ *   capital: object|null,   // public/data/capital.json
+ *   ytd: {base,profit,pct,start,deposits}|null,  // year-to-date incl. deposits (see capital.js)
  *   source: 'live'|'demo'
  * }>}
  */
@@ -94,6 +98,7 @@ export async function loadHoldingsData() {
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const j = await res.json();
+    const capital = await loadCapital();
     if (!Array.isArray(j.holdings) || !j.holdings.length) throw new Error('empty holdings');
 
     return {
@@ -104,8 +109,6 @@ export async function loadHoldingsData() {
       invested_usd: j.invested_usd != null ? Number(j.invested_usd) : null,
       cum_pnl_usd: j.cum_pnl_usd != null ? Number(j.cum_pnl_usd) : null,
       total_assets_usd: j.total_assets_usd != null ? Number(j.total_assets_usd) : null,
-      annualized_return_pct:
-        j.annualized_return_pct != null ? Number(j.annualized_return_pct) : null,
       annual_return_target_pct:
         j.annual_return_target_pct != null ? Number(j.annual_return_target_pct) : null,
       annual_return_year: j.annual_return_year != null ? Number(j.annual_return_year) : null,
@@ -117,6 +120,11 @@ export async function loadHoldingsData() {
       options: Array.isArray(j.options) ? j.options.map(normalizeOption) : [],
       notes: j.notes && typeof j.notes === 'object' ? { ...j.notes } : { ...DEMO_NOTES },
       prices: j.prices && typeof j.prices === 'object' ? { ...j.prices } : null,
+      capital,
+      ytd: computeYtd(
+        j.total_assets_usd != null ? Number(j.total_assets_usd) : null,
+        capital
+      ),
       source: 'live',
     };
   } catch {

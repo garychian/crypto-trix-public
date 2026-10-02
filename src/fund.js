@@ -13,6 +13,7 @@ import {
 } from './lib/format.js';
 import { initEquityChart } from './equity-chart.js';
 import { renderAllocation } from './allocation-chart.js';
+import { computeYtd, computePeriod, loadCheckins } from './lib/capital.js';
 
 
 const MILESTONES = [100_000, 250_000, 500_000, 1_000_000, 2_000_000];
@@ -28,6 +29,8 @@ let options = [];
 let cashUSD = null;
 let notes = { ...DEMO_NOTES };
 let snapshotDay = null;
+let capital = null;
+let checkins = null;
 let snapshotTotal = null;
 let snapshotCumPnl = null;
 let snapshotInvested = null;
@@ -197,7 +200,6 @@ function computeAndRender() {
   let cumPnL = 0;
   let cumCost = 0;
   let hasCost = false;
-  const agg = { weeklyRef: [0, 0], monthlyRef: [0, 0], yearlyRef: [0, 0] };
 
   holdings.forEach((h) => {
     const mv = mvOf(h);
@@ -205,14 +207,6 @@ function computeAndRender() {
     holdingsMV += mv;
     const p = getP(h);
     if (p) {
-      // market-value-weighted period returns across holdings (ex-cash)
-      Object.keys(agg).forEach((k) => {
-        const r = periodRet(p, k);
-        if (r != null) {
-          agg[k][0] += r * mv;
-          agg[k][1] += mv;
-        }
-      });
       const cp = p.changePct == null ? 0 : p.changePct;
       dailyPnL += (mv * cp) / (100 + cp);
     }
@@ -291,14 +285,35 @@ function computeAndRender() {
     cash: cashUSD,
   });
 
-  const setPeriod = (id, key, subId) => {
-    const [num, den] = agg[key];
-    setPct(id, den > 0 ? num / den : null);
-    document.getElementById(subId).textContent = den > 0 ? '持仓加权 · 不含现金' : '行情未就绪';
+  // Account-level returns (deposit-aware) — see lib/capital.js
+  const setAcct = (id, subId, r, subText) => {
+    const el = document.getElementById(id);
+    if (!r) {
+      el.textContent = '—';
+      el.className = 'value muted';
+      document.getElementById(subId).textContent = '数据未就绪';
+      return;
+    }
+    el.className = 'value ' + moneyCls(r.pnl ?? r.profit);
+    const money = r.pnl ?? r.profit;
+    el.innerHTML =
+      usdSigned(money) +
+      (r.pct != null && Number.isFinite(r.pct) ? '<small>' + pctSigned(r.pct) + '</small>' : '');
+    document.getElementById(subId).textContent = subText;
   };
-  setPeriod('d-wtd', 'weeklyRef', 'd-wtd-sub');
-  setPeriod('d-mtd', 'monthlyRef', 'd-mtd-sub');
-  setPeriod('d-ytd', 'yearlyRef', 'd-ytd-sub');
+  const ytd = computeYtd(totalAssets, capital);
+  setAcct(
+    'd-ytd',
+    'd-ytd-sub',
+    ytd,
+    ytd
+      ? '总资产 − ' + usd(ytd.start) + ' − 入金 ' + usd(ytd.deposits) + ' · 基数 ' + usd(ytd.base)
+      : ''
+  );
+  const wtd = computePeriod(checkins, totalAssets, capital, 'week');
+  setAcct('d-wtd', 'd-wtd-sub', wtd, wtd ? '周初 ≈ ' + usd(wtd.startVal) + ' · ' + wtd.n + ' 个交易日' : '');
+  const mtd = computePeriod(checkins, totalAssets, capital, 'month');
+  setAcct('d-mtd', 'd-mtd-sub', mtd, mtd ? '月初 ≈ ' + usd(mtd.startVal) + ' · ' + mtd.n + ' 个交易日' : '');
 
   const rows = holdings.map((h) => {
     const p = getP(h);
@@ -467,6 +482,8 @@ async function boot() {
   cashUSD = data.cash_usd;
   notes = data.notes || { ...DEMO_NOTES };
   snapshotDay = data.day;
+  capital = data.capital;
+  checkins = await loadCheckins();
   snapshotTotal = data.total_assets_usd;
   snapshotCumPnl = data.cum_pnl_usd;
   snapshotInvested = data.invested_usd;

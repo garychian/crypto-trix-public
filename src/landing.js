@@ -300,9 +300,9 @@ function formatCurrentHeadline(stats) {
   const total = `总资产约 ${usd(stats.total_assets_usd)}`;
   const pnl = `累计盈亏 ${usdSigned(stats.cum_pnl_usd)}`;
   const ann =
-    stats.annualized_return_pct != null && Number.isFinite(stats.annualized_return_pct)
-      ? `年化约 ${stats.annualized_return_pct.toFixed(2)}%`
-      : '年化 —';
+    stats.ytd_return_pct != null && Number.isFinite(stats.ytd_return_pct)
+      ? `今年 ${stats.ytd_return_pct >= 0 ? '+' : '−'}${Math.abs(stats.ytd_return_pct).toFixed(2)}%`
+      : '今年 —';
   return `${day} · ${total} · ${pnl} · ${ann}`;
 }
 
@@ -341,8 +341,7 @@ function entryHTML(entry, holdings) {
       day: holdings?.day ?? fb.day,
       total_assets_usd: holdings?.total_assets_usd ?? fb.total_assets_usd,
       cum_pnl_usd: holdings?.cum_pnl_usd ?? fb.cum_pnl_usd,
-      annualized_return_pct:
-        holdings?.annualized_return_pct ?? fb.annualized_return_pct,
+      ytd_return_pct: holdings?.ytd?.pct ?? null,
       as_of: holdings?.as_of ?? fb.as_of ?? asOf,
     };
     headline = formatCurrentHeadline(stats);
@@ -408,7 +407,7 @@ function patchCurrentTimeline(holdings) {
       day: holdings.day,
       total_assets_usd: holdings.total_assets_usd,
       cum_pnl_usd: holdings.cum_pnl_usd,
-      annualized_return_pct: holdings.annualized_return_pct,
+      ytd_return_pct: holdings.ytd ? holdings.ytd.pct : null,
       as_of: holdings.as_of,
     };
     headlineEl.textContent = formatCurrentHeadline(stats);
