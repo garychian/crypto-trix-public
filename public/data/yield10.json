@@ -1,14 +1,10 @@
 {
-  "as_of": "2026-09-30",
-  "value": 5.29,
-  "prev": 5.26,
-  "chg": 0.03,
-  "chg_pct": 0.57,
+  "as_of": "2026-10-01",
+  "value": 5.24,
+  "prev": 5.29,
+  "chg": -0.05,
+  "chg_pct": -0.94,
   "history": [
-    {
-      "date": "2026-07-07",
-      "v": 4.55
-    },
     {
       "date": "2026-07-08",
       "v": 4.56
@@ -244,13 +240,17 @@
     {
       "date": "2026-09-30",
       "value": 5.29
+    },
+    {
+      "date": "2026-10-01",
+      "value": 5.24
     }
   ],
   "lo_52w": 4.38,
-  "hi_52w": 5.29,
+  "hi_52w": 5.3,
   "lo_90d": 4.38,
-  "hi_90d": 5.29,
-  "source": "CBOE TNX 13:59 ET snapshot 52.93 (2026-09-30); new high again on Q3 final session",
+  "hi_90d": 5.3,
+  "source": "CBOE TNX 13:59 ET snapshot 52.37 (2026-10-01); Reuters: eased from 24-year high, first pause after 7 straight up days; Oct hike odds halved to ~35%",
   "live": false,
   "trade_time": "2026-09-28 13:59 ET (snapshot); settled 5.241% per WSJ"
 }
