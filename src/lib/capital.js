@@ -19,6 +19,8 @@ export async function loadCapital() {
       year: j.year ?? null,
       start_of_year_usd: start,
       deposits_total_usd: dep,
+      fx_usdcny: Number(j.fx_usdcny) > 0 ? Number(j.fx_usdcny) : null,
+      fx_as_of: j.fx_as_of || null,
       deposits: Array.isArray(j.deposits)
         ? j.deposits
             .map((d) => ({ date: String(d.date || ''), amount_usd: Number(d.amount_usd) }))

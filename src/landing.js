@@ -2,6 +2,7 @@ import './nav.js';
 import { renderVixGauge } from './vix-gauge.js';
 import { renderYield10Card } from './yield10-card.js';
 import { renderJourneyRings } from './journey-rings.js';
+import { renderNetWorth } from './net-worth.js';
 import { loadHoldingsData } from './lib/holdings.js';
 import { usd, usdSigned, escapeHTML } from './lib/format.js';
 
@@ -493,6 +494,7 @@ async function boot() {
   renderLatestArticle(); // independent of other cards
   const data = await loadHoldingsData();
 
+  renderNetWorth(data); // independent; handles its own failures
   await renderHeatmap();
   renderJourneyRings(data);
   await renderVixGauge();
