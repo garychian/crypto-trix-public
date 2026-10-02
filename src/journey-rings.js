@@ -85,7 +85,7 @@ export function buildJourneyMetrics(data) {
     ...RING_DEFS[0],
     value: progress,
     displayPct: progress * 100,
-    legend: '旅程 · → $2M',
+    legend: '2M进度',
   });
 
   // Middle — progress toward 2026 annual return target (default 20%)
@@ -111,7 +111,7 @@ export function buildJourneyMetrics(data) {
       ...RING_DEFS[1],
       value: toward,
       displayPct: retPct,
-      legend: yearLabel + ' 年化 · 目标' + yearTargetPct + '%',
+      legend: '年化目标' + yearTargetPct + '%',
       displayExtra: retPct.toFixed(2) + '% / ' + yearTargetPct + '%',
     });
   }

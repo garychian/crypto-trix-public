@@ -1094,8 +1094,8 @@
   display: grid;
   /* min 0 (not the old 220px floor) so rings + legend shrink instead of
      clipping past the card edge on narrow columns */
-  /* ring column flexes down so the legend always keeps >=150px */
-  grid-template-columns: minmax(0, 260px) minmax(150px, 1fr);
+  /* ring column flexes down so the one-line legend always keeps >=190px */
+  grid-template-columns: minmax(0, 260px) minmax(190px, 1fr);
   gap: 20px 24px;
   align-items: center;
   margin-top: 10px;
@@ -1217,19 +1217,17 @@
   width: 100%;
 }
 
-/* Narrow legend column (rings + legend side by side in a half-width card):
-   stack each row as  ● label / value  so nothing is ellipsised.            */
+/* One line per item: ● label ........ value (never wraps; labels are short) */
 .jr-leg-item {
-  display: grid;
-  grid-template-columns: 10px minmax(0, 1fr);
-  column-gap: 8px;
-  row-gap: 1px;
-  align-items: baseline;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
   font-size: 12.5px;
   font-weight: 600;
+  white-space: nowrap;
   width: 100%;
 }
-.jr-leg-item .jr-dot { grid-row: 1 / span 2; align-self: start; margin-top: 4px; }
 
 .jr-dot {
   width: 10px;
@@ -1240,10 +1238,9 @@
 
 .jr-leg-label {
   color: #B7BFCA;
+  flex: 1 1 auto;
   min-width: 0;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  line-height: 1.35;
+  white-space: nowrap;
 }
 
 .jr-leg-val {
@@ -1251,22 +1248,14 @@
   font-weight: 800;
   color: var(--text);
   letter-spacing: -0.2px;
-  grid-column: 2;
+  flex: 0 0 auto;
   white-space: nowrap;
-  font-size: 15px;
+  margin-left: auto;
 }
 
-/* Wide legend column: back to the single-line  ● label ........ value  row */
-@container (min-width: 270px) {
-  .jr-leg-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12.5px;
-  }
-  .jr-leg-item .jr-dot { margin-top: 0; align-self: center; }
-  .jr-leg-label { flex: 1 1 auto; white-space: nowrap; overflow-wrap: normal; }
-  .jr-leg-val { margin-left: auto; font-size: inherit; flex: 0 0 auto; }
+/* very narrow legend column: tighten instead of wrapping */
+@container (max-width: 200px) {
+  .jr-leg-item { font-size: 11.5px; gap: 6px; }
 }
 
 .jr-nfa {
