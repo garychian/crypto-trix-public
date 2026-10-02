@@ -6,7 +6,7 @@
  *   node scripts/regen-holdings.mjs
  *
  * Optional overrides via env:
- *   AS_OF=2026-09-19 DAY=66 CASH_USD=32038 INVESTED_USD=93975 GOAL_USD=2000000
+ *   AS_OF=2026-09-19 DAY=66 CASH_USD=32038 GOAL_USD=2000000
  *   CASH_MODE=weight|env|existing   (default: weight when holdings have weights)
  *
  * Cash reverse-inference (CASH_MODE=weight / 现金按权重反推):
@@ -14,7 +14,7 @@
  *   weight_sum  = sum(weight)   // e.g. 76.18
  *   total       = holdings_mv / (weight_sum / 100)
  *   cash_usd    = total - holdings_mv
- *   cum_pnl_usd = total - invested_usd   (when invested_usd is set)
+ *   (cumulative P&L is computed client-side from per-stock cost vs. market value; no invested_usd / cum_pnl_usd stored)
  */
 import { readFileSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
@@ -126,7 +126,6 @@ const cashMode =
 let cashUsd = Number(process.env.CASH_USD || existing.cash_usd || 0);
 let totalAssetsUsd =
   existing.total_assets_usd != null ? Number(existing.total_assets_usd) : undefined;
-let cumPnlUsd = existing.cum_pnl_usd != null ? Number(existing.cum_pnl_usd) : undefined;
 let cashNote = '';
 
 if (cashMode === 'weight' && hasWeights) {
@@ -136,16 +135,6 @@ if (cashMode === 'weight' && hasWeights) {
   cashNote = `cash reverse-inferred from weights (holdings ${weightSum.toFixed(2)}% → cash ${(100 - weightSum).toFixed(2)}%)`;
 }
 
-const investedUsd = Number(process.env.INVESTED_USD || existing.invested_usd || 0) || undefined;
-
-if (
-  cashMode === 'weight' &&
-  hasWeights &&
-  investedUsd != null &&
-  totalAssetsUsd != null
-) {
-  cumPnlUsd = Math.round(totalAssetsUsd - investedUsd);
-}
 
 const asOf = process.env.AS_OF || existing.as_of || new Date().toISOString().slice(0, 10);
 const day = Number(process.env.DAY || existing.day || 1);
@@ -165,8 +154,6 @@ const data = {
   day,
   goal_usd: Number(process.env.GOAL_USD || existing.goal_usd || 2_000_000),
   cash_usd: cashUsd,
-  invested_usd: investedUsd,
-  cum_pnl_usd: cumPnlUsd,
   total_assets_usd: totalAssetsUsd,
   handle: existing.handle || 'CryptoTrix1',
   sub: existing.sub || 'US EQUITIES',
@@ -177,8 +164,6 @@ const data = {
   prices,
 };
 
-if (data.invested_usd == null) delete data.invested_usd;
-if (data.cum_pnl_usd == null) delete data.cum_pnl_usd;
 if (data.total_assets_usd == null) delete data.total_assets_usd;
 
 const out = resolve(root, 'public/data/holdings.json');

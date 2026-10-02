@@ -11,6 +11,27 @@ import {
 } from '../data/demo.js';
 import { loadCapital, computeYtd } from './capital.js';
 
+/**
+ * Cumulative P&L of ALL current stock positions vs. their cost (cash excluded):
+ *   pnl = Σ(market value − costTotal), pct = pnl / Σ costTotal.
+ * Market value = mv (snapshot) or price × shares. Rows without cost are skipped.
+ */
+export function positionsPnl(holdings) {
+  let cost = 0;
+  let mv = 0;
+  let n = 0;
+  (holdings || []).forEach((h) => {
+    const c = h.costTotal != null ? Number(h.costTotal) : null;
+    const m = h.mv != null ? Number(h.mv) : h.price != null ? Number(h.price) * Number(h.shares) : null;
+    if (c == null || m == null || !Number.isFinite(c) || !Number.isFinite(m)) return;
+    cost += c;
+    mv += m;
+    n++;
+  });
+  if (!n || !(cost > 0)) return { cost: null, mv: null, pnl: null, pct: null };
+  return { cost, mv, pnl: mv - cost, pct: ((mv - cost) / cost) * 100 };
+}
+
 function normalizeHolding(h) {
   const shares = Number(h.shares);
   const cost = h.cost != null ? Number(h.cost) : null;
@@ -48,8 +69,9 @@ function demoFallback() {
     day: 67,
     goal_usd: FUND_CFG.goal,
     cash_usd: DEMO_CASH,
-    invested_usd: 93975,
-    cum_pnl_usd: 47403,
+    cum_cost_usd: null,
+    cum_pnl_usd: null,
+    cum_return_pct: null,
     total_assets_usd: 141378,
     handle: FUND_CFG.handle,
     sub: FUND_CFG.sub,
@@ -73,8 +95,9 @@ function demoFallback() {
  *   day: number|null,
  *   goal_usd: number,
  *   cash_usd: number,
- *   invested_usd: number|null,
- *   cum_pnl_usd: number|null,
+ *   cum_cost_usd: number|null,   // Σ cost of current stock positions (no cash)
+ *   cum_pnl_usd: number|null,    // Σ(market value − cost), no cash
+ *   cum_return_pct: number|null, // cum_pnl_usd / cum_cost_usd
  *   total_assets_usd: number|null,
  *   annual_return_target_pct: number|null,
  *   annual_return_year: number|null,
@@ -99,6 +122,8 @@ export async function loadHoldingsData() {
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const j = await res.json();
     const capital = await loadCapital();
+    const holdingsN = Array.isArray(j.holdings) ? j.holdings.map(normalizeHolding) : [];
+    const pos = positionsPnl(holdingsN);
     if (!Array.isArray(j.holdings) || !j.holdings.length) throw new Error('empty holdings');
 
     return {
@@ -106,8 +131,9 @@ export async function loadHoldingsData() {
       day: j.day != null ? Number(j.day) : null,
       goal_usd: Number(j.goal_usd) || FUND_CFG.goal,
       cash_usd: j.cash_usd != null ? Number(j.cash_usd) : DEMO_CASH,
-      invested_usd: j.invested_usd != null ? Number(j.invested_usd) : null,
-      cum_pnl_usd: j.cum_pnl_usd != null ? Number(j.cum_pnl_usd) : null,
+      cum_cost_usd: pos.cost,
+      cum_pnl_usd: pos.pnl,
+      cum_return_pct: pos.pct,
       total_assets_usd: j.total_assets_usd != null ? Number(j.total_assets_usd) : null,
       annual_return_target_pct:
         j.annual_return_target_pct != null ? Number(j.annual_return_target_pct) : null,

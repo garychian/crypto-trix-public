@@ -40,7 +40,7 @@ public/vol_data.json        ← IV/HV overlay for the fund board
 Prices still come from `/api/prices` (with demo fallback in `src/data/demo.js`).  
 Holdings list / cash / day / goal come from `holdings.json` — demo.js is only used if that fetch fails.
 
-**现金按权重反推：** when CSV rows include `Weight`, `regen-holdings.mjs` sets `cash_usd` / `total_assets_usd` / `cum_pnl_usd` from `total = holdings_mv / (weight_sum/100)` (not a fixed broker cash baseline). The fund board reads `cash_usd` from `holdings.json`.
+**现金按权重反推：** when CSV rows include `Weight`, `regen-holdings.mjs` sets `cash_usd` / `total_assets_usd` from `total = holdings_mv / (weight_sum/100)` (not a fixed broker cash baseline). The fund board reads `cash_usd` from `holdings.json`.
 
 Current snapshot: **as_of 2026-09-20 · Day 67 · cash ≈ $34,188**（现金按权重反推；非旧 broker $32,038）。
 
@@ -53,7 +53,7 @@ Whenever positions change, update the repo data and redeploy:
 ### Option A — edit JSON directly (fastest)
 
 1. Edit `public/data/holdings.json`:
-   - `as_of`, `day`, `cash_usd`, `invested_usd`, `goal_usd`
+   - `as_of`, `day`, `cash_usd`, `goal_usd`
    - `holdings[]`: `{ ticker, shares, cost, weight? }`
    - `options[]`: `{ symbol, type, strike, expiry, premium }`
 2. Optionally mirror the same rows into `public/data/holdings.csv` / `options.csv`.
@@ -67,7 +67,7 @@ Whenever positions change, update the repo data and redeploy:
 ```bash
 # default: 现金按权重反推 (CASH_MODE=weight when holdings have Weight)
 #   total = holdings_mv / (weight_sum/100); cash = total - holdings_mv
-AS_OF=2026-09-20 DAY=67 INVESTED_USD=93975 \
+AS_OF=2026-09-20 DAY=67 \
   node scripts/regen-holdings.mjs
 
 # force a fixed cash instead of weight reverse-inference:

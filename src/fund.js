@@ -32,8 +32,6 @@ let snapshotDay = null;
 let capital = null;
 let checkins = null;
 let snapshotTotal = null;
-let snapshotCumPnl = null;
-let snapshotInvested = null;
 let holdingsMeta = null;
 let prices = {};
 let volData = { date: null, map: {} };
@@ -224,23 +222,11 @@ function computeAndRender() {
     snapshotTotal != null;
 
   let totalAssets = holdingsMV + (cashUSD != null ? cashUSD : 0);
-  let displayCumPnL = hasCost ? cumPnL : null;
-  let totalInvested = hasCost
-    ? cumCost + (cashUSD != null ? cashUSD : 0)
-    : cumPnL != 0
-      ? totalAssets - cumPnL
-      : null;
+  // 持仓累计盈亏 = Σ(市值 − 成本) over current stock positions (no cash); 收益率 = pnl / Σ成本
+  const displayCumPnL = hasCost ? cumPnL : null;
+  const totalInvested = hasCost ? cumCost : null;
 
-  if (useSnapshotTotals) {
-    totalAssets = snapshotTotal;
-    if (snapshotCumPnl != null) displayCumPnL = snapshotCumPnl;
-    // invested_usd is already the portfolio cost basis (total − cum_pnl); do not add cash again
-    if (snapshotInvested != null) {
-      totalInvested = snapshotInvested;
-    } else if (snapshotCumPnl != null) {
-      totalInvested = totalAssets - snapshotCumPnl;
-    }
-  }
+  if (useSnapshotTotals) totalAssets = snapshotTotal;
 
   const cashW = cashUSD != null && totalAssets > 0 ? (cashUSD / totalAssets) * 100 : 0;
   const retPct = totalInvested > 0 && displayCumPnL != null ? (displayCumPnL / totalInvested) * 100 : null;
@@ -271,9 +257,9 @@ function computeAndRender() {
   document.getElementById('d-daypnl-sub').textContent = holdings.length + ' 只持仓';
   setMoney('d-cumpnl', displayCumPnL);
   document.getElementById('d-cumpnl-sub').textContent =
-    totalInvested != null ? '本金 ' + usd(totalInvested) : '';
+    totalInvested != null ? '当前持仓股票，不含现金 · 成本 ' + usd(totalInvested) : '';
   setPct('d-ret', retPct);
-  document.getElementById('d-ret-sub').textContent = retPct != null ? '相对本金' : '';
+  document.getElementById('d-ret-sub').textContent = retPct != null ? '相对持仓成本' : '';
   setPlainPct('d-cash', cashUSD != null ? cashW : null);
   document.getElementById('d-cash-sub').textContent =
     cashUSD != null ? usd(cashUSD) + ' 现金' : '';
@@ -307,7 +293,7 @@ function computeAndRender() {
     'd-ytd-sub',
     ytd,
     ytd
-      ? '总资产 − ' + usd(ytd.start) + ' − 入金 ' + usd(ytd.deposits) + ' · 基数 ' + usd(ytd.base)
+      ? '扣除入金，相对年初收益（含期权）'
       : ''
   );
   const wtd = computePeriod(checkins, totalAssets, capital, 'week');
@@ -485,8 +471,6 @@ async function boot() {
   capital = data.capital;
   checkins = await loadCheckins();
   snapshotTotal = data.total_assets_usd;
-  snapshotCumPnl = data.cum_pnl_usd;
-  snapshotInvested = data.invested_usd;
   CFG.goal = data.goal_usd || CFG.goal;
   CFG.handle = data.handle || CFG.handle;
   CFG.sub = data.sub || CFG.sub;
