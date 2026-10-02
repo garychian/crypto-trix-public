@@ -23,7 +23,7 @@ npm run build        # must pass before deploy
 ## Stack
 
 - Vite multi-page (vanilla JS/CSS, `"type": "module"`)
-- Pages: `index.html`, `fund.html`, `options.html`, `portfolio.html`, `cn-fund.html`
+- Pages: `index.html`, `fund.html`, `options.html`, `cn-fund.html` (portfolio.html was merged into fund.html 2026-10-02; `/portfolio(.html)` 301 → `/fund.html` in `vercel.json`)
 - Entry scripts under `src/*.js`; shared styles in `src/styles/`
 - Serverless: `api/prices.js` — **must be ESM `export default`** (CJS `module.exports` breaks on Vercel with type:module)
 
@@ -34,8 +34,7 @@ Top nav (`src/nav.js`):
 1. 首页 `/`
 2. 财富自由基金 `/fund.html`
 3. 期权 `/options.html`
-4. 美股仪表盘 `/portfolio.html`
-5. A股基金 `/cn-fund.html`
+4. A股基金 `/cn-fund.html`
 
 ## Homepage layout (current, important)
 
@@ -209,7 +208,6 @@ npm run regen-holdings
 | VIX gauge | `src/vix-gauge.js` |
 | Fund board | `src/fund.js`, `fund.html` |
 | Options | `src/options.js`, `options.html` |
-| Portfolio EN | `src/portfolio.js`, `portfolio.html` |
 | CN fund | `src/cn-fund.js`, `cn-fund.html` |
 | Holdings load | `src/lib/holdings.js`, `scripts/regen-holdings.mjs` |
 | Prices | `src/lib/prices.js`, `api/prices.js` |
@@ -239,3 +237,4 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 - 2026-10-02: A股基金 持仓明细 table replaced by the shared donut (`renderAllocation()` in `src/allocation-chart.js`, now option-driven: title/center/format/maxNamed; donut CSS moved fund.css → shared.css). 9 funds shown individually (¥ center, 万 in legend, category as sub-label); old table had no P&L column, only 名称/类别/金额/占比/权重条, all preserved in legend/hover. Dead `.cat-chip`/`.row-bar-*` CSS removed.
 - 2026-10-02: Fixed 财富自由进度 legend text being ellipsised on desktop (journey card is only ~461px wide in the 2-col dash-row, legend column ~125px): `.jr-leg-item` is now a grid (● label / value stacked, label wraps) and switches back to the one-line row via `@container (min-width: 270px)` on `.jr-side`; ring column flexes (`minmax(150px,1fr)` legend). Wording/numbers untouched.
 - 2026-10-02: Journey-ring legend back to one line per item (no wrap/stack): labels shortened to 「2M进度」 / 「年化目标20%」 (现金占比 unchanged) in `src/journey-rings.js`; legend column keeps >=190px (`minmax(190px,1fr)`), font tightens to 11.5px via container query if narrower.
+- 2026-10-02: Merged 美股仪表盘 (portfolio.html) into 财富自由基金: removed the page/tab/entry, `vercel.json` 301s `/portfolio(.html)` → `/fund.html`; fund.html gained WTD/MTD/YTD stat cards (MV-weighted, ex-cash; 8 cards in 4×2) and 本周/本月/今年/较成本 columns in the single holdings table (the old 浮盈 note text dropped as duplicate). Dropped the Holdings-by-Weight treemap (donut + weight badges cover it) and the landing CTA/timeline chip for the old page.

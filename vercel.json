@@ -1,4 +1,8 @@
 {
+  "redirects": [
+    { "source": "/portfolio.html", "destination": "/fund.html", "permanent": true },
+    { "source": "/portfolio", "destination": "/fund.html", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",

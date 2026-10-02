@@ -19,7 +19,6 @@ Live: https://crypto-trix-public.vercel.app/
 | Landing / 首页 | `/` | zh-first |
 | 财富自由基金 · 实时看板 | `/fund.html` | zh |
 | 期权 · Cash-Secured Puts | `/options.html` | zh |
-| US Equities Dashboard | `/portfolio.html` | en |
 | A股基金 · 人民币配置 | `/cn-fund.html` | zh |
 
 **Brand:** CryptoTrix · accent gold `#F0B90B` on dark `#0B0D10` · panels `#12151B` · up `#0ECB81` · down `#F6465D`

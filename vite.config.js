@@ -11,7 +11,6 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         fund: resolve(__dirname, 'fund.html'),
-        portfolio: resolve(__dirname, 'portfolio.html'),
         'cn-fund': resolve(__dirname, 'cn-fund.html'),
         options: resolve(__dirname, 'options.html'),
         articles: resolve(__dirname, 'articles.html'),

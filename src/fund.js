@@ -108,18 +108,6 @@ function autoNoteHTML(r) {
         '</b>'
     );
   }
-  if (r.costRet != null) {
-    const c = r.costRet;
-    spans.push(
-      (c >= 0 ? '浮盈 ' : '浮亏 ') +
-        '<b class="' +
-        (c >= 0 ? 'nf-up' : 'nf-dn') +
-        '">' +
-        (c >= 0 ? '+' : '−') +
-        Math.abs(c).toFixed(0) +
-        '%</b>'
-    );
-  }
   if (r.weight != null && r.weight <= 2) spans.push('<span class="nf-pos">观察仓</span>');
   return spans.length ? spans.join(' · ') : '—';
 }
@@ -187,6 +175,16 @@ function mvOf(h) {
   return p ? p.price * h.shares : null;
 }
 
+function periodRet(p, refKey) {
+  if (!p || p[refKey] == null || !p.price) return null;
+  return ((p.price - p[refKey]) / p[refKey]) * 100;
+}
+
+function periodCell(v) {
+  if (v == null || !Number.isFinite(v)) return '<td class="muted">—</td>';
+  return '<td class="' + moneyCls(v) + '" style="font-weight:700">' + pctSigned(v) + '</td>';
+}
+
 function costOf(h) {
   return h.costTotal != null ? h.costTotal : h.cost != null ? h.cost * h.shares : null;
 }
@@ -199,6 +197,7 @@ function computeAndRender() {
   let cumPnL = 0;
   let cumCost = 0;
   let hasCost = false;
+  const agg = { weeklyRef: [0, 0], monthlyRef: [0, 0], yearlyRef: [0, 0] };
 
   holdings.forEach((h) => {
     const mv = mvOf(h);
@@ -206,6 +205,14 @@ function computeAndRender() {
     holdingsMV += mv;
     const p = getP(h);
     if (p) {
+      // market-value-weighted period returns across holdings (ex-cash)
+      Object.keys(agg).forEach((k) => {
+        const r = periodRet(p, k);
+        if (r != null) {
+          agg[k][0] += r * mv;
+          agg[k][1] += mv;
+        }
+      });
       const cp = p.changePct == null ? 0 : p.changePct;
       dailyPnL += (mv * cp) / (100 + cp);
     }
@@ -284,6 +291,15 @@ function computeAndRender() {
     cash: cashUSD,
   });
 
+  const setPeriod = (id, key, subId) => {
+    const [num, den] = agg[key];
+    setPct(id, den > 0 ? num / den : null);
+    document.getElementById(subId).textContent = den > 0 ? '持仓加权 · 不含现金' : '行情未就绪';
+  };
+  setPeriod('d-wtd', 'weeklyRef', 'd-wtd-sub');
+  setPeriod('d-mtd', 'monthlyRef', 'd-mtd-sub');
+  setPeriod('d-ytd', 'yearlyRef', 'd-ytd-sub');
+
   const rows = holdings.map((h) => {
     const p = getP(h);
     const mv = mvOf(h);
@@ -303,6 +319,9 @@ function computeAndRender() {
           ? (mv * (p.changePct || 0)) / (100 + (p.changePct || 0))
           : null,
       costRet: mv != null && costRow != null ? (mv / costRow - 1) * 100 : null,
+      wtd: periodRet(p, 'weeklyRef'),
+      mtd: periodRet(p, 'monthlyRef'),
+      ytd: periodRet(p, 'yearlyRef'),
     };
   });
 
@@ -323,7 +342,7 @@ function computeAndRender() {
           '</span>' +
           wBadge +
           '</div></td>' +
-          '<td class="muted">—</td><td class="muted">—</td><td class="muted">—</td>' +
+          '<td class="muted">—</td>'.repeat(7) +
           '<td class="note-cell"><span class="tag tag-flat">加载中</span></td>' +
           '</tr>'
         );
@@ -378,6 +397,10 @@ function computeAndRender() {
         '" style="font-weight:700">' +
         pctSigned(r.cp) +
         '</td>' +
+        periodCell(r.wtd) +
+        periodCell(r.mtd) +
+        periodCell(r.ytd) +
+        periodCell(r.costRet) +
         vcell +
         '<td class="note-cell">' +
         noteHTML +
