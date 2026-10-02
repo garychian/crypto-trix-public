@@ -244,9 +244,9 @@
   .pct-big { font-size: 28px; }
 }
 
-/* —— Equity chart —— */
+/* —— Equity chart (净值走势) —— */
 .equity-panel {
-  padding: 18px 20px 14px;
+  padding: 16px 20px 14px;
   margin-bottom: 16px;
 }
 
@@ -256,13 +256,13 @@
   align-items: flex-start;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .eq-titles h2 {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.2px;
+  letter-spacing: -0.2px;
 }
 
 .eq-meta {
@@ -288,7 +288,7 @@
   color: var(--muted);
   font-size: 12px;
   font-weight: 700;
-  padding: 6px 14px;
+  padding: 5px 14px;
   border-radius: 999px;
   cursor: pointer;
   transition: color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
@@ -305,8 +305,8 @@
 
 .eq-stats {
   display: flex;
-  gap: 18px;
-  margin-bottom: 8px;
+  gap: 28px;
+  margin-bottom: 6px;
 }
 
 .eq-stat .lbl {
@@ -318,10 +318,16 @@
 }
 
 .eq-stat .val {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.4px;
+}
+.eq-stat .val small {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  opacity: 0.85;
 }
 
 .eq-stat .val.up { color: var(--up); }
@@ -330,30 +336,70 @@
 .eq-canvas-wrap {
   position: relative;
   width: 100%;
-  height: clamp(180px, 28vw, 260px);
-  border-radius: 12px;
-  overflow: visible;
+  height: clamp(200px, 30vw, 280px);
   cursor: crosshair;
-  touch-action: none;
-  background:
-    linear-gradient(180deg, rgba(240, 185, 11, 0.04), transparent 40%),
-    var(--panel-2);
-  border: 1px solid var(--border);
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .eq-svg {
   width: 100%;
   height: 100%;
   display: block;
+  overflow: visible;
 }
+
+.eq-grid-line {
+  stroke: rgba(255, 255, 255, 0.07);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+}
+
+.eq-y-label,
+.eq-x-label {
+  fill: var(--muted-2);
+  font-size: 10.5px;
+  font-weight: 600;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+}
+.eq-x-label { fill: var(--muted); font-size: 11px; }
 
 .eq-line {
-  filter: drop-shadow(0 0 6px rgba(240, 185, 11, 0.35));
-  transition: opacity 0.2s ease;
+  filter: drop-shadow(0 0 5px rgba(240, 185, 11, 0.4));
 }
 
-.eq-area {
-  transition: opacity 0.2s ease;
+.eq-end { transition: opacity 0.35s ease; pointer-events: none; }
+.eq-end[hidden] { display: none; }
+.eq-end-dot {
+  fill: #FFD24A;
+  stroke: var(--panel);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 6px rgba(240, 185, 11, 0.9));
+}
+.eq-end-halo {
+  fill: rgba(240, 185, 11, 0.22);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.eq-end.on .eq-end-halo { animation: eq-pulse 2.4s ease-out infinite; }
+.eq-end-label {
+  fill: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  paint-order: stroke;
+  stroke: var(--panel);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  transition: opacity 0.15s ease;
+}
+@keyframes eq-pulse {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  70%, 100% { transform: scale(1.8); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eq-end.on .eq-end-halo { animation: none; }
 }
 
 .eq-empty {
@@ -363,24 +409,10 @@
   font-weight: 600;
 }
 
-@media (max-width: 640px) {
-  .eq-head { flex-direction: column; align-items: stretch; }
-  .eq-range { align-self: flex-start; }
-  .eq-stat .val { font-size: 16px; }
-}
-
-
-.eq-x-label {
-  fill: var(--muted);
-  font-size: 11px;
-  font-weight: 600;
-  font-family: inherit;
-}
-
 .eq-cross {
-  stroke: rgba(240, 185, 11, 0.55);
+  stroke: rgba(240, 185, 11, 0.5);
   stroke-width: 1;
-  stroke-dasharray: 4 4;
+  stroke-dasharray: 3 4;
   pointer-events: none;
 }
 
@@ -390,47 +422,65 @@
 }
 
 .eq-dot {
-  fill: #F0B90B;
-  stroke: #0b0e11;
+  fill: #FFD24A;
+  stroke: var(--panel);
   stroke-width: 2;
-  filter: drop-shadow(0 0 6px rgba(240, 185, 11, 0.65));
+  filter: drop-shadow(0 0 6px rgba(240, 185, 11, 0.8));
   pointer-events: none;
 }
 
 .eq-tip {
   position: absolute;
   z-index: 2;
-  min-width: 108px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: rgba(15, 18, 24, 0.92);
-  border: 1px solid rgba(240, 185, 11, 0.45);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  min-width: 150px;
+  padding: 9px 12px 10px;
+  border-radius: 12px;
+  background: rgba(18, 21, 27, 0.94);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
   pointer-events: none;
-  transform: translate(-50%, calc(-100% - 14px));
+  white-space: nowrap;
 }
-
-.eq-tip.eq-tip-right {
-  transform: translate(calc(-100% - 8px), calc(-100% - 14px));
-}
-
-.eq-tip.eq-tip-left {
-  transform: translate(8px, calc(-100% - 14px));
-}
+.eq-tip[hidden] { display: none; }
 
 .eq-tip-date {
   font-size: 11px;
   font-weight: 600;
   color: var(--muted);
-  margin-bottom: 2px;
 }
 
 .eq-tip-val {
-  font-size: 15px;
+  margin: 1px 0 6px;
+  font-size: 18px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   color: var(--accent);
-  letter-spacing: -0.2px;
+  letter-spacing: -0.3px;
+}
+
+.eq-tip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.7;
+}
+.eq-tip-row span { color: var(--muted); font-weight: 600; }
+.eq-tip-row b { font-weight: 700; color: var(--text); }
+.eq-tip-row b small { font-size: 11px; font-weight: 600; opacity: 0.85; }
+.eq-tip-row b.up { color: var(--up); }
+.eq-tip-row b.down { color: var(--down); }
+
+@media (max-width: 640px) {
+  .equity-panel { padding: 14px 14px 12px; }
+  .eq-head { flex-direction: column; align-items: stretch; }
+  .eq-range { align-self: flex-start; }
+  .eq-stats { gap: 22px; }
+  .eq-stat .val { font-size: 17px; }
+  .eq-tip { min-width: 138px; padding: 8px 10px; }
 }
 
 /* —— Allocation donut (仓位分布) —— */
