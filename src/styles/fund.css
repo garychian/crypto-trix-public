@@ -288,7 +288,8 @@
   color: var(--muted);
   font-size: 12px;
   font-weight: 700;
-  padding: 5px 14px;
+  padding: 5px 12px;
+  white-space: nowrap;
   border-radius: 999px;
   cursor: pointer;
   transition: color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
@@ -477,7 +478,8 @@
 @media (max-width: 640px) {
   .equity-panel { padding: 14px 14px 12px; }
   .eq-head { flex-direction: column; align-items: stretch; }
-  .eq-range { align-self: flex-start; }
+  .eq-range { align-self: stretch; }
+  .eq-pill { flex: 1 1 0; padding: 5px 4px; white-space: nowrap; }
   .eq-stats { gap: 22px; }
   .eq-stat .val { font-size: 17px; }
   .eq-tip { min-width: 138px; padding: 8px 10px; }

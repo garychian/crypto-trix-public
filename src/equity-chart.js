@@ -12,6 +12,8 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 const RANGES = {
   week: { label: '一周', days: 7 },
   month: { label: '一月', days: 30 },
+  quarter: { label: '三个月', days: 92 },
+  year: { label: '一年', days: 365 },
   all: { label: '全部', days: Infinity },
 };
 
