@@ -12,6 +12,7 @@ import {
   dayNumber,
 } from './lib/format.js';
 import { initEquityChart } from './equity-chart.js';
+import { renderAllocation } from './allocation-chart.js';
 
 
 const MILESTONES = [100_000, 250_000, 500_000, 1_000_000, 2_000_000];
@@ -275,6 +276,13 @@ function computeAndRender() {
   setPlainPct('d-cash', cashUSD != null ? cashW : null);
   document.getElementById('d-cash-sub').textContent =
     cashUSD != null ? usd(cashUSD) + ' 现金' : '';
+
+  renderAllocation(document.getElementById('alloc-chart'), {
+    items: holdings
+      .map((h) => ({ label: h.ticker, value: mvOf(h) }))
+      .filter((x) => x.value != null),
+    cash: cashUSD,
+  });
 
   const rows = holdings.map((h) => {
     const p = getP(h);
