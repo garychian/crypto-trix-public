@@ -1,5 +1,6 @@
 import './nav.js';
 import { escapeHTML } from './lib/format.js';
+import { renderAllocation } from './allocation-chart.js';
 
 const CAT_COLORS = {
   固收: '#4C6FF7',
@@ -89,33 +90,25 @@ function renderCategories(data) {
 }
 
 function renderHoldings(data) {
-  const holdings = (data.holdings || [])
-    .slice()
-    .sort((a, b) => (b.amount_wan || 0) - (a.amount_wan || 0));
-  document.getElementById('holdings-count').textContent = holdings.length + ' 只';
-
-  document.getElementById('d-rows').innerHTML = holdings
-    .map((h) => {
-      const color = catColor(h.category);
-      const w = Math.min(100, h.weight_pct || 0);
-      return `
-        <tr>
-          <td class="l"><span class="sym">${escapeHTML(h.name)}</span></td>
-          <td class="l">
-            <span class="cat-chip" style="border-color:${color}66;color:${color}">
-              ${escapeHTML(h.category || '—')}
-            </span>
-          </td>
-          <td>${wan(h.amount_wan)}</td>
-          <td>${wan(h.weight_pct)}%</td>
-          <td class="l">
-            <div class="row-bar-track">
-              <div class="row-bar-fill" style="width:${w}%;background:${color}"></div>
-            </div>
-          </td>
-        </tr>`;
-    })
-    .join('');
+  const holdings = (data.holdings || []).filter((h) => Number.isFinite(h.amount_wan) && h.amount_wan > 0);
+  // Slice values are amount_wan, so they sum to total_wan and reconcile with the 总资产 card.
+  renderAllocation(
+    document.getElementById('alloc-chart'),
+    {
+      items: holdings.map((h) => ({ label: h.name, value: h.amount_wan, sub: h.category || '' })),
+      cash: null,
+    },
+    {
+      title: '持仓明细',
+      meta: (n) => n + ' 只 · 万元',
+      centerLabel: '总资产',
+      centerSub: '人民币配置',
+      maxNamed: 9, // 9 funds today: list every one; only group into 其他 beyond 10
+      fmtLegend: (v) => wan(v) + ' 万',
+      fmtCenter: (v) => rmbFromWan(v),
+      fmtHover: (v) => rmbFromWan(v),
+    }
+  );
 }
 
 async function boot() {

@@ -85,27 +85,10 @@
       <div class="cat-tiles" id="cat-tiles"></div>
     </section>
 
-    <section class="panel holdings-panel">
-      <div class="panel-head">
-        <h2>持仓明细</h2>
-        <span class="muted" id="holdings-count">—</span>
-      </div>
-      <div class="table-scroll">
-        <table class="data">
-          <thead>
-            <tr>
-              <th class="l">名称</th>
-              <th class="l">类别</th>
-              <th>金额(万)</th>
-              <th>占比</th>
-              <th class="l">权重条</th>
-            </tr>
-          </thead>
-          <tbody id="d-rows"></tbody>
-        </table>
-      </div>
-      <p class="vol-note" id="data-note">数据来自仓库 public/data/cn-fund.json · 配置快照，非实时行情 · #NFA</p>
+    <section class="panel alloc-panel" id="alloc-chart" aria-labelledby="alloc-title" hidden>
+      <!-- filled by allocation-chart.js -->
     </section>
+    <p class="vol-note" id="data-note">数据来自仓库 public/data/cn-fund.json · 配置快照，非实时行情 · #NFA</p>
 
     <footer class="site-foot">
       <div>

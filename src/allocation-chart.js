@@ -2,6 +2,9 @@
  * 仓位分布 donut for 财富自由基金 tab.
  * Pure SVG, no dependency. Slices = top holdings + 其他 (long tail) + 现金.
  * Values come from the same mvOf()/cash numbers the page totals use.
+ *
+ * Shared by fund.html (USD, defaults) and cn-fund.html (CNY) — pass `opts`
+ * to renderAllocation() to change title / center labels / number formats.
  */
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -13,7 +16,7 @@ const R = 76;
 const SW = 26;
 const GAP_DEG = 1.1;
 
-const PALETTE = ['#F0B90B', '#4C8DF7', '#0ECB81', '#A06BFF', '#22C7D6', '#FF8A3D', '#E573B5', '#8FD14F'];
+const PALETTE = ['#F0B90B', '#4C8DF7', '#0ECB81', '#A06BFF', '#22C7D6', '#FF8A3D', '#E573B5', '#8FD14F', '#C9A27A'];
 const OTHER_COLOR = '#E573B5';
 const CASH_COLOR = '#A7B0BD';
 
@@ -51,22 +54,23 @@ function roundedPcts(values) {
 }
 
 /** Build slice list from holdings [{label, value}] + cash. Exported for testing. */
-export function buildSlices(items, cash) {
+export function buildSlices(items, cash, maxNamed = MAX_NAMED) {
   const rows = (items || [])
     .filter((x) => x && Number.isFinite(x.value) && x.value > 0)
     .sort((a, b) => b.value - a.value);
   let named = rows;
   let tail = [];
-  // 8 slices max incl. cash → group once there are more than MAX_NAMED+1 holdings
-  if (rows.length > MAX_NAMED + 1) {
-    named = rows.slice(0, MAX_NAMED);
-    tail = rows.slice(MAX_NAMED);
+  // group the long tail once there are more than maxNamed+1 holdings
+  if (rows.length > maxNamed + 1) {
+    named = rows.slice(0, maxNamed);
+    tail = rows.slice(maxNamed);
   }
   const slices = named.map((r, i) => ({
     name: r.label,
     value: r.value,
     color: PALETTE[i % PALETTE.length],
     kind: 'holding',
+    sub: r.sub || '',
   }));
   if (tail.length) {
     slices.push({
@@ -105,10 +109,21 @@ function arcPath(a0, a1) {
  * @param {HTMLElement|null} el  container (the panel)
  * @param {{items:{label:string,value:number}[], cash:number|null, asOf?:string|null}} data
  */
-export function renderAllocation(el, data) {
+export function renderAllocation(el, data, opts = {}) {
   if (!el) return;
+  const o = {
+    title: '仓位分布 Allocation',
+    meta: (n) => '持仓 ' + n + ' 只 + 现金',
+    centerLabel: '总资产',
+    centerSub: '持仓 + 现金',
+    maxNamed: MAX_NAMED,
+    fmtLegend: money, // legend $ column
+    fmtCenter: money, // donut center total
+    fmtHover: money, // hover 3rd line
+    ...opts,
+  };
   try {
-    const { slices, total } = buildSlices(data && data.items, data && data.cash);
+    const { slices, total } = buildSlices(data && data.items, data && data.cash, o.maxNamed);
     if (!slices.length || !(total > 0)) {
       el.hidden = true;
       return;
@@ -118,8 +133,8 @@ export function renderAllocation(el, data) {
 
     el.innerHTML =
       '<div class="panel-head">' +
-      '<h2 id="alloc-title">仓位分布 Allocation</h2>' +
-      '<span class="muted">持仓 ' + holdingN + ' 只 + 现金</span>' +
+      '<h2 id="alloc-title">' + esc(o.title) + '</h2>' +
+      '<span class="muted">' + esc(o.meta(holdingN)) + '</span>' +
       '</div>' +
       '<div class="alloc-body">' +
       '<div class="alloc-donut">' +
@@ -135,9 +150,13 @@ export function renderAllocation(el, data) {
             (s.detail ? ' title="' + esc(s.detail) + '"' : '') + '>' +
             '<span class="al-dot" style="background:' + s.color + '"></span>' +
             '<span class="al-name">' + esc(s.name) +
-            (s.kind === 'other' ? '<small>' + s.count + ' 只</small>' : '') +
+            (s.kind === 'other'
+              ? '<small>' + s.count + ' 只</small>'
+              : s.sub
+                ? '<small>' + esc(s.sub) + '</small>'
+                : '') +
             '</span>' +
-            '<span class="al-val">' + money(s.value) + '</span>' +
+            '<span class="al-val">' + esc(o.fmtLegend(s.value)) + '</span>' +
             '<span class="al-pct">' + s.pct.toFixed(1) + '%</span>' +
             '</li>'
         )
@@ -174,7 +193,7 @@ export function renderAllocation(el, data) {
       p.setAttribute('tabindex', '0');
       p.setAttribute(
         'aria-label',
-        s.name + ' ' + s.pct.toFixed(1) + '% ' + money(s.value)
+        s.name + ' ' + s.pct.toFixed(1) + '% ' + o.fmtHover(s.value)
       );
       p.dataset.i = String(i);
       svg.appendChild(p);
@@ -191,16 +210,16 @@ export function renderAllocation(el, data) {
     };
 
     const showTotal = () => {
-      ck.textContent = '总资产';
-      cv.textContent = money(total);
-      cs.textContent = '持仓 + 现金';
+      ck.textContent = o.centerLabel;
+      cv.textContent = o.fmtCenter(total);
+      cs.textContent = o.centerSub;
       cv.style.color = '';
     };
     const showSlice = (i) => {
       const s = slices[i];
       ck.textContent = s.name;
       cv.textContent = s.pct.toFixed(1) + '%';
-      cs.textContent = money(s.value);
+      cs.textContent = o.fmtHover(s.value);
       cv.style.color = s.color;
     };
 

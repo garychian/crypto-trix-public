@@ -56,8 +56,7 @@
   margin-bottom: 16px;
 }
 
-.cat-panel,
-.holdings-panel {
+.cat-panel {
   padding: 8px 4px 14px;
   margin-bottom: 14px;
 }
@@ -161,31 +160,6 @@
   font-weight: 600;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
-}
-
-.cat-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 9px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  font-size: 11.5px;
-  font-weight: 700;
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.row-bar-track {
-  width: min(160px, 100%);
-  height: 8px;
-  background: var(--panel-2);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.row-bar-fill {
-  height: 100%;
-  border-radius: 999px;
 }
 
 .vol-note {
