@@ -1094,8 +1094,9 @@
   display: grid;
   /* min 0 (not the old 220px floor) so rings + legend shrink instead of
      clipping past the card edge on narrow columns */
-  grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
-  gap: 20px 28px;
+  /* ring column flexes down so the legend always keeps >=150px */
+  grid-template-columns: minmax(0, 260px) minmax(150px, 1fr);
+  gap: 20px 24px;
   align-items: center;
   margin-top: 10px;
 }
@@ -1182,6 +1183,8 @@
 
 .jr-side {
   width: 100%;
+  min-width: 0;
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1214,16 +1217,19 @@
   width: 100%;
 }
 
+/* Narrow legend column (rings + legend side by side in a half-width card):
+   stack each row as  ● label / value  so nothing is ellipsised.            */
 .jr-leg-item {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr);
+  column-gap: 8px;
+  row-gap: 1px;
+  align-items: baseline;
   font-size: 12.5px;
   font-weight: 600;
-  white-space: nowrap;
   width: 100%;
 }
+.jr-leg-item .jr-dot { grid-row: 1 / span 2; align-self: start; margin-top: 4px; }
 
 .jr-dot {
   width: 10px;
@@ -1234,11 +1240,10 @@
 
 .jr-leg-label {
   color: #B7BFCA;
-  flex: 1 1 auto;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
 }
 
 .jr-leg-val {
@@ -1246,9 +1251,22 @@
   font-weight: 800;
   color: var(--text);
   letter-spacing: -0.2px;
-  flex: 0 0 auto;
+  grid-column: 2;
   white-space: nowrap;
-  margin-left: auto;
+  font-size: 15px;
+}
+
+/* Wide legend column: back to the single-line  ● label ........ value  row */
+@container (min-width: 270px) {
+  .jr-leg-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+  }
+  .jr-leg-item .jr-dot { margin-top: 0; align-self: center; }
+  .jr-leg-label { flex: 1 1 auto; white-space: nowrap; overflow-wrap: normal; }
+  .jr-leg-val { margin-left: auto; font-size: inherit; flex: 0 0 auto; }
 }
 
 .jr-nfa {
