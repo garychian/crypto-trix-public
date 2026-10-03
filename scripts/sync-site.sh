@@ -13,10 +13,19 @@ echo "=== sync-site $(date '+%F %T') ==="
 out=$(node "$REPO/scripts/sync-checkins.mjs" "$@" 2>&1)
 echo "$out"
 
+# 周总结/月总结 + daily snapshots (idempotent; prints SUMMARIES_CHANGED / SUMMARIES_UP_TO_DATE)
+case " $* " in *" --dry-run "*) ;; *)
+  sum_out=$(node "$REPO/scripts/generate-summaries.mjs" 2>&1)
+  echo "$sum_out"
+  out="$out
+$sum_out"
+  ;;
+esac
+
 case "$out" in
   *CHANGED*)
     cd "$REPO" || { echo "ERROR: no repo"; exit 1; }
-    git add public/data/fund-checkins.json || exit 1
+    git add public/data/fund-checkins.json public/data/summaries.json public/data/snapshots || exit 1
     git commit -q -m "checkins: auto-sync daily report ($(date +%F))" || { echo "nothing to commit"; exit 0; }
     if ! git push -q; then
       echo "ERROR: git push failed (ssh-agent missing key?)"

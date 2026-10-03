@@ -1,7 +1,7 @@
 {
   "eyebrow": "Track Record",
   "title": "公开历程",
-  "intro": "公开旅程日志，不是经审计的券商年度 PDF。里程碑来自本站 holdings / 打卡数据与上线记录；更早年份若无公开证据，不臆造。",
+  "intro": "起点里程碑；周 / 月总结见 summaries.json（scripts/generate-summaries.mjs 自动生成）。",
   "entries": [
     {
       "id": "origin",
@@ -39,34 +39,6 @@
         {
           "label": "A股基金",
           "href": "/cn-fund.html"
-        }
-      ]
-    },
-    {
-      "id": "current",
-      "date_label": "当前",
-      "live": true,
-      "as_of": "2026-09-22",
-      "headline": "Day 70 · 总资产约 $147,239 · 累计盈亏 +$53,264",
-      "body": "as_of 2026-09-22。2026 年化目标 20%。A股基金约 107 万人民币配置另页公开；数字会随 holdings.json 刷新。",
-      "fallback": {
-        "day": 70,
-        "total_assets_usd": 147239,
-        "cum_pnl_usd": 53264,
-        "as_of": "2026-09-22"
-      },
-      "chips": [
-        {
-          "label": "基金看板",
-          "href": "/fund.html"
-        },
-        {
-          "label": "A股基金",
-          "href": "/cn-fund.html"
-        },
-        {
-          "label": "期权 CSP",
-          "href": "/options.html"
         }
       ]
     }

@@ -4,8 +4,9 @@ import { renderVixGauge } from './vix-gauge.js';
 import { renderYield10Card } from './yield10-card.js';
 import { renderJourneyRings } from './journey-rings.js';
 import { renderNetWorth } from './net-worth.js';
+import { renderSummaryFeed } from './summary-feed.js';
 import { loadHoldingsData } from './lib/holdings.js';
-import { usd, usdSigned, escapeHTML } from './lib/format.js';
+import { escapeHTML } from './lib/format.js';
 
 /** Mon→Sun labels (weekend rows keep Saturday check-ins visible). */
 const WEEKDAY_LABELS = ['一', '二', '三', '四', '五', '六', '日'];
@@ -297,163 +298,6 @@ async function renderHeatmap() {
   if (tip) bindHeatmapTip(root, tip);
 }
 
-function formatCurrentHeadline(stats) {
-  const day = stats.day != null ? `Day ${stats.day}` : 'Day —';
-  const total = `总资产约 ${usd(stats.total_assets_usd)}`;
-  const pnl = `累计盈亏 ${usdSigned(stats.cum_pnl_usd)}`;
-  const ann =
-    stats.ytd_return_pct != null && Number.isFinite(stats.ytd_return_pct)
-      ? `今年 ${stats.ytd_return_pct >= 0 ? '+' : '−'}${Math.abs(stats.ytd_return_pct).toFixed(2)}%`
-      : '今年 —';
-  return `${day} · ${total} · ${pnl} · ${ann}`;
-}
-
-function formatCurrentBody(stats) {
-  const asOf = stats.as_of ? `as_of ${stats.as_of}。` : '';
-  return `${asOf}2026 年化目标 20%。A股基金约 107 万人民币配置另页公开；数字会随 holdings.json 刷新。`;
-}
-
-function chipHTML(chips) {
-  if (!Array.isArray(chips) || !chips.length) return '';
-  return (
-    `<div class="tl-chips">` +
-    chips
-      .map((c) => {
-        const href = escapeHTML(c.href || '#');
-        const label = escapeHTML(c.label || '');
-        const external = /^https?:/i.test(c.href || '');
-        const extra = external ? ' target="_blank" rel="noopener"' : '';
-        return `<a class="tl-chip" href="${href}"${extra}>${label}</a>`;
-      })
-      .join('') +
-    `</div>`
-  );
-}
-
-function entryHTML(entry, holdings) {
-  const live = !!entry.live;
-  let headline = entry.headline || '';
-  let body = entry.body || '';
-  let asOf = entry.as_of || entry.fallback?.as_of || '';
-  const dateLabel = entry.date_label || '';
-
-  if (live) {
-    const fb = entry.fallback || {};
-    const stats = {
-      day: holdings?.day ?? fb.day,
-      total_assets_usd: holdings?.total_assets_usd ?? fb.total_assets_usd,
-      cum_pnl_usd: holdings?.cum_pnl_usd ?? fb.cum_pnl_usd,
-      ytd_return_pct: holdings?.ytd?.pct ?? null,
-      as_of: holdings?.as_of ?? fb.as_of ?? asOf,
-    };
-    headline = formatCurrentHeadline(stats);
-    body = formatCurrentBody(stats);
-    asOf = stats.as_of || asOf;
-  }
-
-  const cls = live ? 'tl-item tl-current' : 'tl-item';
-  const idAttr = entry.id ? ` data-id="${escapeHTML(entry.id)}"` : '';
-  const headlineId = live ? ' id="tl-current-headline"' : '';
-  const bodyId = live ? ' id="tl-current-body"' : '';
-  const asofHtml = live
-    ? ` <span class="tl-asof muted" id="tl-asof">as_of ${escapeHTML(String(asOf || '—'))}</span>`
-    : '';
-
-  return (
-    `<li class="${cls}"${idAttr}>` +
-    `<div class="tl-rail" aria-hidden="true"><span class="tl-dot"></span></div>` +
-    `<div class="tl-card panel">` +
-    `<div class="tl-date">${escapeHTML(dateLabel)}${asofHtml}</div>` +
-    `<h3 class="tl-headline"${headlineId}>${escapeHTML(headline)}</h3>` +
-    `<p class="tl-body"${bodyId}>${escapeHTML(body)}</p>` +
-    chipHTML(entry.chips) +
-    `</div></li>`
-  );
-}
-
-/**
- * Minimal built-in timeline used only when /data/timeline.json fails to load
- * and index.html has no static <li> items. Mirrors the first + "current"
- * entries of public/data/timeline.json (the "current" one is live-patched).
- */
-const FALLBACK_TIMELINE_ENTRIES = [
-  {
-    id: 'origin',
-    date_label: '起步',
-    headline: '起点资本 $137K · 长期目标 $2,000,000',
-    body: '账户从约 $137K 起步，长期目标 $2,000,000。',
-    chips: [],
-  },
-  {
-    id: 'current',
-    date_label: '当前',
-    live: true,
-    chips: [{ label: '基金看板', href: '/fund.html' }],
-  },
-];
-
-/**
- * Failure path of renderTimeline(): timeline.json unavailable.
- * - If the page already has a rendered/static "current" entry, refresh its
- *   headline/body/as_of from holdings (same formatters as the success path).
- * - Otherwise render FALLBACK_TIMELINE_ENTRIES so the section is not empty.
- */
-function patchCurrentTimeline(holdings) {
-  const list = document.getElementById('timeline-list');
-  if (!list) return;
-
-  const headlineEl = document.getElementById('tl-current-headline');
-  if (headlineEl) {
-    if (!holdings) return;
-    const stats = {
-      day: holdings.day,
-      total_assets_usd: holdings.total_assets_usd,
-      cum_pnl_usd: holdings.cum_pnl_usd,
-      ytd_return_pct: holdings.ytd ? holdings.ytd.pct : null,
-      as_of: holdings.as_of,
-    };
-    headlineEl.textContent = formatCurrentHeadline(stats);
-    const bodyEl = document.getElementById('tl-current-body');
-    if (bodyEl) bodyEl.textContent = formatCurrentBody(stats);
-    const asofEl = document.getElementById('tl-asof');
-    if (asofEl && stats.as_of) asofEl.textContent = `as_of ${stats.as_of}`;
-    return;
-  }
-
-  if (list.querySelector('li')) return; // static items present; leave as-is
-  const entries = holdings
-    ? FALLBACK_TIMELINE_ENTRIES
-    : FALLBACK_TIMELINE_ENTRIES.filter((e) => !e.live);
-  list.innerHTML = entries.map((e) => entryHTML(e, holdings)).join('');
-}
-
-async function renderTimeline(holdings) {
-  const list = document.getElementById('timeline-list');
-  if (!list) return;
-
-  let data = null;
-  try {
-    const res = await fetch('/data/timeline.json', { cache: 'no-store' });
-    if (res.ok) data = await res.json();
-  } catch {
-    /* keep static HTML fallback */
-  }
-
-  if (!data || !Array.isArray(data.entries)) {
-    patchCurrentTimeline(holdings);
-    return;
-  }
-
-  const eyebrow = document.getElementById('timeline-eyebrow');
-  const title = document.getElementById('timeline-title');
-  const intro = document.getElementById('timeline-intro');
-  if (eyebrow && data.eyebrow) eyebrow.textContent = data.eyebrow;
-  if (title && data.title) title.textContent = data.title;
-  if (intro && data.intro) intro.textContent = data.intro;
-
-  list.innerHTML = data.entries.map((e) => entryHTML(e, holdings)).join('');
-}
-
 /**
  * Latest article card: /data/latest-article.json { url, title, date, platform, excerpt? }.
  * Static HTML in index.html is the fallback if fetch fails.
@@ -500,7 +344,7 @@ async function boot() {
   renderJourneyRings(data);
   await renderVixGauge();
   await renderYield10Card();
-  await renderTimeline(data);
+  await renderSummaryFeed();
 }
 
 // 保存为图片 buttons (re-attached automatically if a card re-renders)
@@ -509,7 +353,6 @@ async function boot() {
   ['#journey-rings', 'journey-rings'],
   ['#vix-gauge', 'fear-greed'],
   ['#fund-checkin', 'checkin-heatmap'],
-  ['#track-record', 'timeline'],
 ].forEach(([sel, name]) => attachSnapshotButton(sel, name));
 
 boot();

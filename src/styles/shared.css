@@ -688,7 +688,7 @@ table.data tbody tr:hover td { background: rgba(255, 255, 255, 0.015); }
 }
 .snap-btn svg { width: 16px; height: 16px; }
 /* keep card headers' right-aligned content clear of the button */
-.has-snap :is(.panel-head, .checkin-head, .eq-head) { padding-right: 34px; }
+.has-snap :is(.panel-head, .checkin-head, .eq-head, .sm-head) { padding-right: 34px; }
 .snap-btn:hover, .snap-btn:focus-visible {
   opacity: 1;
   color: var(--accent);
