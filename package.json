@@ -9,7 +9,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "regen-holdings": "node scripts/regen-holdings.mjs",
-    "summaries": "node scripts/generate-summaries.mjs"
+    "summaries": "node scripts/generate-summaries.mjs",
+    "assets": "node scripts/generate-assets.mjs"
   },
   "repository": {
     "type": "git",
