@@ -296,10 +296,25 @@ function computeAndRender() {
       ? '扣除入金，相对年初收益（含期权）'
       : ''
   );
-  const wtd = computePeriod(checkins, totalAssets, capital, 'week');
-  setAcct('d-wtd', 'd-wtd-sub', wtd, wtd ? '周初 ≈ ' + usd(wtd.startVal) + ' · ' + wtd.n + ' 个交易日' : '');
-  const mtd = computePeriod(checkins, totalAssets, capital, 'month');
-  setAcct('d-mtd', 'd-mtd-sub', mtd, mtd ? '月初 ≈ ' + usd(mtd.startVal) + ' · ' + mtd.n + ' 个交易日' : '');
+  // WTD / MTD: completed check-ins + today's live move (live total − last synced snapshot total).
+  // With only snapshot prices (live API down) totalAssets === snapshotTotal → live part is 0.
+  const periodRef =
+    prices && priceSourceLabel(prices) === 'live' && snapshotTotal != null
+      ? { total: snapshotTotal, asOf: holdingsMeta && holdingsMeta.as_of }
+      : null;
+  const periodSub = (r, label) => {
+    if (!r) return '';
+    const base = label + ' ≈ ' + usd(r.startVal) + ' · ';
+    if (r.mode === 'live') {
+      return base + (r.n ? r.n + ' 日打卡 + ' : '') + '今日实时 ' + usdSigned(r.live) + '（含实时）';
+    }
+    if (r.mode === 'closed') return base + r.n + ' 个交易日 · 休市（含实时，增量 0）';
+    return base + r.n + ' 个交易日 · 仅打卡数据';
+  };
+  const wtd = computePeriod(checkins, totalAssets, capital, 'week', periodRef);
+  setAcct('d-wtd', 'd-wtd-sub', wtd, periodSub(wtd, '周初'));
+  const mtd = computePeriod(checkins, totalAssets, capital, 'month', periodRef);
+  setAcct('d-mtd', 'd-mtd-sub', mtd, periodSub(mtd, '月初'));
 
   const rows = holdings.map((h) => {
     const p = getP(h);
