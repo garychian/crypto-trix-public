@@ -6,7 +6,7 @@
  *
  * html-to-image is loaded lazily on first click (not part of the page-load bundle).
  * The card is rendered at pixelRatio 2 on a solid #0B0D10 background, then composed onto a canvas
- * with padding and a CryptoTrix footer strip (logo, URL, capture time in Asia/Shanghai, handle).
+ * with padding and a CryptoTrix footer strip (logo, name, capture time in Asia/Shanghai, handle).
  */
 
 const BG = '#0B0D10';
@@ -175,12 +175,8 @@ async function compose(card, cssW, cssH) {
   g.textBaseline = 'alphabetic';
   g.textAlign = 'left';
   g.fillStyle = '#E8EBF0';
-  g.font = `700 13px ${FONT}`;
+  g.font = `700 15px ${FONT}`;
   g.fillText('CryptoTrix', PAD + 36, fy + 28);
-  const bw = g.measureText('CryptoTrix').width;
-  g.fillStyle = '#9AA4B2';
-  g.font = `500 12px ${FONT}`;
-  g.fillText(' · crypto-trix-public.vercel.app', PAD + 36 + bw, fy + 28);
 
   const p = shanghaiParts();
   g.fillStyle = '#69707C';
@@ -189,8 +185,8 @@ async function compose(card, cssW, cssH) {
 
   g.textAlign = 'right';
   g.fillStyle = GOLD;
-  g.font = `700 11.5px ${FONT}`;
-  g.fillText('@CryptoTrix1 · #NFA', W - PAD, fy + 46);
+  g.font = `700 12px ${FONT}`;
+  g.fillText('@CryptoTrix1 · #NFA', W - PAD, fy + 38);
   return { canvas: c, stamp: `${p.year}${p.month}${p.day}` };
 }
 
