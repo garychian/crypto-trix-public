@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全球资产 · 市值排名 · CryptoTrix</title>
+  <meta name="description" content="全球资产市值排名：黄金、白银、比特币、以太坊、科技巨头、美债、全球股市/债券/房地产与代币化 RWA · 实时抓取 + 标注来源的估值 · #NFA">
+  <meta name="theme-color" content="#0B0D10">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="alternate icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+  <link rel="canonical" href="https://crypto-trix-public.vercel.app/assets.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CryptoTrix">
+  <meta property="og:title" content="全球资产 · 市值排名 · CryptoTrix">
+  <meta property="og:description" content="黄金、比特币、科技巨头、美债、全球股市与房地产——全球资产谁最大？标注来源与日期 · #NFA">
+  <meta property="og:url" content="https://crypto-trix-public.vercel.app/assets.html">
+  <meta property="og:image" content="https://crypto-trix-public.vercel.app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="CryptoTrix · $137K → $2M · 持仓、盈亏与决策，全程公开">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@CryptoTrix1">
+  <meta name="twitter:creator" content="@CryptoTrix1">
+  <meta name="twitter:title" content="全球资产 · 市值排名 · CryptoTrix">
+  <meta name="twitter:description" content="黄金、比特币、科技巨头、美债、全球股市与房地产——全球资产谁最大？标注来源与日期 · #NFA">
+  <meta name="twitter:image" content="https://crypto-trix-public.vercel.app/og-image.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/styles/shared.css">
+  <link rel="stylesheet" href="/src/styles/assets.css">
+</head>
+<body>
+  <header data-site-nav></header>
+  <div class="wrap">
+    <div class="toolbar">
+      <span class="badge badge-demo" id="data-badge">实时抓取 + 约值</span>
+      <span class="badge badge-nfa">⚠️ #NFA #DYOR</span>
+      <span class="muted tiny-meta" id="asof">加载中…</span>
+    </div>
+
+    <section class="fund-head">
+      <div>
+        <h1 class="fund-title">全球资产 · <span class="day">市值排名</span></h1>
+        <p class="fund-sub" id="d-sub">黄金、比特币、科技巨头，到美债与房地产——谁最大？</p>
+      </div>
+      <div class="fund-goal">
+        <div class="lbl">单位</div>
+        <div class="val">美元 USD</div>
+      </div>
+    </section>
+
+    <section class="stat-cards" id="stat-cards">
+      <div class="card">
+        <div class="label">黄金总市值</div>
+        <div class="value flat" id="c-gold">—</div>
+        <div class="sub" id="c-gold-sub"></div>
+      </div>
+      <div class="card">
+        <div class="label">加密货币总市值</div>
+        <div class="value flat" id="c-crypto">—</div>
+        <div class="sub" id="c-crypto-sub"></div>
+      </div>
+      <div class="card">
+        <div class="label">最大公司</div>
+        <div class="value flat" id="c-co">—</div>
+        <div class="sub" id="c-co-sub"></div>
+      </div>
+      <div class="card">
+        <div class="label">代币化 RWA（收录）</div>
+        <div class="value flat" id="c-rwa">—</div>
+        <div class="sub" id="c-rwa-sub"></div>
+      </div>
+    </section>
+
+    <section class="panel assets-panel" id="assets-panel" aria-labelledby="assets-title">
+      <div class="panel-head">
+        <h2 id="assets-title">资产市值排名</h2>
+        <span class="muted" id="assets-count">—</span>
+      </div>
+      <div class="asset-controls">
+        <div class="pill-row" id="pills" role="tablist" aria-label="类别筛选"></div>
+        <div class="ctl-right">
+          <input class="asset-search" id="q" type="search" placeholder="搜索 名称 / 代码" autocomplete="off" aria-label="搜索资产">
+          <div class="seg" id="unit-seg" role="group" aria-label="数字单位">
+            <button type="button" data-unit="cn" class="on">万亿/亿</button>
+            <button type="button" data-unit="en">T/B</button>
+          </div>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="data assets-table" id="assets-table">
+          <thead>
+            <tr>
+              <th class="l c-rank">#</th>
+              <th class="l sortable" data-sort="name">名称</th>
+              <th class="l c-cat sortable" data-sort="category">类别</th>
+              <th class="sortable on" data-sort="mcap_usd">市值 <i class="arr"></i></th>
+              <th class="sortable" data-sort="chg_24h">24h <i class="arr"></i></th>
+              <th class="sortable c-1y" data-sort="chg_1y">1年 <i class="arr"></i></th>
+              <th class="c-spark">走势·1年</th>
+            </tr>
+          </thead>
+          <tbody id="assets-body"></tbody>
+        </table>
+      </div>
+      <div class="more-row" id="more-row" hidden><button type="button" class="more-btn" id="more-btn"></button></div>
+      <p class="vol-note" id="assets-note"></p>
+    </section>
+
+    <details class="panel src-panel" id="src-panel">
+      <summary>数据来源（实时抓取 / 静态参考）</summary>
+      <ul class="src-list" id="src-list"></ul>
+    </details>
+
+    <footer class="site-foot">
+      <div>
+        @<b style="color:var(--accent)">CryptoTrix1</b>
+        · <a href="https://x.com/CryptoTrix1" target="_blank" rel="noopener">X</a>
+        <div class="nfa">⚠️ Not financial advice · #NFA #DYOR · 公开访客视图</div>
+      </div>
+      <div class="nfa">全球资产 · 数据仅供参考</div>
+    </footer>
+  </div>
+  <script type="module" src="/src/assets.js"></script>
+</body>
+</html>

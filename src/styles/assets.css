@@ -1,0 +1,143 @@
+/* 全球资产 · 市值排名 */
+.toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.tiny-meta { font-size: 12px; font-weight: 600; }
+
+.fund-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+.fund-title { font-size: clamp(22px, 4vw, 28px); font-weight: 800; letter-spacing: -0.5px; }
+.fund-title .day { color: var(--accent); }
+.fund-sub { margin-top: 4px; color: var(--muted); font-size: 13px; font-weight: 600; }
+.fund-goal { text-align: right; }
+.fund-goal .lbl { color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; }
+.fund-goal .val { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+.stat-cards .card { min-width: 0; }
+.stat-cards .card .label { text-transform: none; letter-spacing: 0.6px; white-space: nowrap; }
+.stat-cards .card .value { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stat-cards .card .sub { line-height: 1.5; }
+
+.assets-panel { padding: 8px 0 6px; margin-bottom: 14px; position: relative; }
+
+/* controls */
+.asset-controls {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px 14px; flex-wrap: wrap;
+  padding: 2px 16px 12px;
+}
+.pill-row { display: flex; gap: 6px; flex-wrap: wrap; min-width: 0; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  background: transparent; color: var(--muted); border: 1px solid var(--border-strong);
+  border-radius: 999px; padding: 6px 12px; font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.pill i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+.pill em { font-style: normal; font-size: 11px; color: var(--muted-2); font-variant-numeric: tabular-nums; }
+.pill:hover { color: var(--text); border-color: rgba(255, 255, 255, .25); }
+.pill.on { color: var(--accent); background: var(--accent-dim); border-color: rgba(240, 185, 11, .5); }
+.pill.on em { color: var(--accent); opacity: .8; }
+.pill.toggle { border-style: dashed; margin-left: 4px; }
+.pill.toggle.on { border-style: solid; }
+.pill:focus-visible, .more-btn:focus-visible, .seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.ctl-right { display: flex; align-items: center; gap: 8px; }
+.asset-search {
+  width: 170px; background: var(--panel-2); color: var(--text); border: 1px solid var(--border-strong);
+  border-radius: 10px; padding: 7px 11px; font: inherit; font-size: 13px; outline: none;
+}
+.asset-search::placeholder { color: var(--muted-2); }
+.asset-search:focus { border-color: rgba(240, 185, 11, .55); }
+.seg { display: inline-flex; border: 1px solid var(--border-strong); border-radius: 10px; overflow: hidden; }
+.seg button {
+  background: transparent; color: var(--muted); border: 0; padding: 7px 10px; font: inherit; font-size: 12px; font-weight: 700;
+  cursor: pointer; white-space: nowrap;
+}
+.seg button.on { background: var(--accent-dim); color: var(--accent); }
+
+/* table */
+.assets-table { min-width: 640px; }
+.assets-table thead th.sortable { cursor: pointer; user-select: none; text-transform: none; font-size: 12px; letter-spacing: .5px; }
+.assets-table thead th.sortable:hover { color: var(--text); }
+.assets-table thead th.on { color: var(--accent); }
+.assets-table thead th .arr { font-style: normal; font-size: 9px; margin-left: 2px; display: inline-block; min-width: 9px; }
+.assets-table thead th { text-transform: none; font-size: 12px; letter-spacing: .5px; padding: 10px 14px; }
+.assets-table tbody td { padding: 11px 14px; white-space: nowrap; }
+.arow { cursor: pointer; }
+.arow:hover td { background: rgba(255, 255, 255, .03) !important; }
+.arow.open td { background: rgba(240, 185, 11, .05) !important; border-bottom-color: transparent; }
+.arow:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.c-rank { width: 44px; }
+.rk { color: var(--muted-2); font-weight: 700; font-variant-numeric: tabular-nums; }
+.arow:nth-child(-n+3) .rk { color: var(--accent); }
+.nm { display: flex; align-items: center; gap: 7px; font-size: 14px; }
+.nm b { font-weight: 700; }
+.sb { color: var(--muted-2); font-size: 11.5px; font-weight: 600; margin-top: 1px; }
+.m-cat { display: none; }
+.cls { font-size: 10px; font-weight: 700; color: var(--muted); border: 1px solid var(--border-strong); border-radius: 4px; padding: 0 5px; line-height: 15px; }
+.c-cat { font-size: 13px; color: var(--muted); }
+.cat-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 7px; vertical-align: 0; }
+.mc { font-weight: 700; font-variant-numeric: tabular-nums; }
+.est {
+  display: inline-block; margin-left: 6px; font-size: 10px; font-weight: 800; color: var(--warn);
+  background: rgba(245, 166, 35, .14); border-radius: 4px; padding: 0 5px; line-height: 15px; vertical-align: 1px;
+}
+.c-24, .c-1y { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.c-24 .flat, .c-1y .flat, .sub .flat { color: var(--muted); }
+.c-spark { width: 100px; }
+.spk { display: block; margin-left: auto; }
+.empty { text-align: center !important; color: var(--muted); padding: 28px 10px !important; }
+
+.adetail td { padding: 0 !important; border-bottom: 1px solid var(--border); background: rgba(240, 185, 11, .05); text-align: left !important; white-space: normal !important; }
+.dt-in { padding: 4px 16px 14px 58px; font-size: 12.5px; line-height: 1.65; color: var(--muted); }
+.dt-meta { color: var(--text); font-weight: 600; margin-bottom: 2px; }
+.dt-note { color: var(--muted-2); }
+.dt-link a { color: var(--accent); text-decoration: none; font-weight: 600; }
+.dt-link a:hover { text-decoration: underline; }
+.k { display: inline-block; font-size: 10.5px; font-weight: 800; border-radius: 4px; padding: 0 6px; line-height: 16px; }
+.k-live { background: rgba(14, 203, 129, .14); color: var(--up); }
+.k-derived { background: rgba(245, 166, 35, .14); color: var(--warn); }
+.k-static { background: rgba(245, 166, 35, .14); color: var(--warn); }
+
+.more-row { text-align: center; padding: 10px 0 4px; }
+.more-btn {
+  background: transparent; color: var(--accent); border: 1px solid rgba(240, 185, 11, .45); border-radius: 999px;
+  padding: 7px 18px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.more-btn:hover { background: var(--accent-dim); }
+.vol-note { padding: 10px 16px 6px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+
+.src-panel { padding: 0; margin-bottom: 14px; }
+.src-panel summary { padding: 13px 16px; cursor: pointer; font-size: 13.5px; font-weight: 700; color: var(--muted); list-style: none; }
+.src-panel summary::-webkit-details-marker { display: none; }
+.src-panel summary::after { content: '＋'; float: right; color: var(--accent); }
+.src-panel[open] summary::after { content: '－'; }
+.src-list { list-style: none; margin: 0; padding: 0 16px 14px; display: grid; gap: 8px; font-size: 13px; }
+.src-list a { color: var(--text); font-weight: 600; text-decoration: none; border-bottom: 1px dotted var(--muted-2); }
+.src-list a:hover { color: var(--accent); }
+
+@media (max-width: 900px) {
+  .stat-cards { grid-template-columns: repeat(2, 1fr); }
+  .c-spark, .assets-table thead th.c-spark { display: none; }
+  .assets-table { min-width: 0; }
+}
+
+@media (max-width: 640px) {
+  .asset-controls { padding: 2px 12px 10px; }
+  .pill-row { flex-wrap: nowrap; overflow-x: auto; width: 100%; padding-bottom: 4px; scrollbar-width: none; }
+  .pill-row::-webkit-scrollbar { display: none; }
+  .ctl-right { width: 100%; }
+  .asset-search { flex: 1; min-width: 0; width: auto; }
+  .c-cat, .assets-table thead th.c-cat, .c-1y, .assets-table thead th.c-1y { display: none; }
+  .m-cat { display: inline; }
+  .assets-table thead th { padding: 10px 8px; }
+  .assets-table tbody td { padding: 10px 8px; }
+  .assets-table .c-rank { width: 26px; padding-left: 12px; }
+  .assets-table th:first-child { padding-left: 12px; }
+  .assets-table td:last-child, .assets-table th:last-child { padding-right: 12px; }
+  .nm { font-size: 13.5px; }
+  .sb { font-size: 11px; white-space: nowrap; max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
+  .mc { font-size: 13px; }
+  .est { margin-left: 3px; padding: 0 3px; }
+  .dt-in { padding: 4px 12px 12px 12px; }
+  .stat-cards .card .value { font-size: 17px; }
+  .stat-cards .card .sub { font-size: 10.5px; }
+}

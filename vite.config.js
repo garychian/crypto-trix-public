@@ -12,6 +12,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         fund: resolve(__dirname, 'fund.html'),
         'cn-fund': resolve(__dirname, 'cn-fund.html'),
+        assets: resolve(__dirname, 'assets.html'),
         options: resolve(__dirname, 'options.html'),
         articles: resolve(__dirname, 'articles.html'),
       },

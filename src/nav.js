@@ -12,6 +12,8 @@ const ICON = {
   fund: '<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
   options: '<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/>',
   'cn-fund': '<path d="M21 12A9 9 0 1 1 12 3v9z"/><path d="M15.5 3.6A9 9 0 0 1 20.4 8.5H15.5z"/>',
+  assets:
+    '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.6 3.9 5.6 3.9 9s-1.3 6.4-3.9 9c-2.6-2.6-3.9-5.6-3.9-9S9.4 5.6 12 3z"/>',
   articles:
     '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
 };
@@ -24,6 +26,7 @@ const TABS = [
   { id: 'fund', label: '财富自由基金', href: '/fund.html' },
   { id: 'options', label: '期权', href: '/options.html' },
   { id: 'cn-fund', label: 'A股基金', href: '/cn-fund.html' },
+  { id: 'assets', label: '全球资产', href: '/assets.html' },
 ];
 
 const PREV_KEY = 'ct-nav-prev';
@@ -35,6 +38,7 @@ function resolveActive() {
   if (file === 'options.html' || path.endsWith('/options')) return 'options';
   if (file === 'portfolio.html' || path.endsWith('/portfolio')) return 'fund'; // merged into 财富自由基金
   if (file === 'cn-fund.html' || path.endsWith('/cn-fund')) return 'cn-fund';
+  if (file === 'assets.html' || path.endsWith('/assets')) return 'assets';
   if (file === 'articles.html' || path.endsWith('/articles')) return 'articles';
   return 'home';
 }
