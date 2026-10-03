@@ -1,0 +1,117 @@
+{
+ "date": "2026-09-03",
+ "_refreshed": "WebSearch 2026-09-04（barchart/MarketChameleon/optioncharts/alphaquery，多数 as_of 2026-09-03，TSLA 09-01，EUV 08-31）",
+ "_note": "财报季结束+市场平静：全市场 IVR 低位（NVDA 5 / EUV 4 / GOOGL 8 / TSLA 10 / VOO 11），卖 put 权利金普遍偏薄；BB 例外（IVR 75，Q3 财报 9/临近）；SPCX IV 88→51 大幅回落但 9/9 解禁 3.19 亿股临近，HV 仍 83；SPCX 无 IVR 数据。GOOGL HV30 源未返回，页面用 Tiingo 实算。",
+ "holdings": [
+  {
+   "sym": "TSLA",
+   "iv": 40.43,
+   "ivr": 10.28,
+   "hv": 59.94
+  },
+  {
+   "sym": "QQQ",
+   "iv": 17.7,
+   "ivr": 20.0,
+   "hv": 18.06
+  },
+  {
+   "sym": "GOOGL",
+   "iv": 27.08,
+   "ivr": 8.13,
+   "hv": 37
+  },
+  {
+   "sym": "VOO",
+   "iv": 12.65,
+   "ivr": 10.83,
+   "hv": 10.99
+  },
+  {
+   "sym": "MSFT",
+   "iv": 24.84,
+   "ivr": 23.1,
+   "hv": 47.01
+  },
+  {
+   "sym": "NVDA",
+   "iv": 32.96,
+   "ivr": 4.92,
+   "hv": 44.29
+  },
+  {
+   "sym": "AMZN",
+   "iv": 29.26,
+   "ivr": 20.06,
+   "hv": 50.38
+  },
+  {
+   "sym": "AMD",
+   "iv": 47.17,
+   "ivr": 16.28,
+   "hv": 66.92
+  },
+  {
+   "sym": "META",
+   "iv": 34.89,
+   "ivr": 35.71,
+   "hv": 41.07
+  },
+  {
+   "sym": "SPCX",
+   "iv": 50.68,
+   "ivr": null,
+   "hv": 82.89
+  },
+  {
+   "sym": "PLTR",
+   "iv": 47.56,
+   "ivr": 20.17,
+   "hv": 91.83
+  },
+  {
+   "sym": "AAPL",
+   "iv": 25.06,
+   "ivr": 51.0,
+   "hv": 30.64
+  },
+  {
+   "sym": "EUV",
+   "iv": 54.15,
+   "ivr": 3.97,
+   "hv": 67.52
+  },
+  {
+   "sym": "BB",
+   "iv": 72.4,
+   "ivr": 75.4,
+   "hv": 54.79
+  }
+ ],
+ "puts": [
+  {
+   "sym": "RKLB",
+   "iv": 104,
+   "hv": 98,
+   "ivr": 82
+  },
+  {
+   "sym": "DRAM",
+   "iv": 100,
+   "hv": 105,
+   "ivr": 85
+  },
+  {
+   "sym": "SPCX",
+   "iv": 88,
+   "hv": 72,
+   "ivr": 60
+  },
+  {
+   "sym": "EUV",
+   "iv": 58,
+   "hv": 75,
+   "ivr": 8
+  }
+ ]
+}

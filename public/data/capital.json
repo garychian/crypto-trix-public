@@ -1,0 +1,13 @@
+{
+  "year": 2026,
+  "as_of": "2026-10-02",
+  "unit": "USD",
+  "start_of_year_usd": 105323,
+  "deposits_total_usd": 26600,
+  "deposits": [],
+  "note": "用户提供：2026 年初账户净值 $105,323；2026 年内累计入金 $26,600。今年收益 = 总资产 − 年初净值 − 入金合计；今年收益率 = 收益 ÷ (年初净值 + 入金合计)（简单资金回报率）。有新入金时：deposits_total_usd 加总，并在 deposits 里追加 {\"date\":\"YYYY-MM-DD\",\"amount_usd\":N}（有日期才能在周/月收益里扣除）。",
+  "fx_usdcny": 6.7146,
+  "fx_as_of": "2026-10-02",
+  "fx_source": "open.er-api.com (exchangerate-api) USD/CNY 2026-10-02 00:02 UTC; cross-check ECB via frankfurter.dev 6.7045 on 2026-10-01",
+  "fx_note": "USDCNY 汇率，用于首页「总资产」把 A股基金人民币折算为美元（或相反）。有明显变动时手动更新 fx_usdcny 与 fx_as_of。"
+}

@@ -1,0 +1,188 @@
+{
+  "as_of": "2026-10-02",
+  "day": 80,
+  "goal_usd": 2000000,
+  "cash_usd": 33067.75,
+  "total_assets_usd": 147425.25,
+  "handle": "CryptoTrix1",
+  "sub": "US EQUITIES",
+  "start": "2026-07-16",
+  "note": "券商实数锚定链：9/29 盘中重构锚 ≈$144,717（现金 $33,067.75 权重反推，待券商现金实数确认）→ 9/29 收盘 $144,314.15 → 9/30 +$441.47 → $144,755.62 → 10/1 −$41.69 → $144,713.93 → 10/2 +$2,711.32 → $147,425.25。9/29 调仓（NVDA +5 / BRK.B +4 / AMD −2 / EUV −10）已入锚。今年收益率见 capital.json；持仓累计盈亏由逐股成本×股数与市值现算。",
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "shares": 101,
+      "cost": 216.95,
+      "costTotal": 21911.95,
+      "weight": 24.79,
+      "price": 370.59,
+      "mv": 37429.59
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 15.14,
+      "cost": 600.44,
+      "costTotal": 9090.66,
+      "weight": 7.74,
+      "price": 749.58,
+      "mv": 11348.64
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 30.19,
+      "cost": 111.97,
+      "costTotal": 3380.37,
+      "weight": 7.07,
+      "price": 343.5,
+      "mv": 10370.27
+    },
+    {
+      "ticker": "VOO",
+      "shares": 14.22,
+      "cost": 519.22,
+      "costTotal": 7383.31,
+      "weight": 6.91,
+      "price": 707.54,
+      "mv": 10061.22
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 41,
+      "cost": 124.04,
+      "costTotal": 5085.64,
+      "weight": 6.55,
+      "price": 233.95,
+      "mv": 9591.95
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 18.19,
+      "cost": 359.82,
+      "costTotal": 6545.13,
+      "weight": 6.45,
+      "price": 517.53,
+      "mv": 9413.87
+    },
+    {
+      "ticker": "AMD",
+      "shares": 8,
+      "cost": -61.3,
+      "costTotal": -490.4,
+      "weight": 3.4,
+      "price": 633.91,
+      "mv": 5071.28
+    },
+    {
+      "ticker": "META",
+      "shares": 6.03,
+      "cost": 80.34,
+      "costTotal": 484.45,
+      "weight": 3.02,
+      "price": 728.08,
+      "mv": 4390.32
+    },
+    {
+      "ticker": "AMZN",
+      "shares": 17,
+      "cost": 202.06,
+      "costTotal": 3435.02,
+      "weight": 2.9,
+      "price": 251.52,
+      "mv": 4275.84
+    },
+    {
+      "ticker": "BRK.B",
+      "shares": 6,
+      "cost": 508.24,
+      "costTotal": 3049.44,
+      "weight": 2.08,
+      "price": 502.65,
+      "mv": 3015.9
+    },
+    {
+      "ticker": "SPCX",
+      "shares": 20,
+      "cost": 136.8,
+      "costTotal": 2736.0,
+      "weight": 2.03,
+      "price": 158.96,
+      "mv": 3179.2
+    },
+    {
+      "ticker": "PLTR",
+      "shares": 15,
+      "cost": 3.59,
+      "costTotal": 53.85,
+      "weight": 1.93,
+      "price": 188.75,
+      "mv": 2831.25
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6.09,
+      "cost": 145.1,
+      "costTotal": 883.66,
+      "weight": 1.4,
+      "price": 333.69,
+      "mv": 2032.17
+    },
+    {
+      "ticker": "EUV",
+      "shares": 50,
+      "cost": 26.05,
+      "costTotal": 1302.5,
+      "weight": 0.88,
+      "price": 26.92,
+      "mv": 1346.0
+    }
+  ],
+  "options": [
+    {
+      "symbol": "DRAM",
+      "type": "SELL PUT",
+      "strike": 50,
+      "expiry": "2026-11-20",
+      "premium": 789
+    },
+    {
+      "symbol": "RKLB",
+      "type": "SELL PUT",
+      "strike": 60,
+      "expiry": "2027-06-17",
+      "premium": 1740
+    },
+    {
+      "symbol": "SPCX",
+      "type": "SELL PUT",
+      "strike": 100,
+      "expiry": "2027-01-15",
+      "premium": 719
+    },
+    {
+      "symbol": "EUV",
+      "type": "SELL PUT",
+      "strike": 27,
+      "expiry": "2026-10-16",
+      "premium": 260
+    }
+  ],
+  "prices": {
+    "TSLA": 370.59,
+    "QQQ": 749.58,
+    "GOOGL": 343.5,
+    "VOO": 707.54,
+    "MSFT": 517.53,
+    "NVDA": 233.95,
+    "AMD": 633.91,
+    "META": 728.08,
+    "AMZN": 251.52,
+    "BRK.B": 502.65,
+    "SPCX": 158.96,
+    "PLTR": 188.75,
+    "AAPL": 333.69,
+    "EUV": 26.92
+  },
+  "holdingsNote": "2026-10-02 收盘（券商 9/29 盘中重构锚 + 官方收盘价重估）",
+  "cum_pnl_usd": 53450.25,
+  "annualized_return_pct": 15.17
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A股基金 · CryptoTrix</title>
+  <meta name="description" content="A股基金 · 人民币国内配置快照：固收 / A股 / 海外 / 港股 / 商品 · #NFA">
+  <meta name="theme-color" content="#0B0D10">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="alternate icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+  <link rel="canonical" href="https://crypto-trix-public.vercel.app/cn-fund.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CryptoTrix">
+  <meta property="og:title" content="A股基金 · 人民币配置 · CryptoTrix">
+  <meta property="og:description" content="A股基金 · 人民币国内配置快照：固收 / A股 / 海外 / 港股 / 商品 · #NFA">
+  <meta property="og:url" content="https://crypto-trix-public.vercel.app/cn-fund.html">
+  <meta property="og:image" content="https://crypto-trix-public.vercel.app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="CryptoTrix · $137K → $2M · 持仓、盈亏与决策，全程公开">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@CryptoTrix1">
+  <meta name="twitter:creator" content="@CryptoTrix1">
+  <meta name="twitter:title" content="A股基金 · 人民币配置 · CryptoTrix">
+  <meta name="twitter:description" content="A股基金 · 人民币国内配置快照：固收 / A股 / 海外 / 港股 / 商品 · #NFA">
+  <meta name="twitter:image" content="https://crypto-trix-public.vercel.app/og-image.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/styles/shared.css">
+  <link rel="stylesheet" href="/src/styles/cn-fund.css">
+</head>
+<body>
+  <header data-site-nav></header>
+  <div class="wrap">
+    <div class="toolbar">
+      <span class="badge badge-demo" id="data-badge">配置快照 · Snapshot</span>
+      <span class="badge badge-nfa">⚠️ #NFA #DYOR</span>
+      <span class="muted tiny-meta" id="asof">加载中…</span>
+    </div>
+
+    <section class="fund-head">
+      <div>
+        <h1 class="fund-title">A股基金 · <span class="day">人民币配置</span></h1>
+        <p class="fund-sub" id="d-sub">国内资产配置快照 · 单位：万元人民币</p>
+      </div>
+      <div class="fund-goal">
+        <div class="lbl">币种 / 单位</div>
+        <div class="val">CNY · 万元</div>
+      </div>
+    </section>
+
+    <section class="stat-cards" id="stat-cards">
+      <div class="card">
+        <div class="label">总资产</div>
+        <div class="value flat" id="d-total">—</div>
+        <div class="sub" id="d-total-sub"></div>
+      </div>
+      <div class="card">
+        <div class="label">持仓只数</div>
+        <div class="value flat" id="d-count">—</div>
+        <div class="sub" id="d-count-sub"></div>
+      </div>
+      <div class="card">
+        <div class="label">最大仓位</div>
+        <div class="value flat" id="d-max">—</div>
+        <div class="sub" id="d-max-sub"></div>
+      </div>
+      <div class="card">
+        <div class="label">分类数</div>
+        <div class="value flat" id="d-cats">—</div>
+        <div class="sub" id="d-cats-sub"></div>
+      </div>
+    </section>
+
+    <section class="panel cat-panel">
+      <div class="panel-head">
+        <h2>按类别配置</h2>
+        <span class="muted" id="cat-summary">—</span>
+      </div>
+      <div class="cat-bars" id="cat-bars"></div>
+      <div class="cat-tiles" id="cat-tiles"></div>
+    </section>
+
+    <section class="panel alloc-panel" id="alloc-chart" aria-labelledby="alloc-title" hidden>
+      <!-- filled by allocation-chart.js -->
+    </section>
+    <p class="vol-note" id="data-note">数据来自仓库 public/data/cn-fund.json · 配置快照，非实时行情 · #NFA</p>
+
+    <footer class="site-foot">
+      <div>
+        @<b style="color:var(--accent)">CryptoTrix1</b>
+        · <a href="https://x.com/CryptoTrix1" target="_blank" rel="noopener">X</a>
+        <div class="nfa">⚠️ Not financial advice · #NFA #DYOR · 公开访客视图</div>
+      </div>
+      <div class="nfa">人民币配置 · 单位万元</div>
+    </footer>
+  </div>
+  <script type="module" src="/src/cn-fund.js"></script>
+</body>
+</html>
