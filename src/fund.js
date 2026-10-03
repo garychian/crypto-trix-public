@@ -1,4 +1,5 @@
 import './nav.js';
+import { attachSnapshotButton } from './lib/snapshot.js';
 import { DEMO_NOTES } from './data/demo.js';
 import { loadHoldingsData, holdingsSourceBadge } from './lib/holdings.js';
 import { fetchPrices, priceSourceLabel, priceSourceBadge, pricesFromHoldings } from './lib/prices.js';
@@ -500,5 +501,12 @@ async function boot() {
     anchorTotal: snapshotTotal ?? data.total_assets_usd,
   });
 }
+
+[
+  ['#stat-cards', 'fund-stats'],
+  ['#equity-chart', 'nav-chart'],
+  ['#alloc-chart', 'allocation'],
+  ['.holdings-panel', 'holdings'],
+].forEach(([sel, name]) => attachSnapshotButton(sel, name));
 
 boot();

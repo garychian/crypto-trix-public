@@ -651,3 +651,63 @@ table.data tbody tr:hover td { background: rgba(255, 255, 255, 0.015); }
   margin-bottom: 2px;
 }
 .alloc-panel .panel-head h2 { font-size: 14px; font-weight: 700; letter-spacing: -0.2px; }
+
+/* ── 保存为图片 (snapshot button) ── */
+.snap-host { position: relative; }
+.snap-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 6;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  opacity: 0.4;
+  cursor: pointer;
+  transition: opacity 0.15s, color 0.15s, background 0.15s, border-color 0.15s;
+}
+.snap-btn svg { width: 16px; height: 16px; }
+/* keep card headers' right-aligned content clear of the button */
+.has-snap :is(.panel-head, .checkin-head, .eq-head) { padding-right: 34px; }
+.snap-btn:hover, .snap-btn:focus-visible {
+  opacity: 1;
+  color: var(--accent);
+  background: rgba(240, 185, 11, 0.1);
+  border-color: rgba(240, 185, 11, 0.35);
+  outline: none;
+}
+.snap-btn.busy { opacity: 1; color: var(--accent); cursor: progress; animation: snap-pulse 0.9s ease-in-out infinite; }
+@keyframes snap-pulse { 50% { opacity: 0.35; } }
+@media (hover: none) { .snap-btn { opacity: 0.5; } }
+.snap-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translate(-50%, 12px);
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(18, 21, 27, 0.96);
+  border: 1px solid rgba(240, 185, 11, 0.45);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 9999;
+}
+.snap-toast.show { opacity: 1; transform: translate(-50%, 0); }
+.snap-toast.bad { border-color: rgba(246, 70, 93, 0.6); color: #F6465D; }
+/* freeze CSS motion while capturing */
+html.snap-capturing *, html.snap-capturing *::before, html.snap-capturing *::after {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition: none !important;
+}
+@media print { .snap-btn, .snap-toast { display: none !important; } }

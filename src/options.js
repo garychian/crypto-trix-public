@@ -1,4 +1,5 @@
 import './nav.js';
+import { attachSnapshotButton } from './lib/snapshot.js';
 import { loadHoldingsData, holdingsSourceBadge } from './lib/holdings.js';
 import { fetchPrices, priceSourceBadge, pricesFromHoldings } from './lib/prices.js';
 import { marketStatus } from './lib/market.js';
@@ -235,5 +236,10 @@ async function boot() {
     : { __source: 'snapshot' };
   render();
 }
+
+[
+  ['#stat-cards', 'options-stats'],
+  ['#opt-panel', 'options-contracts'],
+].forEach(([sel, name]) => attachSnapshotButton(sel, name));
 
 boot();

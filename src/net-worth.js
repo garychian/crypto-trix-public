@@ -73,8 +73,8 @@ export async function renderNetWorth(holdings) {
     const usPct = (usUsd / totalUsd) * 100;
     const cnPct = 100 - usPct;
     bigHTML = `
-      <div class="nw-big" id="nw-big" aria-live="off">${fmtUSD(totalUsd)}</div>
-      <div class="nw-sub">≈ <span id="nw-cny">${fmtCNY(usUsd * fx + cn.cny)}</span></div>`;
+      <div class="nw-big" id="nw-big" aria-live="off" data-final="${fmtUSD(totalUsd)}">${fmtUSD(totalUsd)}</div>
+      <div class="nw-sub">≈ <span id="nw-cny" data-final="${fmtCNY(usUsd * fx + cn.cny)}">${fmtCNY(usUsd * fx + cn.cny)}</span></div>`;
     splitHTML = `
       <div class="nw-bar" role="img" aria-label="美股 ${usPct.toFixed(1)}%，A股基金 ${cnPct.toFixed(1)}%">
         <span class="nw-seg us" style="--w:${usPct.toFixed(2)}%"></span>

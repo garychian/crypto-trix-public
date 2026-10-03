@@ -1,4 +1,5 @@
 import './nav.js';
+import { attachSnapshotButton } from './lib/snapshot.js';
 import { escapeHTML } from './lib/format.js';
 import { renderAllocation } from './allocation-chart.js';
 
@@ -130,5 +131,11 @@ async function boot() {
     document.getElementById('data-badge').textContent = '数据加载失败';
   }
 }
+
+[
+  ['#stat-cards', 'cn-fund-overview'],
+  ['.cat-panel', 'cn-fund-categories'],
+  ['#alloc-chart', 'cn-fund-allocation'],
+].forEach(([sel, name]) => attachSnapshotButton(sel, name));
 
 boot();

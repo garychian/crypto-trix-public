@@ -1,4 +1,5 @@
 import './nav.js';
+import { attachSnapshotButton } from './lib/snapshot.js';
 import { renderVixGauge } from './vix-gauge.js';
 import { renderYield10Card } from './yield10-card.js';
 import { renderJourneyRings } from './journey-rings.js';
@@ -501,5 +502,14 @@ async function boot() {
   await renderYield10Card();
   await renderTimeline(data);
 }
+
+// 保存为图片 buttons (re-attached automatically if a card re-renders)
+[
+  ['#net-worth', 'total-assets'],
+  ['#journey-rings', 'journey-rings'],
+  ['#vix-gauge', 'fear-greed'],
+  ['#fund-checkin', 'checkin-heatmap'],
+  ['#track-record', 'timeline'],
+].forEach(([sel, name]) => attachSnapshotButton(sel, name));
 
 boot();
