@@ -16,7 +16,8 @@ const R = 76;
 const SW = 26;
 const GAP_DEG = 1.1;
 
-const PALETTE = ['#F0B90B', '#4C8DF7', '#0ECB81', '#A06BFF', '#22C7D6', '#FF8A3D', '#E573B5', '#8FD14F', '#C9A27A'];
+// first 9 unchanged (cn-fund); extra hues so ~14 stocks stay distinguishable
+const PALETTE = ['#F0B90B', '#4C8DF7', '#0ECB81', '#A06BFF', '#22C7D6', '#FF8A3D', '#E573B5', '#8FD14F', '#C9A27A', '#5B5FEF', '#FF6B6B', '#2E9E8F', '#D9D26A', '#9BB7D4', '#B07A5B', '#7FE0B5'];
 const OTHER_COLOR = '#E573B5';
 const CASH_COLOR = '#A7B0BD';
 
@@ -117,6 +118,7 @@ export function renderAllocation(el, data, opts = {}) {
     centerLabel: '总资产',
     centerSub: '持仓 + 现金',
     maxNamed: MAX_NAMED,
+    twoColFrom: Infinity, // legend switches to 2 columns (desktop) at this many rows
     fmtLegend: money, // legend $ column
     fmtCenter: money, // donut center total
     fmtHover: money, // hover 3rd line
@@ -142,7 +144,7 @@ export function renderAllocation(el, data, opts = {}) {
       '<div class="alloc-center" aria-live="polite">' +
       '<span class="ac-k"></span><span class="ac-v"></span><span class="ac-s"></span>' +
       '</div></div>' +
-      '<ul class="alloc-legend">' +
+      '<ul class="alloc-legend' + (slices.length >= o.twoColFrom ? ' cols2' : '') + '" style="--rows:' + Math.ceil(slices.length / 2) + '">' +
       slices
         .map(
           (s, i) =>
@@ -184,6 +186,12 @@ export function renderAllocation(el, data, opts = {}) {
       const g = multi ? Math.min(GAP_DEG, span / 3) : 0;
       s._a0 = cursor + g / 2;
       s._a1 = cursor + span - g / 2;
+      // keep tiny slices visible: minimum arc ~1.6°, centred on the slice
+      if (s._a1 - s._a0 < 1.6) {
+        const mid = (s._a0 + s._a1) / 2;
+        s._a0 = mid - 0.8;
+        s._a1 = mid + 0.8;
+      }
       cursor += span;
       const p = document.createElementNS(SVG_NS, 'path');
       p.setAttribute('class', 'alloc-slice');

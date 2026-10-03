@@ -270,7 +270,7 @@ function computeAndRender() {
       .map((h) => ({ label: h.ticker, value: mvOf(h) }))
       .filter((x) => x.value != null),
     cash: cashUSD,
-  });
+  }, { maxNamed: Infinity, twoColFrom: 9 }); // every stock its own slice, no 其他
 
   // Account-level returns (deposit-aware) — see lib/capital.js
   const setAcct = (id, subId, r, subText) => {
