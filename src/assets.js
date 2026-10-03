@@ -127,7 +127,8 @@ function visibleItems() {
   ranked.forEach((it, idx) => (it._rank = idx + 1));
   const q = state.q.trim().toLowerCase();
   let rows = ranked.filter((i) => {
-    if (state.cat !== '全部' && i.category !== state.cat) return false;
+    // 总量类参考（全球股市/债券/房地产）只出现在「全部」，类别 pill 只列个体资产
+    if (state.cat !== '全部' && (i.type === 'class' || i.category !== state.cat)) return false;
     if (!q) return true;
     return [i.name, i.name_en, i.symbol, i.category, i.rwa_type].filter(Boolean).join(' ').toLowerCase().includes(q);
   });
@@ -182,7 +183,7 @@ function detailHtml(i) {
 
 function renderPills(all) {
   const counts = { 全部: all.length };
-  for (const c of CATS) counts[c] = all.filter((i) => i.category === c).length;
+  for (const c of CATS) counts[c] = all.filter((i) => i.type !== 'class' && i.category === c).length;
   const mk = (name) =>
     `<button type="button" class="pill${state.cat === name ? ' on' : ''}" role="tab" aria-selected="${state.cat === name}" data-cat="${name}">${
       name === '全部' ? '' : `<i style="background:${CAT_COLORS[name]}"></i>`

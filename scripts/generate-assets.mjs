@@ -65,11 +65,13 @@ const CN_NAMES = {
   SPCX: 'SpaceX', META: 'Meta', AVGO: '博通', '2222.SR': '沙特阿美', TSLA: '特斯拉', '005930.KS': '三星电子',
   MU: '美光科技', 'BRK-B': '伯克希尔', AMD: 'AMD', LLY: '礼来', '000660.KS': 'SK 海力士', JPM: '摩根大通',
   WMT: '沃尔玛', ASML: '阿斯麦', V: 'Visa', XOM: '埃克森美孚', INTC: '英特尔', JNJ: '强生', MA: '万事达',
-  TCEHY: '腾讯', '600519.SS': '贵州茅台', '688825.SS': 'CXMT', ABBV: '艾伯维', PLTR: 'Palantir', CSCO: '思科',
+  TCEHY: '腾讯', WELL: 'Welltower', PLD: 'Prologis 普洛斯', EQIX: 'Equinix', SPG: '西蒙地产', AMT: '美国铁塔', DLR: 'Digital Realty', PSA: 'Public Storage', O: 'Realty Income', '600519.SS': '贵州茅台', '688825.SS': 'CXMT', ABBV: '艾伯维', PLTR: 'Palantir', CSCO: '思科',
   ORCL: '甲骨文', COST: '开市客', '601939.SS': '建设银行', '1398.HK': '工商银行', '601288.SS': '农业银行',
 };
 const YAHOO_OVERRIDE = { TCEHY: '0700.HK', GOOG: 'GOOG' };
-const WANT_COMPANIES = { topN: 25, always: ['TCEHY', '600519.SS'] };
+// 房地产类别的个体资产：全球市值最大的上市地产/REIT（来自同一 CSV）；总量类「全球房地产」只在「全部」里出现
+const REITS = ['WELL', 'PLD', 'EQIX', 'SPG', 'AMT', 'DLR', 'PSA', 'O'];
+const WANT_COMPANIES = { topN: 25, always: ['TCEHY', '600519.SS', ...REITS] };
 
 const RWA = {
   'tether-gold': ['代币化黄金', 'Tether Gold'],
@@ -230,8 +232,8 @@ async function main() {
         const ys = YAHOO_OVERRIDE[r.symbol] || r.symbol;
         const y = await safe('Yahoo ' + ys, () => yahoo(ys));
         items.push({
-          id: 'co-' + r.symbol.toLowerCase(), name: CN_NAMES[r.symbol] || r.name, name_en: r.name, symbol: r.symbol === 'TCEHY' ? '0700.HK' : r.symbol,
-          category: '股票', type: 'asset', country: r.country,
+          id: 'co-' + r.symbol.toLowerCase(), name: CN_NAMES[r.symbol] || r.name.replace(/&amp;/g, '&'), name_en: r.name, symbol: r.symbol === 'TCEHY' ? '0700.HK' : r.symbol,
+          category: REITS.includes(r.symbol) ? '房地产' : '股票', ...(REITS.includes(r.symbol) ? { rwa_type: 'REIT' } : {}), type: 'asset', country: r.country,
           mcap_usd: Math.round(r.mcap), price: y ? r2(y.price) : null, chg_24h: y ? r2(y.chg24) : null, chg_1y: y ? r2(y.chg1y) : null, spark: y?.spark || null,
           kind: 'live', approx: false, source: 'companiesmarketcap.com（市值，已折美元）· 涨跌/走势 Yahoo Finance（最近交易日 / 近 1 年）',
           source_url: 'https://companiesmarketcap.com/', data_date: y?.date || asOf,
@@ -252,7 +254,7 @@ async function main() {
       getJson(`https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?filter=record_date:lte:${yAgo.toISOString().slice(0, 10)}&sort=-record_date&page%5Bsize%5D=1`));
     const prev = dPrev?.data?.[0] ? +dPrev.data[0].tot_pub_debt_out_amt : null;
     items.push({
-      id: 'us-treasuries', name: '美国国债', name_en: 'US Treasuries (total public debt)', symbol: 'UST', category: '债券与现金类', type: 'class',
+      id: 'us-treasuries', name: '美国国债', name_en: 'US Treasuries (total public debt)', symbol: 'UST', category: '债券与现金类', type: 'asset',
       mcap_usd: Math.round(cur), chg_24h: null, chg_1y: prev ? r2((cur / prev - 1) * 100) : null, spark: null,
       kind: 'live', approx: false, source: 'U.S. Treasury FiscalData · Debt to the Penny（公共债务总额，含政府内部持有）',
       source_url: 'https://fiscaldata.treasury.gov/datasets/debt-to-the-penny/', data_date: d.record_date,
@@ -266,7 +268,7 @@ async function main() {
   if (m2?.length > 13) {
     const last = m2.at(-1), prev = m2.at(-13);
     items.push({
-      id: 'us-m2', name: '美元 M2 货币供应', name_en: 'US M2 money stock', symbol: 'M2', category: '债券与现金类', type: 'class',
+      id: 'us-m2', name: '美元 M2 货币供应', name_en: 'US M2 money stock', symbol: 'M2', category: '债券与现金类', type: 'asset',
       mcap_usd: Math.round(+last[1] * 1e9), chg_24h: null, chg_1y: r2((+last[1] / +prev[1] - 1) * 100), spark: null,
       kind: 'live', approx: false, source: 'Federal Reserve · FRED M2SL（季调，月度）',
       source_url: 'https://fred.stlouisfed.org/series/M2SL', data_date: last[0], note: '月度数据，日期为数据所属月份',
