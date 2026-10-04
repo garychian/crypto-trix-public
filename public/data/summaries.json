@@ -8,7 +8,7 @@
       "pnl_usd": 338,
       "pct": 0.23,
       "total_start": 146496.83,
-      "total_end": 147425.25,
+      "total_end": 147121.23,
       "closes": 5,
       "daily": [
         {
@@ -32,8 +32,8 @@
           "pnl_usd": 2711
         }
       ],
-      "cash_pct_end": 22.43,
-      "unreconciled_usd": 590,
+      "cash_pct_end": 22.28,
+      "unreconciled_usd": 286,
       "cash_pct_start": 23.34,
       "top_gainers": [
         {
@@ -80,9 +80,9 @@
         {
           "ticker": "BRK.B",
           "kind": "added",
-          "shares_delta": 4,
+          "shares_delta": 5,
           "shares_start": 2,
-          "shares_end": 6
+          "shares_end": 7
         },
         {
           "ticker": "EUV",
@@ -90,6 +90,13 @@
           "shares_delta": -10,
           "shares_start": 60,
           "shares_end": 50
+        },
+        {
+          "ticker": "MSFT",
+          "kind": "trimmed",
+          "shares_delta": -0.98,
+          "shares_start": 18.17,
+          "shares_end": 17.19
         },
         {
           "ticker": "NVDA",
@@ -106,11 +113,11 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 307018,
-      "ytd_usd": 15502,
-      "ytd_pct": 11.75
+      "total_usd_end": 306714,
+      "ytd_usd": 15198,
+      "ytd_pct": 11.52
     },
-    "generated_at": "2026-10-03T12:18:14.263Z"
+    "generated_at": "2026-10-04T03:16:40.098Z"
   },
   {
     "type": "month",

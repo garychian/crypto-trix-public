@@ -1,8 +1,8 @@
 {
   "date": "2026-10-02",
   "source": "public/data/holdings.json",
-  "total_usd": 147425.25,
-  "cash_usd": 33067.75,
+  "total_usd": 147121.23,
+  "cash_usd": 32778.61,
   "holdings": [
     {
       "ticker": "TSLA",
@@ -33,18 +33,18 @@
       "cost_total": 7383.31
     },
     {
+      "ticker": "MSFT",
+      "shares": 17.19,
+      "price": 517.53,
+      "mv": 8896.34,
+      "cost_total": 6026.99
+    },
+    {
       "ticker": "NVDA",
       "shares": 41,
       "price": 233.95,
       "mv": 9591.95,
       "cost_total": 5085.64
-    },
-    {
-      "ticker": "MSFT",
-      "shares": 18.19,
-      "price": 517.53,
-      "mv": 9413.87,
-      "cost_total": 6545.13
     },
     {
       "ticker": "AMD",
@@ -69,10 +69,10 @@
     },
     {
       "ticker": "BRK.B",
-      "shares": 6,
+      "shares": 7,
       "price": 502.65,
-      "mv": 3015.9,
-      "cost_total": 3049.44
+      "mv": 3518.55,
+      "cost_total": 3549.42
     },
     {
       "ticker": "SPCX",
