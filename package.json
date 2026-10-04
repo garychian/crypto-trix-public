@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "regen-holdings": "node scripts/regen-holdings.mjs",
     "summaries": "node scripts/generate-summaries.mjs",
-    "assets": "node scripts/generate-assets.mjs"
+    "assets": "node scripts/generate-assets.mjs",
+    "13f": "node scripts/generate-13f.mjs"
   },
   "repository": {
     "type": "git",
