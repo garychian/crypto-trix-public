@@ -13,6 +13,7 @@ export default defineConfig({
         fund: resolve(__dirname, 'fund.html'),
         'cn-fund': resolve(__dirname, 'cn-fund.html'),
         assets: resolve(__dirname, 'assets.html'),
+        f13: resolve(__dirname, '13f.html'),
         options: resolve(__dirname, 'options.html'),
         articles: resolve(__dirname, 'articles.html'),
       },
