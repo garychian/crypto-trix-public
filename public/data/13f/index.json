@@ -21,7 +21,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 299253556246,
-   "latest_n": 29
+   "latest_n": 29,
+   "avatar": "/img/13f/berkshire.webp"
   },
   {
    "id": "tci",
@@ -36,7 +37,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 52769884406,
-   "latest_n": 11
+   "latest_n": 11,
+   "avatar": "/img/13f/tci.webp"
   },
   {
    "id": "coatue",
@@ -51,7 +53,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 48629053706,
-   "latest_n": 66
+   "latest_n": 66,
+   "avatar": "/img/13f/coatue.webp"
   },
   {
    "id": "pif",
@@ -66,7 +69,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 37908748002,
-   "latest_n": 5
+   "latest_n": 5,
+   "avatar": "/img/13f/pif.webp"
   },
   {
    "id": "temasek",
@@ -81,7 +85,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-07",
    "latest_value_usd": 36501865797,
-   "latest_n": 176
+   "latest_n": 176,
+   "avatar": "/img/13f/temasek.webp"
   },
   {
    "id": "bridgewater",
@@ -96,7 +101,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 24376086530,
-   "latest_n": 997
+   "latest_n": 997,
+   "avatar": "/img/13f/bridgewater.webp"
   },
   {
    "id": "tiger",
@@ -111,7 +117,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 23981506027,
-   "latest_n": 46
+   "latest_n": 46,
+   "avatar": "/img/13f/tiger.webp"
   },
   {
    "id": "elliott",
@@ -126,7 +133,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 14292858303,
-   "latest_n": 17
+   "latest_n": 17,
+   "avatar": "/img/13f/elliott.webp"
   },
   {
    "id": "hh",
@@ -141,7 +149,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 19100584155,
-   "latest_n": 18
+   "latest_n": 18,
+   "avatar": "/img/13f/hh.webp"
   },
   {
    "id": "ark",
@@ -156,7 +165,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 15402068886,
-   "latest_n": 190
+   "latest_n": 190,
+   "avatar": "/img/13f/ark.webp"
   },
   {
    "id": "pershing",
@@ -171,7 +181,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 19465692772,
-   "latest_n": 14
+   "latest_n": 14,
+   "avatar": "/img/13f/pershing.webp"
   },
   {
    "id": "appaloosa",
@@ -186,7 +197,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 7471257999,
-   "latest_n": 25
+   "latest_n": 25,
+   "avatar": "/img/13f/appaloosa.webp"
   },
   {
    "id": "duquesne",
@@ -201,7 +213,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 4354220000,
-   "latest_n": 86
+   "latest_n": 86,
+   "avatar": "/img/13f/duquesne.webp"
   },
   {
    "id": "thirdpoint",
@@ -216,7 +229,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 4650771988,
-   "latest_n": 42
+   "latest_n": 42,
+   "avatar": "/img/13f/thirdpoint.webp"
   },
   {
    "id": "dme",
@@ -231,7 +245,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 3908853490,
-   "latest_n": 46
+   "latest_n": 46,
+   "avatar": "/img/13f/dme.webp"
   },
   {
    "id": "himalaya",
@@ -246,7 +261,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-14",
    "latest_value_usd": 3702921099,
-   "latest_n": 8
+   "latest_n": 8,
+   "avatar": "/img/13f/himalaya.webp"
   },
   {
    "id": "oriental",
@@ -261,7 +277,8 @@
    "latest_period": "2026-06-30",
    "latest_filing_date": "2026-08-11",
    "latest_value_usd": 1649592644,
-   "latest_n": 13
+   "latest_n": 13,
+   "avatar": "/img/13f/oriental.webp"
   }
  ]
 }

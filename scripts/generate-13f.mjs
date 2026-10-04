@@ -22,6 +22,7 @@
  *  - 每季只保留市值前 MAX_HOLDINGS 只，其余合并成 other{n,value,pct}（变化先算后截）。
  */
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -37,24 +38,27 @@ const CHANGE_THRESHOLD = 0.02;
 const MIN_GAP_MS = 130; // ≤ 8 req/s
 
 // ── 机构配置：名单 / 中文名 / 掌门人 / CIK / 品牌色（首字母徽章用，不用真人肖像）──────────
+// avatar：public/img/13f/<id>.webp（256px，页面用 CSS 圆形裁切）；文件不存在则输出 null，页面回退首字母徽章
+const avatarOf = (inst) => (inst.avatar && existsSync(resolve(ROOT, 'public' + inst.avatar)) ? inst.avatar : null);
+
 export const INSTITUTIONS = [
-  { id: 'berkshire', name: 'Berkshire Hathaway', name_cn: '伯克希尔', manager: 'Greg Abel（前任 Warren Buffett）', cik: '0001067983', initials: 'BH', color: '#4C8DF7' },
-  { id: 'tci', name: 'TCI Fund Management', name_cn: 'TCI', manager: 'Chris Hohn', cik: '0001647251', initials: 'TCI', color: '#0ECB81' },
-  { id: 'coatue', name: 'Coatue Management', name_cn: 'Coatue', manager: 'Philippe Laffont', cik: '0001135730', initials: 'CT', color: '#A06BFF' },
-  { id: 'pif', name: 'Public Investment Fund', name_cn: '沙特 PIF', manager: 'Yasir Al-Rumayyan（Governor）', cik: '0001767640', initials: 'PIF', color: '#22C7D6' },
-  { id: 'temasek', name: 'Temasek Holdings', name_cn: '淡马锡', manager: 'Dilhan Pillay（CEO）', cik: '0001021944', initials: 'TM', color: '#FF6B6B' },
-  { id: 'bridgewater', name: 'Bridgewater Associates', name_cn: '桥水', manager: 'Ray Dalio（创办人，已退一线）', cik: '0001350694', initials: 'BW', color: '#5B5FEF' },
-  { id: 'tiger', name: 'Tiger Global Management', name_cn: '老虎环球', manager: 'Chase Coleman', cik: '0001167483', initials: 'TG', color: '#FF8A3D' },
-  { id: 'elliott', name: 'Elliott Investment Management', name_cn: 'Elliott', manager: 'Paul Singer', cik: '0001791786', initials: 'EL', color: '#E573B5' },
-  { id: 'hh', name: 'H&H International Investment', name_cn: 'H&H（段永平）', manager: '段永平', cik: '0001759760', initials: 'HH', color: '#F0B90B' },
-  { id: 'ark', name: 'ARK Investment Management', name_cn: 'ARK', manager: 'Cathie Wood', cik: '0001697748', initials: 'ARK', color: '#8FD14F' },
-  { id: 'pershing', name: 'Pershing Square Capital Management', name_cn: '潘兴广场', manager: 'Bill Ackman', cik: '0001336528', also_ciks: ['0002026053'], initials: 'PS', color: '#2E9E8F' },
-  { id: 'appaloosa', name: 'Appaloosa LP', name_cn: 'Appaloosa', manager: 'David Tepper', cik: '0001656456', initials: 'AP', color: '#C9A27A' },
-  { id: 'duquesne', name: 'Duquesne Family Office', name_cn: 'Duquesne', manager: 'Stanley Druckenmiller', cik: '0001536411', initials: 'DQ', color: '#9BB7D4' },
-  { id: 'thirdpoint', name: 'Third Point', name_cn: 'Third Point', manager: 'Dan Loeb', cik: '0001040273', initials: 'TP', color: '#D9D26A' },
-  { id: 'dme', name: 'DME Capital Management (Greenlight)', name_cn: 'DME / Greenlight', manager: 'David Einhorn', cik: '0001489933', initials: 'DME', color: '#7FE0B5' },
-  { id: 'himalaya', name: 'Himalaya Capital Management', name_cn: '喜马拉雅（李录）', manager: '李录 Li Lu', cik: '0001709323', initials: 'HC', color: '#B07A5B' },
-  { id: 'oriental', name: 'Oriental Harbor', name_cn: '东方港湾（但斌）', manager: '但斌', cik: '0002046333', initials: 'OH', color: '#FF6B9D' },
+  { id: 'berkshire', avatar: '/img/13f/berkshire.webp', name: 'Berkshire Hathaway', name_cn: '伯克希尔', manager: 'Greg Abel（前任 Warren Buffett）', cik: '0001067983', initials: 'BH', color: '#4C8DF7' },
+  { id: 'tci', avatar: '/img/13f/tci.webp', name: 'TCI Fund Management', name_cn: 'TCI', manager: 'Chris Hohn', cik: '0001647251', initials: 'TCI', color: '#0ECB81' },
+  { id: 'coatue', avatar: '/img/13f/coatue.webp', name: 'Coatue Management', name_cn: 'Coatue', manager: 'Philippe Laffont', cik: '0001135730', initials: 'CT', color: '#A06BFF' },
+  { id: 'pif', avatar: '/img/13f/pif.webp', name: 'Public Investment Fund', name_cn: '沙特 PIF', manager: 'Yasir Al-Rumayyan（Governor）', cik: '0001767640', initials: 'PIF', color: '#22C7D6' },
+  { id: 'temasek', avatar: '/img/13f/temasek.webp', name: 'Temasek Holdings', name_cn: '淡马锡', manager: 'Dilhan Pillay（CEO）', cik: '0001021944', initials: 'TM', color: '#FF6B6B' },
+  { id: 'bridgewater', avatar: '/img/13f/bridgewater.webp', name: 'Bridgewater Associates', name_cn: '桥水', manager: 'Ray Dalio（创办人，已退一线）', cik: '0001350694', initials: 'BW', color: '#5B5FEF' },
+  { id: 'tiger', avatar: '/img/13f/tiger.webp', name: 'Tiger Global Management', name_cn: '老虎环球', manager: 'Chase Coleman', cik: '0001167483', initials: 'TG', color: '#FF8A3D' },
+  { id: 'elliott', avatar: '/img/13f/elliott.webp', name: 'Elliott Investment Management', name_cn: 'Elliott', manager: 'Paul Singer', cik: '0001791786', initials: 'EL', color: '#E573B5' },
+  { id: 'hh', avatar: '/img/13f/hh.webp', name: 'H&H International Investment', name_cn: 'H&H（段永平）', manager: '段永平', cik: '0001759760', initials: 'HH', color: '#F0B90B' },
+  { id: 'ark', avatar: '/img/13f/ark.webp', name: 'ARK Investment Management', name_cn: 'ARK', manager: 'Cathie Wood', cik: '0001697748', initials: 'ARK', color: '#8FD14F' },
+  { id: 'pershing', avatar: '/img/13f/pershing.webp', name: 'Pershing Square Capital Management', name_cn: '潘兴广场', manager: 'Bill Ackman', cik: '0001336528', also_ciks: ['0002026053'], initials: 'PS', color: '#2E9E8F' },
+  { id: 'appaloosa', avatar: '/img/13f/appaloosa.webp', name: 'Appaloosa LP', name_cn: 'Appaloosa', manager: 'David Tepper', cik: '0001656456', initials: 'AP', color: '#C9A27A' },
+  { id: 'duquesne', avatar: '/img/13f/duquesne.webp', name: 'Duquesne Family Office', name_cn: 'Duquesne', manager: 'Stanley Druckenmiller', cik: '0001536411', initials: 'DQ', color: '#9BB7D4' },
+  { id: 'thirdpoint', avatar: '/img/13f/thirdpoint.webp', name: 'Third Point', name_cn: 'Third Point', manager: 'Dan Loeb', cik: '0001040273', initials: 'TP', color: '#D9D26A' },
+  { id: 'dme', avatar: '/img/13f/dme.webp', name: 'DME Capital Management (Greenlight)', name_cn: 'DME / Greenlight', manager: 'David Einhorn', cik: '0001489933', initials: 'DME', color: '#7FE0B5' },
+  { id: 'himalaya', avatar: '/img/13f/himalaya.webp', name: 'Himalaya Capital Management', name_cn: '喜马拉雅（李录）', manager: '李录 Li Lu', cik: '0001709323', initials: 'HC', color: '#B07A5B' },
+  { id: 'oriental', avatar: '/img/13f/oriental.webp', name: 'Oriental Harbor', name_cn: '东方港湾（但斌）', manager: '但斌', cik: '0002046333', initials: 'OH', color: '#FF6B9D' },
 ];
 
 // ── ticker 覆盖表（CUSIP → [ticker, 显示名]）：SEC 名称映射不可靠的 ETF / 多股类别 / 简称 ──
@@ -435,6 +439,7 @@ async function runInstitution(inst, idx, stats) {
     cik: inst.cik,
     initials: inst.initials,
     color: inst.color,
+    avatar: avatarOf(inst),
     sec_entity: entity,
     generated_at: new Date().toISOString(),
     source: 'SEC EDGAR 13F-HR',
@@ -465,11 +470,11 @@ async function main() {
       const data = await runInstitution(inst, idx, stats);
       await writeFile(resolve(OUT_DIR, `${inst.id}.json`), JSON.stringify(data) + '\n');
       const q = data.quarters[0];
-      summary.push({ id: inst.id, name: inst.name, name_cn: inst.name_cn, manager: inst.manager, cik: inst.cik, initials: inst.initials, color: inst.color, status: 'ok', quarters: data.quarters.length, latest_period: q.period, latest_filing_date: q.filing_date, latest_value_usd: q.total_value_usd, latest_n: q.n_positions });
+      summary.push({ id: inst.id, name: inst.name, name_cn: inst.name_cn, manager: inst.manager, cik: inst.cik, initials: inst.initials, color: inst.color, avatar: avatarOf(inst), status: 'ok', quarters: data.quarters.length, latest_period: q.period, latest_filing_date: q.filing_date, latest_value_usd: q.total_value_usd, latest_n: q.n_positions });
       console.log(`✓ ${inst.id.padEnd(11)} ${data.quarters.length}Q  latest ${q.period} filed ${q.filing_date}  $${(q.total_value_usd / 1e9).toFixed(2)}B  ${q.n_positions} pos  opts ${q.options_n}${q.amendment ? '  [' + q.amendment + ']' : ''}`);
     } catch (e) {
       console.warn(`✗ ${inst.id}: ${e.message}`);
-      summary.push({ id: inst.id, name: inst.name, name_cn: inst.name_cn, manager: inst.manager, cik: inst.cik, initials: inst.initials, color: inst.color, status: 'missing', error: e.message, quarters: 0 });
+      summary.push({ id: inst.id, name: inst.name, name_cn: inst.name_cn, manager: inst.manager, cik: inst.cik, initials: inst.initials, color: inst.color, avatar: avatarOf(inst), status: 'missing', error: e.message, quarters: 0 });
     }
   }
   await writeFile(
