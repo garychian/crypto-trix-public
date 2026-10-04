@@ -26,6 +26,12 @@
 }
 .ipill:focus-visible, .qpill:focus-visible, .more-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+/* 头像：圆形裁切（img 本体 256px webp） */
+.av-img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: 50% 22%; }
+.ipill-dot.has-av, .badge-ini.has-av { padding: 0; overflow: hidden; background: var(--panel-2, #14171c); }
+.ipill-dot.has-av { width: 28px; height: 28px; }
+.badge-ini.has-av.big { width: 56px; height: 56px; }
+
 /* institution card */
 .inst-card { padding: 18px 18px 16px; margin-bottom: 14px; position: relative; }
 .ic-top { display: flex; align-items: center; gap: 14px; padding-right: 34px; }

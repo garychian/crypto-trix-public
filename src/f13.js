@@ -50,7 +50,9 @@ async function loadInst(id) {
 }
 
 /* ───────── pills ───────── */
+// 有头像用头像（img，CSS 圆形裁切；html-to-image 截图可内联），否则回退首字母徽章
 function badge(inst, size = '') {
+  if (inst.avatar) return `<span class="badge-ini has-av${size}" style="--bc:${esc(inst.color)}"><img class="av-img" src="${esc(inst.avatar)}" alt="${esc(inst.name_cn)}" width="256" height="256" decoding="async"></span>`;
   return `<span class="badge-ini${size}" style="--bc:${esc(inst.color)}">${esc(inst.initials)}</span>`;
 }
 
@@ -60,7 +62,7 @@ function renderPills() {
       const on = i.id === state.id;
       const miss = i.status !== 'ok';
       return `<button type="button" class="ipill${on ? ' on' : ''}${miss ? ' miss' : ''}" role="tab" aria-selected="${on}" data-id="${esc(i.id)}" style="--bc:${esc(i.color)}">
-        <i class="ipill-dot">${esc(i.initials.slice(0, 2))}</i><span>${esc(i.name_cn)}</span></button>`;
+        ${i.avatar ? `<i class="ipill-dot has-av"><img class="av-img" src="${esc(i.avatar)}" alt="" width="256" height="256" loading="lazy" decoding="async"></i>` : `<i class="ipill-dot">${esc(i.initials.slice(0, 2))}</i>`}<span>${esc(i.name_cn)}</span></button>`;
     })
     .join('');
   const on = $('inst-pills').querySelector('.on');
