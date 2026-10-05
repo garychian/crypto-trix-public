@@ -262,3 +262,8 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 - **13F 头像（2026-10）**：`public/img/13f/<id>.webp`（256px，单张 ≤7KB，来源 ~/.claude/skills/13f-holdings-card/assets/*_headshot.png，AI 人像，用户已确认使用）；`scripts/generate-13f.mjs` 的 INSTITUTIONS 每家有 `avatar` 字段，文件存在才写入数据（否则 null → 页面回退首字母徽章）。pills 和机构头部用 `<img class="av-img">` + CSS 圆形裁切，截图（html-to-image）可正常内联。换头像：覆盖对应 webp 即可。
 - 2026-10-05 股息收入：fund.html 新增「股息收入」卡片（src/dividends.js，数据 public/data/dividends.json），首页总资产卡下单行提示。`npm run dividends` 按 holdings.json + 现金中 SGOV 255 股（常量，非持仓）用 Yahoo 过去 12 个月派息重算；Mac 连不上 Yahoo，需在能访问的机器上跑后拷回。持仓变动后重跑。
 - 2026-10-05 持仓表周/月/年涨跌：`api/prices.js` 在 hist=1 时用 Finnhub candle（优先）或 Yahoo 日线，按上周五收盘 / 上月末收盘 / 去年末收盘算 weeklyRef/monthlyRef/yearlyRef，不再用写死快照。
+
+## 2026-10-05 — A股基金配置更新
+- `public/data/cn-fund.json` as_of 2026-10-05，总额 105.48 万（原 107.16）
+- 债券 43.84 / 黄金 3.77 / 红利低波 22.36 / 标普500 5.68 / 纳指100 10.44 / 中证A500 7.68 / 沪深300 5.05 / 恒生科技 5.45 / 科创和创业板 1.21
+- 快照 `public/data/snapshots/2026-10-05-cn.json`
