@@ -1547,3 +1547,19 @@
   .div-home .div-big { font-size: 22px; }
   .div-home .div-mid { font-size: 20px; }
 }
+
+.div-home-ctas { display: flex; gap: 8px; flex-shrink: 0; }
+.div-home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.div-home-block-label {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: var(--text, #e8eaed);
+}
+@media (max-width: 720px) {
+  .div-home-grid { grid-template-columns: 1fr; }
+}

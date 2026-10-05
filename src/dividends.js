@@ -39,34 +39,71 @@ export async function renderDividendCard(el) {
 
 export async function renderDividendHint(el) {
   if (!el) return;
-  const d = await loadDividends();
-  if (!d || !Number.isFinite(Number(d.total_annual))) {
+  const [d, cn] = await Promise.all([
+    loadDividends(),
+    fetch('/data/cn-fund.json', { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null))
+      .catch(() => null),
+  ]);
+  const usOk = d && Number.isFinite(Number(d.total_annual));
+  const inc = cn && cn.income;
+  const cnOk = inc && Number.isFinite(Number(inc.total_annual_yuan));
+  if (!usOk && !cnOk) {
     el.hidden = true;
     return;
   }
-  const annual = usd(d.total_annual);
-  const monthly = usd(d.monthly_avg);
-  const asOf = d.as_of || '';
+
+  const usAnnual = usOk ? usd(d.total_annual) : '—';
+  const usMonthly = usOk ? usd(d.monthly_avg) : '—';
+  const cnYuan = (n) =>
+    '¥' + Math.round(Number(n)).toLocaleString('zh-CN');
+  const cnAnnual = cnOk ? cnYuan(inc.total_annual_yuan) : '—';
+  const cnMonthly = cnOk ? cnYuan(inc.monthly_avg_yuan) : '—';
+  const asOfUs = usOk ? d.as_of || '' : '';
+  const asOfCn = cnOk ? cn.as_of || '' : '';
+  const asOfBits = [asOfUs && `美股 ${asOfUs}`, asOfCn && `A股 ${asOfCn}`].filter(Boolean).join(' · ');
+
   el.hidden = false;
   el.innerHTML = `
     <div class="div-home-inner">
       <div class="div-home-head">
         <div>
-          <div class="en">Dividends · Trailing 12M</div>
-          <h2 class="div-home-title">股息收入</h2>
+          <div class="en">Dividends · Income</div>
+          <h2 class="div-home-title">股息 / 分红收入</h2>
         </div>
-        <a class="btn btn-ghost div-home-cta" href="/fund.html#dividend-card">明细 →</a>
-      </div>
-      <div class="div-home-nums">
-        <div class="div-home-cell">
-          <div class="div-label">预计年股息</div>
-          <div class="div-big">${annual}</div>
-        </div>
-        <div class="div-home-cell">
-          <div class="div-label">月均</div>
-          <div class="div-mid">${monthly}</div>
+        <div class="div-home-ctas">
+          <a class="btn btn-ghost div-home-cta" href="/fund.html#dividend-card">美股 →</a>
+          <a class="btn btn-ghost div-home-cta" href="/cn-fund.html#cn-income-card">A股 →</a>
         </div>
       </div>
-      <p class="div-home-note muted">含股票 + SGOV · 截至 ${asOf} · 税前估算 · #NFA</p>
+      <div class="div-home-grid">
+        <div class="div-home-block">
+          <div class="div-home-block-label">美股基金 <span class="muted">USD</span></div>
+          <div class="div-home-nums">
+            <div class="div-home-cell">
+              <div class="div-label">预计年股息</div>
+              <div class="div-big">${usAnnual}</div>
+            </div>
+            <div class="div-home-cell">
+              <div class="div-label">月均</div>
+              <div class="div-mid">${usMonthly}</div>
+            </div>
+          </div>
+        </div>
+        <div class="div-home-block">
+          <div class="div-home-block-label">A股基金 <span class="muted">CNY</span></div>
+          <div class="div-home-nums">
+            <div class="div-home-cell">
+              <div class="div-label">预计年收入</div>
+              <div class="div-big">${cnAnnual}</div>
+            </div>
+            <div class="div-home-cell">
+              <div class="div-label">月均</div>
+              <div class="div-mid">${cnMonthly}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="div-home-note muted">美股含股票 + SGOV · A股按固收 3.5% / 红利低波 5% 估算 · ${asOfBits} · 税前 · #NFA</p>
     </div>`;
 }
