@@ -88,5 +88,27 @@
       "weight_pct": 1.15,
       "category": "A股"
     }
-  ]
+  ],
+  "income": {
+    "note": "按当前配置金额 × 约定年化估算（固收 3.5%、红利低波 5%），税前，非实际到账 · #NFA",
+    "items": [
+      {
+        "name": "固收",
+        "source": "债券",
+        "amount_wan": 43.84,
+        "yield_pct": 3.5,
+        "annual_yuan": 15344
+      },
+      {
+        "name": "红利低波",
+        "source": "红利低波",
+        "amount_wan": 22.36,
+        "yield_pct": 5.0,
+        "annual_yuan": 11180
+      }
+    ],
+    "total_annual_yuan": 26524,
+    "monthly_avg_yuan": 2210,
+    "portfolio_yield_pct": 2.51
+  }
 }

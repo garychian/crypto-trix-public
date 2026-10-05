@@ -267,3 +267,6 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 - `public/data/cn-fund.json` as_of 2026-10-05，总额 105.48 万（原 107.16）
 - 债券 43.84 / 黄金 3.77 / 红利低波 22.36 / 标普500 5.68 / 纳指100 10.44 / 中证A500 7.68 / 沪深300 5.05 / 恒生科技 5.45 / 科创和创业板 1.21
 - 快照 `public/data/snapshots/2026-10-05-cn.json`
+
+## 2026-10-06 — A股基金分红/固收收入
+- `cn-fund.json` 新增 `income`：固收（债券）3.5

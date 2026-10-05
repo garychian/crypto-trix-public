@@ -112,6 +112,48 @@ function renderHoldings(data) {
   );
 }
 
+
+function yuan(v) {
+  if (v == null || !Number.isFinite(v)) return '—';
+  return '¥' + Math.round(v).toLocaleString('zh-CN');
+}
+
+function renderIncome(data) {
+  const el = document.getElementById('cn-income-card');
+  if (!el) return;
+  const inc = data.income;
+  if (!inc || !Array.isArray(inc.items) || !inc.items.length) {
+    el.hidden = true;
+    return;
+  }
+  const rows = inc.items
+    .map(
+      (it) => `
+    <tr>
+      <td class="l">${escapeHTML(it.name)}${it.source && it.source !== it.name ? ` <span class="muted">（${escapeHTML(it.source)}）</span>` : ''}</td>
+      <td>${wan(it.amount_wan)} 万</td>
+      <td>${wan(it.yield_pct, 1)}%</td>
+      <td class="up">${yuan(it.annual_yuan)}</td>
+    </tr>`
+    )
+    .join('');
+  el.hidden = false;
+  el.innerHTML = `
+    <div class="panel-head"><h2>分红 / 固收收入</h2><span class="muted">年化估算 · ${escapeHTML(data.as_of || '')}</span></div>
+    <div class="div-hero">
+      <div><div class="div-label">预计年收入</div><div class="div-big">${yuan(inc.total_annual_yuan)}</div></div>
+      <div><div class="div-label">月均</div><div class="div-mid">${yuan(inc.monthly_avg_yuan)}</div></div>
+      <div><div class="div-label">相对总资产</div><div class="div-mid">${wan(inc.portfolio_yield_pct)}%</div><div class="div-sub">固收 3.5% · 红利低波 5%</div></div>
+    </div>
+    <div class="table-scroll">
+      <table class="data div-table">
+        <thead><tr><th class="l">来源</th><th>金额</th><th>年化</th><th>年收入</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <p class="vol-note">${escapeHTML(inc.note || '')}</p>`;
+}
+
 async function boot() {
   try {
     const data = await loadCnFund();
@@ -125,6 +167,7 @@ async function boot() {
     renderStats(data);
     renderCategories(data);
     renderHoldings(data);
+    renderIncome(data);
   } catch (err) {
     console.error(err);
     document.getElementById('asof').textContent = '加载失败';
@@ -136,6 +179,7 @@ async function boot() {
   ['#stat-cards', 'cn-fund-overview'],
   ['.cat-panel', 'cn-fund-categories'],
   ['#alloc-chart', 'cn-fund-allocation'],
+  ['#cn-income-card', 'cn-fund-income'],
 ].forEach(([sel, name]) => attachSnapshotButton(sel, name));
 
 boot();
