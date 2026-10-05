@@ -53,42 +53,6 @@ function renderStats(data) {
   document.getElementById('d-cats-sub').textContent = cats.map((c) => c.name).join(' / ');
 }
 
-function renderCategories(data) {
-  const cats = data.categories || [];
-  const bars = document.getElementById('cat-bars');
-  const tiles = document.getElementById('cat-tiles');
-  document.getElementById('cat-summary').textContent = cats.length + ' 类';
-
-  bars.innerHTML = cats
-    .map((c) => {
-      const color = catColor(c.name);
-      return `
-        <div class="cat-bar-row">
-          <div class="cat-bar-meta">
-            <span class="cat-dot" style="background:${color}"></span>
-            <span class="cat-name">${escapeHTML(c.name)}</span>
-            <span class="cat-amt">${wan(c.amount_wan)} 万</span>
-            <span class="cat-pct">${wan(c.weight_pct)}%</span>
-          </div>
-          <div class="cat-bar-track">
-            <div class="cat-bar-fill" style="width:${Math.min(100, c.weight_pct)}%;background:${color}"></div>
-          </div>
-        </div>`;
-    })
-    .join('');
-
-  tiles.innerHTML = cats
-    .map((c) => {
-      const color = catColor(c.name);
-      return `
-        <div class="cat-tile" style="border-color:${color}55;background:${color}18">
-          <div class="ct-name">${escapeHTML(c.name)}</div>
-          <div class="ct-pct" style="color:${color}">${wan(c.weight_pct)}%</div>
-          <div class="ct-amt">${wan(c.amount_wan)} 万</div>
-        </div>`;
-    })
-    .join('');
-}
 
 function renderHoldings(data) {
   const holdings = (data.holdings || []).filter((h) => Number.isFinite(h.amount_wan) && h.amount_wan > 0);
@@ -165,7 +129,6 @@ async function boot() {
     if (data.note) document.getElementById('data-note').textContent = data.note;
 
     renderStats(data);
-    renderCategories(data);
     renderHoldings(data);
     renderIncome(data);
   } catch (err) {
@@ -177,7 +140,6 @@ async function boot() {
 
 [
   ['#stat-cards', 'cn-fund-overview'],
-  ['.cat-panel', 'cn-fund-categories'],
   ['#alloc-chart', 'cn-fund-allocation'],
   ['#cn-income-card', 'cn-fund-income'],
 ].forEach(([sel, name]) => attachSnapshotButton(sel, name));
