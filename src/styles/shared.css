@@ -725,3 +725,17 @@ html.snap-capturing *, html.snap-capturing *::before, html.snap-capturing *::aft
   transition: none !important;
 }
 @media print { .snap-btn, .snap-toast { display: none !important; } }
+
+/* 股息收入 */
+.div-hero { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 8px 0 14px; }
+.div-label { color: var(--muted, #8a8f98); font-size: 12px; white-space: nowrap; }
+.div-big { color: #F0B90B; font-size: 30px; font-weight: 700; white-space: nowrap; }
+.div-mid { font-size: 20px; font-weight: 600; white-space: nowrap; }
+.div-sub { color: var(--muted, #8a8f98); font-size: 12px; white-space: nowrap; }
+.div-sgov { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; padding: 10px 12px; margin-bottom: 12px; border: 1px solid rgba(240,185,11,.25); border-radius: 10px; background: rgba(240,185,11,.06); }
+.div-sgov-name { font-weight: 600; white-space: nowrap; }
+.div-sgov-val { color: #F0B90B; font-weight: 600; white-space: nowrap; }
+.div-hint { text-align: center; font-size: 13px; color: var(--muted, #8a8f98); margin: -6px 0 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.div-hint a { color: inherit; text-decoration: none; }
+.div-hint b { color: #F0B90B; font-weight: 600; }
+@media (max-width: 480px) { .div-big { font-size: 24px; } .div-mid { font-size: 16px; } .div-hero { gap: 8px; } }

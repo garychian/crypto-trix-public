@@ -1,5 +1,6 @@
 import './nav.js';
 import { attachSnapshotButton } from './lib/snapshot.js';
+import { renderDividendHint } from './dividends.js';
 import { renderVixGauge } from './vix-gauge.js';
 import { renderYield10Card } from './yield10-card.js';
 import { renderJourneyRings } from './journey-rings.js';
@@ -356,3 +357,5 @@ async function boot() {
 ].forEach(([sel, name]) => attachSnapshotButton(sel, name));
 
 boot();
+
+renderDividendHint(document.getElementById('div-hint'));

@@ -1,5 +1,6 @@
 import './nav.js';
 import { attachSnapshotButton } from './lib/snapshot.js';
+import { renderDividendCard } from './dividends.js';
 import { DEMO_NOTES } from './data/demo.js';
 import { loadHoldingsData, holdingsSourceBadge } from './lib/holdings.js';
 import { fetchPrices, priceSourceLabel, priceSourceBadge, pricesFromHoldings } from './lib/prices.js';
@@ -507,6 +508,9 @@ async function boot() {
   ['#equity-chart', 'nav-chart'],
   ['#alloc-chart', 'allocation'],
   ['.holdings-panel', 'holdings'],
+  ['#dividend-card', 'dividends'],
 ].forEach(([sel, name]) => attachSnapshotButton(sel, name));
+
+renderDividendCard(document.getElementById('dividend-card'));
 
 boot();
