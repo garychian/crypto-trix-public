@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-const SGOV_SHARES = 510; // 用户 2026-10-05 告知：现金里约 510 股 SGOV，当作现金，不进持仓
+const SGOV_SHARES = 255; // 用户 2026-10-05 告知：现金里 255 股 SGOV，当作现金，不进持仓
 const holdings = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/holdings.json'), 'utf8'));
 const list = (holdings.holdings || holdings.positions || []).map((h) => [h.ticker || h.symbol, Number(h.shares || h.qty || 0)]);
 const ysym = (t) => t.replace('.', '-');
