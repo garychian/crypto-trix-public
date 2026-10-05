@@ -1512,3 +1512,38 @@
 @media (prefers-reduced-motion: reduce) {
   .nw-seg { transition: none; }
 }
+
+/* ── homepage dividend mini card ── */
+.div-home {
+  margin: 0 0 18px;
+  padding: 16px 18px 14px;
+}
+.div-home-inner { display: flex; flex-direction: column; gap: 10px; }
+.div-home-head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.div-home-head .en {
+  font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted, #8a8f98); margin-bottom: 2px;
+}
+.div-home-title {
+  margin: 0; font-size: 18px; font-weight: 700; color: var(--text, #e8eaed);
+}
+.div-home-cta { flex-shrink: 0; padding: 6px 12px; font-size: 12px; }
+.div-home-nums {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.div-home-cell {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(240,185,11,.22);
+  background: rgba(240,185,11,.06);
+}
+.div-home .div-big { font-size: 28px; }
+.div-home .div-mid { font-size: 24px; color: #F0B90B; font-weight: 700; }
+.div-home-note { margin: 0; font-size: 12px; line-height: 1.4; }
+@media (max-width: 480px) {
+  .div-home { padding: 14px 14px 12px; }
+  .div-home .div-big { font-size: 22px; }
+  .div-home .div-mid { font-size: 20px; }
+}

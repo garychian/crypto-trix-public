@@ -40,7 +40,33 @@ export async function renderDividendCard(el) {
 export async function renderDividendHint(el) {
   if (!el) return;
   const d = await loadDividends();
-  if (!d) { el.hidden = true; return; }
-  el.innerHTML = `<a href="/fund.html#dividend-card">预计年股息 <b>${usd(d.total_annual)}</b> · 月均 <b>${usd(d.monthly_avg)}</b></a>`;
+  if (!d || !Number.isFinite(Number(d.total_annual))) {
+    el.hidden = true;
+    return;
+  }
+  const annual = usd(d.total_annual);
+  const monthly = usd(d.monthly_avg);
+  const asOf = d.as_of || '';
   el.hidden = false;
+  el.innerHTML = `
+    <div class="div-home-inner">
+      <div class="div-home-head">
+        <div>
+          <div class="en">Dividends · Trailing 12M</div>
+          <h2 class="div-home-title">股息收入</h2>
+        </div>
+        <a class="btn btn-ghost div-home-cta" href="/fund.html#dividend-card">明细 →</a>
+      </div>
+      <div class="div-home-nums">
+        <div class="div-home-cell">
+          <div class="div-label">预计年股息</div>
+          <div class="div-big">${annual}</div>
+        </div>
+        <div class="div-home-cell">
+          <div class="div-label">月均</div>
+          <div class="div-mid">${monthly}</div>
+        </div>
+      </div>
+      <p class="div-home-note muted">含股票 + SGOV · 截至 ${asOf} · 税前估算 · #NFA</p>
+    </div>`;
 }
