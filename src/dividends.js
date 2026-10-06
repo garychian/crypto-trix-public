@@ -78,7 +78,7 @@ export async function renderDividendHint(el) {
       </div>
       <div class="div-home-grid">
         <div class="div-home-block">
-          <div class="div-home-block-label">美股基金 <span class="muted">USD</span></div>
+          <div class="div-home-block-label">美股分红 <span class="muted">USD</span></div>
           <div class="div-home-nums">
             <div class="div-home-cell">
               <div class="div-label">预计年股息</div>
