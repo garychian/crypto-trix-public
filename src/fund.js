@@ -37,6 +37,15 @@ let snapshotTotal = null;
 let holdingsMeta = null;
 let prices = {};
 let volData = { date: null, map: {} };
+// Live ~15-min-delayed IV30 from /api/iv (CBOE). Per-ticker fallback: vol_data.json.
+let liveIV = { map: {}, asOf: null, source: null };
+// IVR needs ~1y of IV history (no free source) → only show vol_data.json IVR while fresh.
+const IVR_MAX_AGE_DAYS = 14;
+function volDataAgeDays() {
+  if (!volData.date) return Infinity;
+  const t = Date.parse(volData.date + 'T00:00:00Z');
+  return Number.isFinite(t) ? (Date.now() - t) / 86400000 : Infinity;
+}
 
 function msLabel(v) {
   return v >= 1e6 ? '$' + v / 1e6 + 'M' : '$' + v / 1e3 + 'K';
@@ -323,14 +332,17 @@ function computeAndRender() {
     const mv = mvOf(h);
     const costRow = costOf(h);
     const v = volData.map[h.ticker] || {};
+    const lv = liveIV.map[h.ticker];
+    const ivrFresh = volDataAgeDays() <= IVR_MAX_AGE_DAYS;
     return {
       ticker: h.ticker,
       weight: h.weight,
       price: p ? p.price : null,
       cp: p ? p.changePct || 0 : null,
       hasPrice: !!p,
-      iv: v.iv != null ? v.iv : null,
-      ivr: v.ivr != null ? v.ivr : null,
+      iv: lv && lv.iv != null ? lv.iv : v.iv != null ? v.iv : null,
+      ivLive: !!(lv && lv.iv != null),
+      ivr: ivrFresh && v.ivr != null ? v.ivr : null,
       hv: p && p.hv30 != null ? p.hv30 : v.hv != null ? v.hv : null,
       dailyD:
         p && mv != null
@@ -380,11 +392,13 @@ function computeAndRender() {
           : 'muted';
       const vtip =
         'IV30 ' +
-        (r.iv != null ? r.iv.toFixed(0) : '—') +
-        '% · HV30 ' +
+        (r.iv != null ? r.iv.toFixed(1) : '—') +
+        '%' +
+        (r.iv != null ? (r.ivLive ? '（CBOE 延时）' : '（vol_data ' + (volData.date || '') + '）') : '') +
+        ' · HV30 ' +
         (r.hv != null ? r.hv.toFixed(0) : '—') +
         '% · IVR ' +
-        (r.ivr != null ? r.ivr : '—');
+        (r.ivr != null ? Math.round(r.ivr) + '（' + volData.date + '）' : '—');
       const vcell =
         r.iv != null || r.hv != null
           ? '<td class="' +
@@ -430,10 +444,25 @@ function computeAndRender() {
 
   const vn = document.getElementById('vol-note');
   if (vn) {
-    vn.textContent =
-      'IV=隐含波动率' +
-      (volData.date ? '（vol_data ' + volData.date + '）' : '') +
-      ' · HV=30日历史波动率 · 绿=IV比HV高5点以上，权利金偏厚';
+    const nLive = rows.filter((r) => r.ivLive).length;
+    const ivPart =
+      nLive > 0
+        ? 'IV=30日隐含波动率（CBOE 延时约15分钟' +
+          (nLive < rows.length ? '，缺失的用 vol_data ' + (volData.date || '') : '') +
+          '）'
+        : 'IV=隐含波动率（实时源暂不可用，用 vol_data ' + (volData.date || '—') + '）';
+    const ivrPart =
+      volDataAgeDays() <= IVR_MAX_AGE_DAYS
+        ? 'IVR 见悬停（vol_data ' + volData.date + '）'
+        : 'IVR 需一年 IV 历史，快照超 ' + IVR_MAX_AGE_DAYS + ' 天已隐藏';
+    const first =
+      ivPart + ' · HV=30日历史波动率（日收盘实算）· ' + ivrPart + ' · 绿=IV比HV高5点以上，权利金偏厚';
+    // keep the period-return explainer (2nd line) that ships in fund.html
+    if (!vn.dataset.line2) {
+      const parts = vn.innerHTML.split(/<br\s*\/?>/i);
+      vn.dataset.line2 = parts.length > 1 ? parts.slice(1).join('<br>') : '';
+    }
+    vn.innerHTML = escapeHTML(first) + (vn.dataset.line2 ? '<br>' + vn.dataset.line2 : '');
   }
 
   const holdBadge = holdingsSourceBadge(holdingsMeta);
@@ -477,6 +506,21 @@ async function loadVol() {
   }
 }
 
+async function loadLiveIV(syms) {
+  try {
+    const r = await fetch('/api/iv?syms=' + encodeURIComponent(syms.join(',')));
+    if (!r.ok) return;
+    const j = await r.json();
+    const map = {};
+    Object.entries((j && j.data) || {}).forEach(([k, v]) => {
+      if (v && typeof v.iv === 'number' && Number.isFinite(v.iv)) map[k.toUpperCase()] = v;
+    });
+    liveIV = { map, asOf: j.fetched_at || null, source: 'CBOE' };
+  } catch {
+    /* optional — falls back to vol_data.json */
+  }
+}
+
 async function boot() {
   const data = await loadHoldingsData();
   holdingsMeta = data;
@@ -496,7 +540,9 @@ async function boot() {
   await loadVol();
   const syms = [...new Set(holdings.map((h) => h.ticker))];
   const snapshot = pricesFromHoldings(holdings, data.prices);
+  const ivP = loadLiveIV(syms);
   prices = await fetchPrices(syms, { hist: true, snapshot });
+  await ivP;
   computeAndRender();
   await initEquityChart(document.getElementById('equity-chart'), {
     anchorTotal: snapshotTotal ?? data.total_assets_usd,

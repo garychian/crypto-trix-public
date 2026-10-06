@@ -270,3 +270,6 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 
 ## 2026-10-06 — A股基金分红/固收收入
 - `cn-fund.json` 新增 `income`：固收（债券）3.5
+## 2026-10-06 — 持仓 IV 实时化
+- 新增 `api/iv.js`：GET `/api/iv?syms=TSLA,QQQ`，优先 CBOE 延时报价 `quotes/{SYM}.json` 的 `iv30`（约 15 分钟延时，无 key）；兜底 CBOE 期权链 ATM IV 按总方差插值到 30 天，再兜底 Yahoo 期权链；无期权/失败返回 null。缓存 s-maxage=300, swr=900。注意 cdn.cboe.com 会 307 到 cdn-api.cboe.com（fetch 自动跟随）。BRK.B 在 CBOE 用 `BRK.B`。
+- `src/fund.js`：IV 用 /api/iv，按 ticker 回退 vol_data.json；HV30 仍来自 /api/prices。IVR 需一年 IV 历史（免费源没有），只在 vol_data.json 日期 ≤14 天时显示（悬停提示带日期），过期即隐藏，不推算。vol-note 文案同步，保留第二行周/月/年说明。
