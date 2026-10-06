@@ -277,3 +277,6 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 ## 2026-10-06 — 持仓估值列（市盈率/远期PE/市销率/市值）
 - `npm run valuation`（scripts/generate-valuation.mjs）→ `public/data/valuation.json`：EPS/营收 TTM 来自 SEC EDGAR companyfacts（GAAP 摊薄，最近4季，Q4=FY−Q1..Q3，>200 天的旧数据丢弃）；远期 EPS = Nasdaq/Zacks 未来4季一致预期之和；市值 = Nasdaq 快照 + price_ref。BRK 没有 us-gaap EPS 标签 → 用 净利润TTM×price_ref/市值 推出隐含 EPS。ETF（QQQ/VOO/EUV）全部 null；SPCX 上市不足4季 → 市盈率/市销率 null。需能访问 sec.gov + api.nasdaq.com 的机器（box 可以），财报季后重跑。
 - 前端 `src/fund.js` 用实时价计算：P/E=价/eps_ttm，远期PE=价/eps_ntm，市值=mcap×价/price_ref，P/S=市值/rev_ttm。没做实时接口：Yahoo crumb 在 Vercel 上 429，Finnhub 未配 token。
+
+## 2026-10-06 — 持仓表首列冻结
+- fund.html 持仓表加 `sticky-first` 类、滚动容器 `#holdings-scroll`（.table-scroll, overflow-x:auto）。`src/styles/fund.css` 末尾：首列 th/td `position:sticky; left:0`，不透明 var(--panel) 背景（hover 用叠加渐变保持不透明），z-index td 2 / 表头角 3；`src/fund.js` 横向滚动时给容器加 `.is-scrolled` → 首列右侧细边+阴影。≤760px 首列收窄（代码和权重上下堆叠）。

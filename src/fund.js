@@ -617,4 +617,13 @@ async function boot() {
 
 renderDividendCard(document.getElementById('dividend-card'));
 
+// Sticky 标的 column: show its edge shadow only once the table is scrolled horizontally.
+(() => {
+  const sc = document.getElementById('holdings-scroll');
+  if (!sc) return;
+  const upd = () => sc.classList.toggle('is-scrolled', sc.scrollLeft > 2);
+  sc.addEventListener('scroll', upd, { passive: true });
+  upd();
+})();
+
 boot();
