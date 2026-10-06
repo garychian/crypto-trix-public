@@ -617,13 +617,23 @@ async function boot() {
 
 renderDividendCard(document.getElementById('dividend-card'));
 
-// Sticky 标的 column: show its edge shadow only once the table is scrolled horizontally.
+// Sticky 标的 column + header row: edge shadows only once the wrapper is scrolled.
 (() => {
   const sc = document.getElementById('holdings-scroll');
   if (!sc) return;
-  const upd = () => sc.classList.toggle('is-scrolled', sc.scrollLeft > 2);
+  const upd = () => {
+    sc.classList.toggle('is-scrolled', sc.scrollLeft > 2);
+    sc.classList.toggle('is-scrolled-y', sc.scrollTop > 2);
+  };
   sc.addEventListener('scroll', upd, { passive: true });
   upd();
+  // frozen header: wrapper height = viewport − sticky top nav (nav wraps to 2 rows on mobile)
+  const nav = document.querySelector('.top-nav');
+  const setNavH = () => {
+    if (nav) document.documentElement.style.setProperty('--nav-h', Math.ceil(nav.getBoundingClientRect().height) + 'px');
+  };
+  setNavH();
+  window.addEventListener('resize', setNavH, { passive: true });
 })();
 
 boot();

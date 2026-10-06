@@ -280,3 +280,6 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 
 ## 2026-10-06 — 持仓表首列冻结
 - fund.html 持仓表加 `sticky-first` 类、滚动容器 `#holdings-scroll`（.table-scroll, overflow-x:auto）。`src/styles/fund.css` 末尾：首列 th/td `position:sticky; left:0`，不透明 var(--panel) 背景（hover 用叠加渐变保持不透明），z-index td 2 / 表头角 3；`src/fund.js` 横向滚动时给容器加 `.is-scrolled` → 首列右侧细边+阴影。≤760px 首列收窄（代码和权重上下堆叠）。
+
+## 2026-10-06 — 持仓表表头冻结
+- 方案：`#holdings-scroll` 改为 `overflow:auto` + `max-height: calc(100dvh - var(--nav-h) - 24px)`，表内滚动；thead th `position:sticky; top:0`（z 3，不透明 var(--panel)，下边框用 inset box-shadow 画），角格 标的 z 4，首列仍 sticky left。`--nav-h` 由 src/fund.js 量 `.top-nav` 高度（移动端两行 ≈93px，桌面 ≈63px，resize 时更新）。纵向滚动时加 `.is-scrolled-y` 显示表头下阴影。表格比一屏短时不受影响。

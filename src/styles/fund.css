@@ -521,3 +521,44 @@ table.sticky-first tbody tr:hover td:first-child {
   table.sticky-first .t-tick { flex-direction: column; align-items: flex-start; gap: 1px; }
   table.sticky-first .w-badge { margin-left: 0; font-size: 10.5px; }
 }
+
+/* —— Holdings table: frozen header row ——
+   overflow-x:auto makes .table-scroll the sticky container for `top` as well, so page-level
+   sticky can't work. Instead cap the wrapper at one viewport (minus the sticky .top-nav, height
+   measured by src/fund.js into --nav-h) and let it scroll both ways: thead sticks to its top,
+   the 标的 column to its left. Short tables never hit the cap, so nothing changes for them. */
+#holdings-scroll {
+  overflow: auto;
+  max-height: calc(100vh - var(--nav-h, 72px) - 24px);
+  max-height: calc(100dvh - var(--nav-h, 72px) - 24px);
+}
+table.sticky-first thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--panel);
+  background-clip: padding-box;
+  /* collapsed borders don't travel with sticky cells → draw the divider as a shadow */
+  box-shadow: inset 0 -1px 0 var(--border-strong);
+}
+table.sticky-first thead th:first-child {
+  left: 0;
+  z-index: 4; /* corner: above header row and frozen column */
+}
+.table-scroll.is-scrolled table.sticky-first thead th:first-child {
+  box-shadow:
+    inset 0 -1px 0 var(--border-strong),
+    inset -1px 0 0 var(--border-strong),
+    8px 0 10px -6px rgba(0, 0, 0, 0.65);
+}
+.table-scroll.is-scrolled-y table.sticky-first thead th {
+  box-shadow:
+    inset 0 -1px 0 var(--border-strong),
+    0 8px 10px -6px rgba(0, 0, 0, 0.65);
+}
+.table-scroll.is-scrolled.is-scrolled-y table.sticky-first thead th:first-child {
+  box-shadow:
+    inset 0 -1px 0 var(--border-strong),
+    inset -1px 0 0 var(--border-strong),
+    6px 6px 10px -6px rgba(0, 0, 0, 0.65);
+}
