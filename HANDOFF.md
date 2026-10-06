@@ -288,3 +288,9 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 - `scripts/generate-valuation.mjs` 新增 INDEX_ETFS（QQQ→NDX 纳指100，VOO→SPX 标普500），`valuation.json` 的这两只多一个 `index` 块：pe/fpe 来自 WSJ「P/E & Yields」页内嵌 JSON（Birinyi：近12月 as-reported / 未来12月 operating，带 pe_date），ps 来自 multpl（只有标普500，NDX 无免费源 → null），mcap = slickcharts 成分股总市值（NDX 备用：Nasdaq nasdaq100 列表合计，双重股权只算一次）。`*_ref` = 对应日期 ETF 收盘（Nasdaq historical），前端按 ETF 实时价缩放。EUV 仍全部 —。
 - 前端：这些单元格浅色 + 悬停提示「纳斯达克100/标普500 指数估值（来源，日期）」，市值格带 NDX/SPX 小标签；估值说明行已更新。
 - 交叉核对 2026-10-06：标普远期 WSJ 19.8 vs FactSet 19.0；纳指远期 23.9 vs dollarliquidity 21.6 / historyofmarket 22.4；近12月 PE 各家口径差 10–15%（标普 WSJ 23.4 / worldperatio 24.9 / multpl 26.5；纳指 34.7 / 30.7 / 29.7）；市值 slickcharts 70.7T/43.9T vs Nasdaq 成分合计 70.4T/43.5T。
+
+## 2026-10-06 晚 — 冻结表头/首列在 iPhone Safari 失效
+- **根因 1（主要）**：约 11:10 有一次从 Mac 旧工作区发起的 `vercel deploy --prod`（带 10/05 新持仓数据，但没 pull box 推的 a61d56b…e8a2abc），把线上回滚到无 IV 实时/估值列/冻结表格的版本——所以手机上根本没有 sticky。该次的数据（holdings.json/.csv、fund-checkins.json、vix.json、yield10.json）没进 git，已从线上原样取回并提交。**Mac 部署前务必 `git pull --rebase`**；`scripts/sync-site.sh` 已在 commit 前加 `git pull --rebase --autostash`。
+- **根因 2（WebKit 潜在 bug）**：JS 在 WebKit 里过早量 `.top-nav` 高度（≈3211px），`--nav-h` 过大 → 滚动框 max-height=0，表格整体塌掉。改为 ResizeObserver 重测并限定 40–160px。
+- iOS 加固：`position:-webkit-sticky`，表格 `border-collapse:separate; border-spacing:0`，滚动框 `max-height: max(320px, calc(100svh - var(--nav-h) - 16px))`（svh 不随 Safari 工具栏伸缩抖动，vh 兜底），关闭 `-webkit-overflow-scrolling:touch`。
+- 验证：Playwright WebKit（iPhone 14）+ Chromium 桌面，表格内滚动下/右后表头与首列位置不变。截图 /workspace/sticky-ios/。

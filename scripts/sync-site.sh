@@ -25,6 +25,9 @@ esac
 case "$out" in
   *CHANGED*)
     cd "$REPO" || { echo "ERROR: no repo"; exit 1; }
+    # Other machines (box agent) also push + deploy this branch: always rebase onto origin first,
+    # otherwise `vercel deploy` ships a stale tree and silently rolls back their features.
+    git pull --rebase --autostash -q || { echo "ERROR: git pull --rebase failed"; exit 1; }
     git add public/data/fund-checkins.json public/data/summaries.json public/data/snapshots || exit 1
     git commit -q -m "checkins: auto-sync daily report ($(date +%F))" || { echo "nothing to commit"; exit 0; }
     if ! git push -q; then

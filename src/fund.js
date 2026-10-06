@@ -648,7 +648,7 @@ async function boot() {
 
 renderDividendCard(document.getElementById('dividend-card'));
 
-// Sticky 标的 column + header row: edge shadows only once the wrapper is scrolled.
+// Sticky 标的 column + header row: edge shadows once scrolled; wrapper height for the frozen header.
 (() => {
   const sc = document.getElementById('holdings-scroll');
   if (!sc) return;
@@ -658,13 +658,17 @@ renderDividendCard(document.getElementById('dividend-card'));
   };
   sc.addEventListener('scroll', upd, { passive: true });
   upd();
-  // frozen header: wrapper height = viewport − sticky top nav (nav wraps to 2 rows on mobile)
+  // frozen header: CSS caps the wrapper at 100svh − --nav-h. Nav height is re-measured via
+  // ResizeObserver (in WebKit it reads ~3000px before CSS settles) and clamped to a sane range.
   const nav = document.querySelector('.top-nav');
   const setNavH = () => {
-    if (nav) document.documentElement.style.setProperty('--nav-h', Math.ceil(nav.getBoundingClientRect().height) + 'px');
+    const h = nav ? nav.getBoundingClientRect().height : 0;
+    if (h >= 40 && h <= 160) document.documentElement.style.setProperty('--nav-h', Math.ceil(h) + 'px');
   };
   setNavH();
   window.addEventListener('resize', setNavH, { passive: true });
+  window.addEventListener('load', setNavH);
+  if (nav && 'ResizeObserver' in window) new ResizeObserver(setNavH).observe(nav);
 })();
 
 boot();

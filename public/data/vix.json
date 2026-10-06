@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-02",
-  "value": 15.31,
-  "chg": -1.08,
-  "chg_pct": -6.59,
-  "source": "CBOE official close 16:15:01 ET 2026-10-02",
+  "as_of": "2026-10-05",
+  "value": 15.52,
+  "chg": 0.21,
+  "chg_pct": 1.35,
+  "source": "CBOE official close 16:15:01 ET 2026-10-05",
   "history": [
     {
       "date": "2026-09-14",
@@ -94,6 +94,12 @@
       "close": 15.31,
       "chg": -1.08,
       "chg_pct": -6.5894
+    },
+    {
+      "date": "2026-10-05",
+      "close": 15.52,
+      "chg": 0.21,
+      "chg_pct": 1.3531
     }
   ]
 }
