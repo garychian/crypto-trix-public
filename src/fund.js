@@ -206,6 +206,27 @@ async function loadValuation() {
 }
 function valuationOf(ticker, price) {
   const v = valData.map[ticker];
+  if (v && v.index) {
+    // index-tracking ETF (QQQ→NDX, VOO→SPX): index valuation, scaled by the ETF's move since each figure's date
+    const ix = v.index;
+    const sc = (x, ref) => (x == null ? null : price != null && ref ? (x * price) / ref : x);
+    const d = (iso) => (iso ? iso.slice(5).replace('-', '/') : '');
+    const tip = ix.name + ' 指数估值';
+    return {
+      etf: true,
+      index: ix.index,
+      pe: sc(ix.pe, ix.pe_ref),
+      fpe: sc(ix.fpe, ix.pe_ref),
+      ps: sc(ix.ps, ix.ps_ref),
+      mcap: sc(ix.mcap, ix.mcap_ref),
+      tips: {
+        pe: tip + '（WSJ/Birinyi 近12月，' + d(ix.pe_date) + '）',
+        fpe: tip + '（WSJ/Birinyi 未来12月，' + d(ix.pe_date) + '）',
+        ps: ix.ps != null ? tip + '（multpl，' + d(ix.ps_date) + '）' : ix.name + ' 无免费 P/S 数据',
+        mcap: ix.name + ' 成分股总市值（slickcharts，' + d(ix.mcap_date) + '）',
+      },
+    };
+  }
   if (!v || v.type === 'ETF') return { etf: !!v, pe: null, fpe: null, ps: null, mcap: null };
   const px = price != null ? price : v.price_ref;
   const mcap = v.mcap != null && v.price_ref && px ? (v.mcap * px) / v.price_ref : v.mcap ?? null;
@@ -229,10 +250,12 @@ function compactUSD(n) {
   const x = n / u[0];
   return '$' + (x >= 100 ? x.toFixed(0) : x.toFixed(x >= 10 ? 1 : 2)) + u[1];
 }
-function ratioCell(x, tip) {
+function ratioCell(x, tip, idx) {
   const t = tip ? ' title="' + tip + '"' : '';
   if (x == null || !Number.isFinite(x)) return '<td class="muted"' + t + '>—</td>';
-  return '<td' + t + '>' + (x >= 100 ? x.toFixed(0) : x.toFixed(1)) + '</td>';
+  return (
+    '<td' + (idx ? ' class="idx-val"' : '') + t + '>' + (x >= 100 ? x.toFixed(0) : x.toFixed(1)) + '</td>'
+  );
 }
 
 function periodCell(v) {
@@ -478,12 +501,20 @@ function computeAndRender() {
         periodCell(r.ytd) +
         periodCell(r.costRet) +
         vcell +
-        ratioCell(r.val.pe, r.val.etf ? 'ETF 不显示' : r.val.lossTTM ? '近四季亏损' : '') +
-        ratioCell(r.val.fpe, r.val.etf ? 'ETF 不显示' : '') +
-        ratioCell(r.val.ps, r.val.etf ? 'ETF 不显示' : '') +
-        (r.val.mcap != null
-          ? '<td>' + compactUSD(r.val.mcap) + '</td>'
-          : '<td class="muted"' + (r.val.etf ? ' title="ETF 不显示"' : '') + '>—</td>') +
+        (r.val.index
+          ? ratioCell(r.val.pe, r.val.tips.pe, true) +
+            ratioCell(r.val.fpe, r.val.tips.fpe, true) +
+            ratioCell(r.val.ps, r.val.tips.ps, true) +
+            (r.val.mcap != null
+              ? '<td class="idx-val" title="' + r.val.tips.mcap + '"><span class="idx-tag">' + r.val.index + '</span>' +
+                compactUSD(r.val.mcap) + '</td>'
+              : '<td class="muted">—</td>')
+          : ratioCell(r.val.pe, r.val.etf ? 'ETF 不显示' : r.val.lossTTM ? '近四季亏损' : '') +
+            ratioCell(r.val.fpe, r.val.etf ? 'ETF 不显示' : '') +
+            ratioCell(r.val.ps, r.val.etf ? 'ETF 不显示' : '') +
+            (r.val.mcap != null
+              ? '<td>' + compactUSD(r.val.mcap) + '</td>'
+              : '<td class="muted"' + (r.val.etf ? ' title="ETF 不显示"' : '') + '>—</td>')) +
         '<td class="note-cell">' +
         noteHTML +
         '</td>' +
@@ -510,7 +541,7 @@ function computeAndRender() {
     const valLine = valData.asOf
       ? '估值：市盈率=现价/近四季GAAP摊薄EPS（SEC），远期PE=现价/未来四季一致预期EPS（Nasdaq/Zacks），市销率=市值/近四季营收；基本面 ' +
         valData.asOf +
-        ' 更新，随实时价变动；ETF、亏损或无数据显示 —'
+        ' 更新，随实时价变动；QQQ/VOO 显示所跟踪指数（纳指100/标普500）估值：PE/远期PE 来自 WSJ·Birinyi，P/S 来自 multpl（仅标普500），市值=成分股总市值（slickcharts）；其他 ETF、亏损或无数据显示 —'
       : '';
     // keep the period-return explainer (2nd line) that ships in fund.html
     if (!vn.dataset.line2) {

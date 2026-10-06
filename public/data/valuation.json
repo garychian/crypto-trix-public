@@ -1,6 +1,6 @@
 {
  "as_of": "2026-10-06",
- "_source": "EPS/营收 TTM: SEC EDGAR（GAAP 摊薄）；远期 EPS: Nasdaq/Zacks 未来4季一致预期；市值: Nasdaq 快照 × 实时价/price_ref",
+ "_source": "EPS/营收 TTM: SEC EDGAR（GAAP 摊薄）；远期 EPS: Nasdaq/Zacks 未来4季一致预期；市值: Nasdaq 快照 × 实时价/price_ref；QQQ/VOO: 跟踪指数估值（PE/远期PE: WSJ·Birinyi；P/S: multpl 仅标普500；市值: slickcharts 成分股合计），*_ref = ETF 当日收盘，用于按 ETF 实时价缩放",
  "data": {
   "TSLA": {
    "type": "EQUITY",
@@ -20,7 +20,23 @@
    "eps_ntm": null,
    "ntm": null,
    "mcap": null,
-   "price_ref": null
+   "price_ref": null,
+   "index": {
+    "index": "NDX",
+    "name": "纳斯达克100",
+    "pe": 34.68,
+    "fpe": 23.87,
+    "ps": null,
+    "mcap": 43907000000000,
+    "sources": {
+     "pe": "WSJ P/E & Yields（Birinyi；TTM as-reported / 远期12个月 operating）2026-10-02",
+     "mcap": "slickcharts 成分股总市值 2026-10-05"
+    },
+    "pe_date": "2026-10-02",
+    "pe_ref": 749.58,
+    "mcap_date": "2026-10-05",
+    "mcap_ref": 756.2
+   }
   },
   "GOOGL": {
    "type": "EQUITY",
@@ -40,7 +56,26 @@
    "eps_ntm": null,
    "ntm": null,
    "mcap": null,
-   "price_ref": null
+   "price_ref": null,
+   "index": {
+    "index": "SPX",
+    "name": "标普500",
+    "pe": 23.38,
+    "fpe": 19.8,
+    "ps": 3.84,
+    "mcap": 70745000000000,
+    "sources": {
+     "pe": "WSJ P/E & Yields（Birinyi；TTM as-reported / 远期12个月 operating）2026-10-02",
+     "ps": "multpl S&P 500 Price to Sales（4:00 PM EDT, Mon Oct 5）",
+     "mcap": "slickcharts 成分股总市值 2026-10-05"
+    },
+    "pe_date": "2026-10-02",
+    "pe_ref": 707.54,
+    "ps_date": "2026-10-05",
+    "ps_ref": 712.32,
+    "mcap_date": "2026-10-05",
+    "mcap_ref": 712.32
+   }
   },
   "MSFT": {
    "type": "EQUITY",

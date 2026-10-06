@@ -283,3 +283,8 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 
 ## 2026-10-06 — 持仓表表头冻结
 - 方案：`#holdings-scroll` 改为 `overflow:auto` + `max-height: calc(100dvh - var(--nav-h) - 24px)`，表内滚动；thead th `position:sticky; top:0`（z 3，不透明 var(--panel)，下边框用 inset box-shadow 画），角格 标的 z 4，首列仍 sticky left。`--nav-h` 由 src/fund.js 量 `.top-nav` 高度（移动端两行 ≈93px，桌面 ≈63px，resize 时更新）。纵向滚动时加 `.is-scrolled-y` 显示表头下阴影。表格比一屏短时不受影响。
+
+## 2026-10-06 — QQQ/VOO 用指数估值
+- `scripts/generate-valuation.mjs` 新增 INDEX_ETFS（QQQ→NDX 纳指100，VOO→SPX 标普500），`valuation.json` 的这两只多一个 `index` 块：pe/fpe 来自 WSJ「P/E & Yields」页内嵌 JSON（Birinyi：近12月 as-reported / 未来12月 operating，带 pe_date），ps 来自 multpl（只有标普500，NDX 无免费源 → null），mcap = slickcharts 成分股总市值（NDX 备用：Nasdaq nasdaq100 列表合计，双重股权只算一次）。`*_ref` = 对应日期 ETF 收盘（Nasdaq historical），前端按 ETF 实时价缩放。EUV 仍全部 —。
+- 前端：这些单元格浅色 + 悬停提示「纳斯达克100/标普500 指数估值（来源，日期）」，市值格带 NDX/SPX 小标签；估值说明行已更新。
+- 交叉核对 2026-10-06：标普远期 WSJ 19.8 vs FactSet 19.0；纳指远期 23.9 vs dollarliquidity 21.6 / historyofmarket 22.4；近12月 PE 各家口径差 10–15%（标普 WSJ 23.4 / worldperatio 24.9 / multpl 26.5；纳指 34.7 / 30.7 / 29.7）；市值 slickcharts 70.7T/43.9T vs Nasdaq 成分合计 70.4T/43.5T。
