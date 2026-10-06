@@ -273,3 +273,7 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 ## 2026-10-06 — 持仓 IV 实时化
 - 新增 `api/iv.js`：GET `/api/iv?syms=TSLA,QQQ`，优先 CBOE 延时报价 `quotes/{SYM}.json` 的 `iv30`（约 15 分钟延时，无 key）；兜底 CBOE 期权链 ATM IV 按总方差插值到 30 天，再兜底 Yahoo 期权链；无期权/失败返回 null。缓存 s-maxage=300, swr=900。注意 cdn.cboe.com 会 307 到 cdn-api.cboe.com（fetch 自动跟随）。BRK.B 在 CBOE 用 `BRK.B`。
 - `src/fund.js`：IV 用 /api/iv，按 ticker 回退 vol_data.json；HV30 仍来自 /api/prices。IVR 需一年 IV 历史（免费源没有），只在 vol_data.json 日期 ≤14 天时显示（悬停提示带日期），过期即隐藏，不推算。vol-note 文案同步，保留第二行周/月/年说明。
+
+## 2026-10-06 — 持仓估值列（市盈率/远期PE/市销率/市值）
+- `npm run valuation`（scripts/generate-valuation.mjs）→ `public/data/valuation.json`：EPS/营收 TTM 来自 SEC EDGAR companyfacts（GAAP 摊薄，最近4季，Q4=FY−Q1..Q3，>200 天的旧数据丢弃）；远期 EPS = Nasdaq/Zacks 未来4季一致预期之和；市值 = Nasdaq 快照 + price_ref。BRK 没有 us-gaap EPS 标签 → 用 净利润TTM×price_ref/市值 推出隐含 EPS。ETF（QQQ/VOO/EUV）全部 null；SPCX 上市不足4季 → 市盈率/市销率 null。需能访问 sec.gov + api.nasdaq.com 的机器（box 可以），财报季后重跑。
+- 前端 `src/fund.js` 用实时价计算：P/E=价/eps_ttm，远期PE=价/eps_ntm，市值=mcap×价/price_ref，P/S=市值/rev_ttm。没做实时接口：Yahoo crumb 在 Vercel 上 429，Finnhub 未配 token。

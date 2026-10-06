@@ -1,0 +1,147 @@
+{
+ "as_of": "2026-10-06",
+ "_source": "EPS/营收 TTM: SEC EDGAR（GAAP 摊薄）；远期 EPS: Nasdaq/Zacks 未来4季一致预期；市值: Nasdaq 快照 × 实时价/price_ref",
+ "data": {
+  "TSLA": {
+   "type": "EQUITY",
+   "eps_ttm": 1.08,
+   "eps_ttm_end": "2026-06-30",
+   "rev_ttm": 103619000000,
+   "eps_ntm": 0.99,
+   "ntm": "Sep 2026–Jun 2027",
+   "mcap": 1495812084530,
+   "price_ref": 378.73
+  },
+  "QQQ": {
+   "type": "ETF",
+   "eps_ttm": null,
+   "eps_ttm_end": null,
+   "rev_ttm": null,
+   "eps_ntm": null,
+   "ntm": null,
+   "mcap": null,
+   "price_ref": null
+  },
+  "GOOGL": {
+   "type": "EQUITY",
+   "eps_ttm": 19.91,
+   "eps_ttm_end": "2026-06-30",
+   "rev_ttm": 445866000000,
+   "eps_ntm": 12.95,
+   "ntm": "Sep 2026–Jun 2027",
+   "mcap": 4237328100000,
+   "price_ref": 346.47
+  },
+  "VOO": {
+   "type": "ETF",
+   "eps_ttm": null,
+   "eps_ttm_end": null,
+   "rev_ttm": null,
+   "eps_ntm": null,
+   "ntm": null,
+   "mcap": null,
+   "price_ref": null
+  },
+  "MSFT": {
+   "type": "EQUITY",
+   "eps_ttm": 17.95,
+   "eps_ttm_end": "2026-06-30",
+   "rev_ttm": 331839000000,
+   "eps_ntm": 19.52,
+   "ntm": "Sep 2026–Jun 2027",
+   "mcap": 3899747980963,
+   "price_ref": 525.18
+  },
+  "NVDA": {
+   "type": "EQUITY",
+   "eps_ttm": 7.91,
+   "eps_ttm_end": "2026-07-26",
+   "rev_ttm": 302969000000,
+   "eps_ntm": 11.91,
+   "ntm": "Oct 2026–Jul 2027",
+   "mcap": 5757490000000,
+   "price_ref": 238.9
+  },
+  "AMD": {
+   "type": "EQUITY",
+   "eps_ttm": 3.89,
+   "eps_ttm_end": "2026-06-27",
+   "rev_ttm": 41305000000,
+   "eps_ntm": 9.38,
+   "ntm": "Sep 2026–Jun 2027",
+   "mcap": 1031316107784,
+   "price_ref": 631.75
+  },
+  "META": {
+   "type": "EQUITY",
+   "eps_ttm": 26.54,
+   "eps_ttm_end": "2026-06-30",
+   "rev_ttm": 228248000000,
+   "eps_ntm": 30.5,
+   "ntm": "Sep 2026–Jun 2027",
+   "mcap": 1889994868328,
+   "price_ref": 741.9
+  },
+  "AMZN": {
+   "type": "EQUITY",
+   "eps_ttm": 12.43,
+   "eps_ttm_end": "2026-06-30",
+   "rev_ttm": 775680000000,
+   "eps_ntm": 9.51,
+   "ntm": "Sep 2026–Jun 2027",
+   "mcap": 2711679232001,
+   "price_ref": 251.4
+  },
+  "BRK.B": {
+   "type": "EQUITY",
+   "eps_ttm": 38.874,
+   "eps_ttm_end": "2026-06-30",
+   "rev_ttm": 384687000000,
+   "eps_ntm": null,
+   "ntm": null,
+   "mcap": 1112554571940,
+   "price_ref": 504.26,
+   "eps_basis": "net_income/mcap"
+  },
+  "SPCX": {
+   "type": "EQUITY",
+   "eps_ttm": null,
+   "eps_ttm_end": null,
+   "rev_ttm": null,
+   "eps_ntm": 1.23,
+   "ntm": "Sep 2026–Jun 2027",
+   "mcap": 2322174051821,
+   "price_ref": 171.09
+  },
+  "PLTR": {
+   "type": "EQUITY",
+   "eps_ttm": 1.17,
+   "eps_ttm_end": "2026-06-30",
+   "rev_ttm": 6155941000,
+   "eps_ntm": 1.52,
+   "ntm": "Sep 2026–Jun 2027",
+   "mcap": 454948929112,
+   "price_ref": 189.4
+  },
+  "AAPL": {
+   "type": "EQUITY",
+   "eps_ttm": 8.71,
+   "eps_ttm_end": "2026-06-27",
+   "rev_ttm": 466823000000,
+   "eps_ntm": 9.14,
+   "ntm": "Sep 2026–Jun 2027",
+   "mcap": 4858256580200,
+   "price_ref": 332.89
+  },
+  "EUV": {
+   "type": "ETF",
+   "eps_ttm": null,
+   "eps_ttm_end": null,
+   "rev_ttm": null,
+   "eps_ntm": null,
+   "ntm": null,
+   "mcap": null,
+   "price_ref": null
+  }
+ }
+}

@@ -192,6 +192,49 @@ function periodRet(p, refKey) {
   return ((p.price - p[refKey]) / p[refKey]) * 100;
 }
 
+// Valuation fundamentals (public/data/valuation.json, `npm run valuation`) × live price.
+let valData = { asOf: null, map: {} };
+async function loadValuation() {
+  try {
+    const r = await fetch('/data/valuation.json?d=' + new Date().toISOString().slice(0, 10));
+    if (!r.ok) return;
+    const j = await r.json();
+    valData = { asOf: j.as_of || null, map: j.data || {} };
+  } catch {
+    /* optional */
+  }
+}
+function valuationOf(ticker, price) {
+  const v = valData.map[ticker];
+  if (!v || v.type === 'ETF') return { etf: !!v, pe: null, fpe: null, ps: null, mcap: null };
+  const px = price != null ? price : v.price_ref;
+  const mcap = v.mcap != null && v.price_ref && px ? (v.mcap * px) / v.price_ref : v.mcap ?? null;
+  return {
+    etf: false,
+    pe: px && v.eps_ttm > 0 ? px / v.eps_ttm : null,
+    fpe: px && v.eps_ntm > 0 ? px / v.eps_ntm : null,
+    ps: mcap && v.rev_ttm > 0 ? mcap / v.rev_ttm : null,
+    mcap,
+    lossTTM: v.eps_ttm != null && v.eps_ttm <= 0,
+  };
+}
+function compactUSD(n) {
+  if (n == null || !Number.isFinite(n)) return '—';
+  const u = [
+    [1e12, 'T'],
+    [1e9, 'B'],
+    [1e6, 'M'],
+  ].find(([d]) => Math.abs(n) >= d);
+  if (!u) return '$' + Math.round(n).toLocaleString('en-US');
+  const x = n / u[0];
+  return '$' + (x >= 100 ? x.toFixed(0) : x.toFixed(x >= 10 ? 1 : 2)) + u[1];
+}
+function ratioCell(x, tip) {
+  const t = tip ? ' title="' + tip + '"' : '';
+  if (x == null || !Number.isFinite(x)) return '<td class="muted"' + t + '>—</td>';
+  return '<td' + t + '>' + (x >= 100 ? x.toFixed(0) : x.toFixed(1)) + '</td>';
+}
+
 function periodCell(v) {
   if (v == null || !Number.isFinite(v)) return '<td class="muted">—</td>';
   return '<td class="' + moneyCls(v) + '" style="font-weight:700">' + pctSigned(v) + '</td>';
@@ -352,6 +395,7 @@ function computeAndRender() {
       wtd: periodRet(p, 'weeklyRef'),
       mtd: periodRet(p, 'monthlyRef'),
       ytd: periodRet(p, 'yearlyRef'),
+      val: valuationOf(h.ticker, p ? p.price : null),
     };
   });
 
@@ -372,7 +416,7 @@ function computeAndRender() {
           '</span>' +
           wBadge +
           '</div></td>' +
-          '<td class="muted">—</td>'.repeat(7) +
+          '<td class="muted">—</td>'.repeat(11) +
           '<td class="note-cell"><span class="tag tag-flat">加载中</span></td>' +
           '</tr>'
         );
@@ -434,6 +478,12 @@ function computeAndRender() {
         periodCell(r.ytd) +
         periodCell(r.costRet) +
         vcell +
+        ratioCell(r.val.pe, r.val.etf ? 'ETF 不显示' : r.val.lossTTM ? '近四季亏损' : '') +
+        ratioCell(r.val.fpe, r.val.etf ? 'ETF 不显示' : '') +
+        ratioCell(r.val.ps, r.val.etf ? 'ETF 不显示' : '') +
+        (r.val.mcap != null
+          ? '<td>' + compactUSD(r.val.mcap) + '</td>'
+          : '<td class="muted"' + (r.val.etf ? ' title="ETF 不显示"' : '') + '>—</td>') +
         '<td class="note-cell">' +
         noteHTML +
         '</td>' +
@@ -457,12 +507,20 @@ function computeAndRender() {
         : 'IVR 需一年 IV 历史，快照超 ' + IVR_MAX_AGE_DAYS + ' 天已隐藏';
     const first =
       ivPart + ' · HV=30日历史波动率（日收盘实算）· ' + ivrPart + ' · 绿=IV比HV高5点以上，权利金偏厚';
+    const valLine = valData.asOf
+      ? '估值：市盈率=现价/近四季GAAP摊薄EPS（SEC），远期PE=现价/未来四季一致预期EPS（Nasdaq/Zacks），市销率=市值/近四季营收；基本面 ' +
+        valData.asOf +
+        ' 更新，随实时价变动；ETF、亏损或无数据显示 —'
+      : '';
     // keep the period-return explainer (2nd line) that ships in fund.html
     if (!vn.dataset.line2) {
       const parts = vn.innerHTML.split(/<br\s*\/?>/i);
       vn.dataset.line2 = parts.length > 1 ? parts.slice(1).join('<br>') : '';
     }
-    vn.innerHTML = escapeHTML(first) + (vn.dataset.line2 ? '<br>' + vn.dataset.line2 : '');
+    vn.innerHTML =
+      escapeHTML(first) +
+      (vn.dataset.line2 ? '<br>' + vn.dataset.line2 : '') +
+      (valLine ? '<br>' + escapeHTML(valLine) : '');
   }
 
   const holdBadge = holdingsSourceBadge(holdingsMeta);
@@ -537,7 +595,7 @@ async function boot() {
   CFG.sub = data.sub || CFG.sub;
   CFG.start = data.start || CFG.start;
 
-  await loadVol();
+  await Promise.all([loadVol(), loadValuation()]);
   const syms = [...new Set(holdings.map((h) => h.ticker))];
   const snapshot = pricesFromHoldings(holdings, data.prices);
   const ivP = loadLiveIV(syms);

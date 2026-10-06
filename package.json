@@ -12,7 +12,8 @@
     "summaries": "node scripts/generate-summaries.mjs",
     "assets": "node scripts/generate-assets.mjs",
     "13f": "node scripts/generate-13f.mjs",
-    "dividends": "node scripts/generate-dividends.mjs"
+    "dividends": "node scripts/generate-dividends.mjs",
+    "valuation": "node scripts/generate-valuation.mjs"
   },
   "repository": {
     "type": "git",
