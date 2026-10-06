@@ -583,3 +583,9 @@ table.data td.idx-val { color: #AEB6C4; white-space: nowrap; }
   color: var(--accent);
   background: rgba(240, 185, 11, 0.12);
 }
+
+/* keep notes from wrapping into 4–6 lines (tall rows looked like blank rows under the frozen header) */
+.holdings-panel table.data td.note-cell { min-width: 230px; }
+@media (max-width: 760px) {
+  .holdings-panel table.data td.note-cell { min-width: 190px; }
+}

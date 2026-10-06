@@ -294,3 +294,8 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 - **根因 2（WebKit 潜在 bug）**：JS 在 WebKit 里过早量 `.top-nav` 高度（≈3211px），`--nav-h` 过大 → 滚动框 max-height=0，表格整体塌掉。改为 ResizeObserver 重测并限定 40–160px。
 - iOS 加固：`position:-webkit-sticky`，表格 `border-collapse:separate; border-spacing:0`，滚动框 `max-height: max(320px, calc(100svh - var(--nav-h) - 16px))`（svh 不随 Safari 工具栏伸缩抖动，vh 兜底），关闭 `-webkit-overflow-scrolling:touch`。
 - 验证：Playwright WebKit（iPhone 14）+ Chromium 桌面，表格内滚动下/右后表头与首列位置不变。截图 /workspace/sticky-ios/。
+
+## 2026-10-06 晚 — 持仓表「较成本」异常值
+- 不是 10/05 数据拷贝导致：AMD −61.30 / META 80.34 / PLTR 3.59 在 git 里早已如此（AMD 自 adbc882 9/29 券商重构起：10 股 @74.59 → 卖 2 股后 8 股 @−61.30 = (745.9 − 卖出所得 ≈1236)/8，即券商**摊薄成本**，已实现盈亏冲减成本；PLTR 3.59 低于其历史最低价 ≈5.9，也只能是摊薄成本；META 80.34 疑似同理）。fund.js 直接 市值/成本−1，摊薄成本很小或为负时百分比失真。
+- 修复：`costRetOf()` 成本 ≤0 或结果 > +1000%（或 < −100%）时显示 —，悬停显示每股成本与原因；其余照常。表头加说明。没有改任何成本数据。「持仓累计盈亏」卡片（Σ市值−Σ摊薄成本）口径不变。
+- “表头下空行”：不是多余 DOM 行（tbody 14 行），是备注列换行成 4–6 行导致行高 ~100px，滚动时行内容藏在冻结表头后只露出空白下半截。给备注列 min-width（桌面 230 / 手机 190px）后行高统一 ~60px。

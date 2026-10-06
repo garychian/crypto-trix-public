@@ -263,6 +263,24 @@ function periodCell(v) {
   return '<td class="' + moneyCls(v) + '" style="font-weight:700">' + pctSigned(v) + '</td>';
 }
 
+// 较成本: holdings cost is the broker's diluted cost (摊薄成本 — realised gains from trims are
+// subtracted), so it can be tiny or negative (AMD after selling 2 of 10 shares → −61.30/股).
+// A % return on such a base is meaningless → show — when cost ≤ 0 or the result exceeds +1000%.
+const COST_RET_MAX = 1000;
+function costRetOf(mv, costRow) {
+  if (mv == null || costRow == null || !(costRow > 0)) return null;
+  const r = (mv / costRow - 1) * 100;
+  return Number.isFinite(r) && r >= -100 && r <= COST_RET_MAX ? r : null;
+}
+function costCell(r) {
+  const per = r.costPer != null ? '成本 $' + r.costPer.toFixed(2) + '/股（券商摊薄成本）' : '无成本数据';
+  if (r.costRet != null) {
+    return '<td class="' + moneyCls(r.costRet) + '" style="font-weight:700" title="' + per + '">' + pctSigned(r.costRet) + '</td>';
+  }
+  const why = r.costPer == null ? per : per + '：成本≤0 或收益率超 +' + COST_RET_MAX + '%，百分比无意义';
+  return '<td class="muted" title="' + why + '">—</td>';
+}
+
 function costOf(h) {
   return h.costTotal != null ? h.costTotal : h.cost != null ? h.cost * h.shares : null;
 }
@@ -414,7 +432,8 @@ function computeAndRender() {
         p && mv != null
           ? (mv * (p.changePct || 0)) / (100 + (p.changePct || 0))
           : null,
-      costRet: mv != null && costRow != null ? (mv / costRow - 1) * 100 : null,
+      costRet: costRetOf(mv, costRow),
+      costPer: h.cost != null && Number.isFinite(Number(h.cost)) ? Number(h.cost) : null,
       wtd: periodRet(p, 'weeklyRef'),
       mtd: periodRet(p, 'monthlyRef'),
       ytd: periodRet(p, 'yearlyRef'),
@@ -499,7 +518,7 @@ function computeAndRender() {
         periodCell(r.wtd) +
         periodCell(r.mtd) +
         periodCell(r.ytd) +
-        periodCell(r.costRet) +
+        costCell(r) +
         vcell +
         (r.val.index
           ? ratioCell(r.val.pe, r.val.tips.pe, true) +
