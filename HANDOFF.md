@@ -307,3 +307,10 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 - 画框（canvas）：深色渐变 + 金色光晕 + 顶部金线；头部 = logo + 标题 + 「CryptoTrix · 页面名」+ 截图时间（Asia/Shanghai）；卡片投影；底部 @CryptoTrix1 + #NFA · Not financial advice。没有 vercel 网址。
 - 交付：桌面 → 下载（不变）。手机（iPhone/iPad/Android UA）→ `navigator.canShare({files})` 支持时直接 `navigator.share`；不支持或手势过期（NotAllowedError）→ 全屏预览层（长按图片保存，data: URL；分享/下载/关闭按钮，Esc/点背景关闭）。用户取消分享（AbortError）不弹预览。
 - 验证：Playwright WebKit iPhone 14 + Chromium 1440 桌面，表格滚动到中间再截图：克隆 14 行 × 13 列、滚动框 scrollWidth=clientWidth，PNG 2718×1890（手机）/2734×1890（桌面）。其他 12 个截图按钮（首页 4 个、基金页 4 个、期权、13F、A股、全球资产）两种浏览器都正常出图。图在 /workspace/snapshot-mobile/。
+
+## 2026-10-07 22:xx CST — second stale-deploy rollback fixed + guard
+- Cause: prod `1ltcphq9z` (2026-10-07 20:32 CST) was a Vercel CLI deploy from the Mac by the Claude Code agent (actor claude-code, commit cad4509 Day 83 + dirty Day 84 data). The Mac was 9 commits behind origin, so valuation columns/valuation.json/sticky table/live IV disappeared. The launchd job com.cryptotrix.syncsite is NOT the culprit (it fails with "Operation not permitted", a macOS TCC block on ~/Downloads).
+- Data: the Mac's Day 84 commit (fund-checkins 10-07, holdings/vix/yield10 10-06) matched prod byte for byte. It was rebased onto origin (Day 83 dropped as already upstream) and pushed as 8ebf972. Backup branch on Mac: backup/pre-rebase-20261007.
+- Guard: `scripts/deploy-prod.sh` fetches and refuses if origin/feat/public-site is not an ancestor of HEAD or public/api is dirty, then pushes and deploys. sync-site.sh uses it. CLAUDE.md/AGENTS.md say to never run `vercel --prod` directly.
+- Mac: Claude Code PreToolUse hook ~/.claude/hooks/guard-vercel-prod.sh (in ~/.claude/settings.json, backup settings.json.bak-20261007) blocks raw `vercel … --prod` and points to scripts/deploy-prod.sh.
+- Redeployed from box via guard: nvp73x6oq; valuation.json 200, fund JS has valuation columns, data matches repo.
