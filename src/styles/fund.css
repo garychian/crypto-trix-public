@@ -589,3 +589,52 @@ table.data td.idx-val { color: #AEB6C4; white-space: nowrap; }
 @media (max-width: 760px) {
   .holdings-panel table.data td.note-cell { min-width: 190px; }
 }
+
+/* —— 持仓 snapshot export (cloned off-screen by src/lib/snapshot.js, class snap-export-holdings) ——
+   Desktop-style layout regardless of the capturing device's viewport (overrides the ≤760px rules),
+   no frozen cells, zebra rows, gold header rule. The on-page table is unaffected. */
+.snap-export-holdings {
+  padding: 4px 4px 10px !important;
+  border-color: rgba(240, 185, 11, 0.16) !important;
+  background: linear-gradient(180deg, #151921 0%, #12151B 60%) !important;
+}
+.snap-export-holdings > .panel-head { display: none !important; }
+.snap-export-holdings table.data thead th {
+  padding: 14px 13px 12px;
+  font-size: 10.5px;
+  color: #B9A46A;
+  background: transparent !important;
+  box-shadow: inset 0 -1px 0 rgba(240, 185, 11, 0.32) !important;
+}
+.snap-export-holdings table.data tbody td {
+  padding: 12px 13px;
+  font-size: 14px;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.snap-export-holdings table.data tbody tr:nth-child(even) td { background: rgba(255, 255, 255, 0.028) !important; }
+.snap-export-holdings table.sticky-first th:first-child,
+.snap-export-holdings table.sticky-first td:first-child {
+  padding-left: 18px;
+  padding-right: 10px;
+  width: auto;
+  white-space: nowrap;
+}
+.snap-export-holdings table.sticky-first .t-tick { flex-direction: row; align-items: baseline; gap: 4px; }
+.snap-export-holdings table.sticky-first .w-badge { margin-left: 6px; font-size: 11px; }
+/* notes on one line (equal row heights); if that would make the image wider than maxExportWidth,
+   snapshot.js adds .snap-export-wrap and they wrap inside a capped column instead */
+.snap-export-holdings table.data td.note-cell {
+  min-width: 0;
+  padding-right: 18px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+.snap-export-holdings.snap-export-wrap table.data td.note-cell {
+  min-width: 260px;
+  max-width: 380px;
+  white-space: normal;
+}
+.snap-export-holdings .vol-note { padding-left: 16px; padding-right: 16px; }

@@ -661,9 +661,20 @@ async function boot() {
   ['#stat-cards', 'fund-stats'],
   ['#equity-chart', 'nav-chart'],
   ['#alloc-chart', 'allocation'],
-  ['.holdings-panel', 'holdings'],
+  [
+    '.holdings-panel',
+    'holdings',
+    {
+      // export at a fixed desktop width so every column fits (no horizontal scroll in the PNG)
+      title: '持仓 Holdings',
+      sub: () => (document.getElementById('holdings-count') || {}).textContent || '',
+      exportWidth: 1200,
+      maxExportWidth: 1600,
+      exportClass: 'snap-export-holdings',
+    },
+  ],
   ['#dividend-card', 'dividends'],
-].forEach(([sel, name]) => attachSnapshotButton(sel, name));
+].forEach(([sel, name, opts]) => attachSnapshotButton(sel, name, opts));
 
 renderDividendCard(document.getElementById('dividend-card'));
 

@@ -299,3 +299,11 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 - 不是 10/05 数据拷贝导致：AMD −61.30 / META 80.34 / PLTR 3.59 在 git 里早已如此（AMD 自 adbc882 9/29 券商重构起：10 股 @74.59 → 卖 2 股后 8 股 @−61.30 = (745.9 − 卖出所得 ≈1236)/8，即券商**摊薄成本**，已实现盈亏冲减成本；PLTR 3.59 低于其历史最低价 ≈5.9，也只能是摊薄成本；META 80.34 疑似同理）。fund.js 直接 市值/成本−1，摊薄成本很小或为负时百分比失真。
 - 修复：`costRetOf()` 成本 ≤0 或结果 > +1000%（或 < −100%）时显示 —，悬停显示每股成本与原因；其余照常。表头加说明。没有改任何成本数据。「持仓累计盈亏」卡片（Σ市值−Σ摊薄成本）口径不变。
 - “表头下空行”：不是多余 DOM 行（tbody 14 行），是备注列换行成 4–6 行导致行高 ~100px，滚动时行内容藏在冻结表头后只露出空白下半截。给备注列 min-width（桌面 230 / 手机 190px）后行高统一 ~60px。
+
+## 2026-10-07 — 截图（保存为图片）在 iPhone 上不完整 → 整表导出 + 新样式 + iOS 分享
+- **根因**：`src/lib/snapshot.js` 直接对页面上的卡片节点跑 html-to-image。持仓表在 `#holdings-scroll`（overflow:auto + max-height≈一屏 + sticky 表头/首列）里，html-to-image 按节点当前布局克隆，滚动框尺寸和裁切照搬 → 只拍到滚动框可见那部分（手机上列多、屏窄，缺得最明显）。另外 iOS Safari 对 `<a download>` 的 blob 下载不可靠。
+- **改法**（全部截图按钮通用）：点击后把卡片 `cloneNode` 到原卡片后面一个 `position:fixed; left:-100000px` 的 `.snap-stage` 里（保留祖先 CSS 选择器），去掉内部所有 overflow:auto/scroll 的裁切和 max-height、sticky→static；横向滚动的 chip 行改成换行；若表格仍溢出就把克隆加宽直到放得下。再对克隆跑 html-to-image，pixelRatio ≤2 且按 W×H ≤16M 像素自动降（iOS canvas 上限 16.7M）。
+- 持仓表额外参数（`src/fund.js` attachSnapshotButton 第三个参数）：`exportWidth:1200`、`maxExportWidth:1600`、`exportClass:'snap-export-holdings'`、标题「持仓 Holdings」、副标题 = 页面「财富自由基金 · N 只」。`src/styles/fund.css` 末尾 `.snap-export-holdings`：桌面版布局（覆盖 ≤760px 规则）、隐藏卡内标题、斑马纹、金色表头线、备注单行（超宽时 `.snap-export-wrap` 改为换行）。页面上的表格不受影响。
+- 画框（canvas）：深色渐变 + 金色光晕 + 顶部金线；头部 = logo + 标题 + 「CryptoTrix · 页面名」+ 截图时间（Asia/Shanghai）；卡片投影；底部 @CryptoTrix1 + #NFA · Not financial advice。没有 vercel 网址。
+- 交付：桌面 → 下载（不变）。手机（iPhone/iPad/Android UA）→ `navigator.canShare({files})` 支持时直接 `navigator.share`；不支持或手势过期（NotAllowedError）→ 全屏预览层（长按图片保存，data: URL；分享/下载/关闭按钮，Esc/点背景关闭）。用户取消分享（AbortError）不弹预览。
+- 验证：Playwright WebKit iPhone 14 + Chromium 1440 桌面，表格滚动到中间再截图：克隆 14 行 × 13 列、滚动框 scrollWidth=clientWidth，PNG 2718×1890（手机）/2734×1890（桌面）。其他 12 个截图按钮（首页 4 个、基金页 4 个、期权、13F、A股、全球资产）两种浏览器都正常出图。图在 /workspace/snapshot-mobile/。
