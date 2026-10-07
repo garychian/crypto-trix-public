@@ -57,7 +57,7 @@ Whenever positions change, update the repo data and redeploy:
    - `holdings[]`: `{ ticker, shares, cost, weight? }`
    - `options[]`: `{ symbol, type, strike, expiry, premium }`
 2. Optionally mirror the same rows into `public/data/holdings.csv` / `options.csv`.
-3. Commit, push, and Vercel will redeploy (or run `vercel deploy --prod`).
+3. Commit, push, and Vercel will redeploy (or run `scripts/deploy-prod.sh`).
 
 ### Option B — edit CSVs then regenerate
 
@@ -134,7 +134,7 @@ Requires Node 18+.
 `vercel.json` is included for headers + API rewrite.
 
 ```bash
-~/.local/bin/vercel deploy --prod --yes
+scripts/deploy-prod.sh   # guarded: refuses if HEAD is behind origin
 ```
 
 ---

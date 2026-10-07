@@ -34,7 +34,8 @@ case "$out" in
       echo "ERROR: git push failed (ssh-agent missing key?)"
       exit 1
     fi
-    if vercel deploy --prod --yes >/dev/null 2>&1; then
+    # Guarded deploy: refuses if HEAD is behind origin (see scripts/deploy-prod.sh).
+    if "$REPO/scripts/deploy-prod.sh" >/dev/null 2>&1; then
       echo "DEPLOYED"
     else
       echo "ERROR: vercel deploy failed"
