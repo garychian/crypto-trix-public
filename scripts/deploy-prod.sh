@@ -18,4 +18,4 @@ if [ -n "$(git log --oneline "origin/$BRANCH..HEAD")" ]; then
   git push -q origin "HEAD:$BRANCH" || { echo "DEPLOY REFUSED: push failed"; exit 1; }
 fi
 VERCEL="$(command -v vercel || echo "$HOME/.local/bin/vercel")"
-exec "$VERCEL" deploy --prod --yes "$@"
+exec "$VERCEL" deploy --prod --yes --scope chaqian888-1586s-projects "$@"
