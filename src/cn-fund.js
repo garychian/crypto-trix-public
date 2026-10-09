@@ -2,6 +2,7 @@ import './nav.js';
 import { attachSnapshotButton } from './lib/snapshot.js';
 import { escapeHTML } from './lib/format.js';
 import { renderAllocation } from './allocation-chart.js';
+import { initCnFundChart } from './cn-fund-chart.js';
 
 const CAT_COLORS = {
   固收: '#4C6FF7',
@@ -129,6 +130,7 @@ async function boot() {
     if (data.note) document.getElementById('data-note').textContent = data.note;
 
     renderStats(data);
+    await initCnFundChart(document.getElementById('cn-hist-chart'));
     renderHoldings(data);
     renderIncome(data);
   } catch (err) {
@@ -140,6 +142,7 @@ async function boot() {
 
 [
   ['#stat-cards', 'cn-fund-overview'],
+  ['#cn-hist-chart', 'cn-fund-history'],
   ['#alloc-chart', 'cn-fund-allocation'],
   ['#cn-income-card', 'cn-fund-income'],
 ].forEach(([sel, name]) => attachSnapshotButton(sel, name));

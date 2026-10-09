@@ -314,3 +314,9 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 - Guard: `scripts/deploy-prod.sh` fetches and refuses if origin/feat/public-site is not an ancestor of HEAD or public/api is dirty, then pushes and deploys. sync-site.sh uses it. CLAUDE.md/AGENTS.md say to never run `vercel --prod` directly.
 - Mac: Claude Code PreToolUse hook ~/.claude/hooks/guard-vercel-prod.sh (in ~/.claude/settings.json, backup settings.json.bak-20261007) blocks raw `vercel … --prod` and points to scripts/deploy-prod.sh.
 - Redeployed from box via guard: nvp73x6oq; valuation.json 200, fund JS has valuation columns, data matches repo.
+
+## 2026-10-09 — A股基金「周度走势」多线图表
+- **数据** `public/data/cn-fund-history.json`：`{ unit, currency, note, series:[{ date, total_wan, categories:{ "固收":N, "A股":N, "海外":N, "港股":N, "商品":N } }] }`，单位万元。已用 2026-09-21（107.16）与 2026-10-05（105.48）两个快照播种。
+- **每周更新**：改完 `cn-fund.json` 后，在 `series` **末尾追加**一个同结构对象（date=as_of，total_wan + categories 金额），再 commit + `scripts/deploy-prod.sh`。不要改历史点。
+- **前端**：`src/cn-fund-chart.js` + `cn-fund.html` `#cn-hist-chart`（统计卡下方、持仓 donut 上方）+ `src/styles/cn-fund.css`（`.cnh-*`）。粗金色总额线 + 渐变填充；分类细线；悬停十字线 + 日期/总额/各类金额；≤2 点时仍画点线并脚注「数据刚起步」。≥3 点出现 一月/三个月/半年/全部 range pills。
+- **颜色**：总额 `#F0B90B`；固收 `#4C6FF7`；A股 `#E8A838`（略偏暖以免与总额金线重合）；海外 `#0ECB81`；港股 `#F6465D`；商品 `#C084FC`。
