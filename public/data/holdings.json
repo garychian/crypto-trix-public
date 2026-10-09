@@ -1,139 +1,139 @@
 {
-  "as_of": "2026-10-07",
-  "day": 85,
+  "as_of": "2026-10-08",
+  "day": 86,
   "goal_usd": 2000000,
   "cash_usd": 32778.61,
-  "total_assets_usd": 149109.2,
+  "total_assets_usd": 147784.63,
   "handle": "CryptoTrix1",
   "sub": "US EQUITIES",
   "start": "2026-07-16",
-  "note": "券商实数锚定链：10/3 券商表重构锚（10/2 收盘 $147,121.23，现金 $32,778.61 权重反推，MSFT −1 / BRK.B +1 已入锚）→ 10/5 +$1,735.71 → $148,856.95 → 10/6 +$711.19 → $149,568.15 → 10/7 −$458.95 → $149,109.20。今年收益率见 capital.json；持仓累计盈亏由逐股成本×股数与市值现算。",
+  "note": "券商实数锚定链：10/3 券商表重构锚（10/2 收盘 $147,121.23，现金 $32,778.61 权重反推，MSFT −1 / BRK.B +1 已入锚）→ 10/5 +$1,735.71 → $148,856.95 → 10/6 +$711.19 → $149,568.15 → 10/7 −$458.95 → $149,109.20 → 10/8 −$1,324.57 → $147,784.63。今年收益率见 capital.json；持仓累计盈亏由逐股成本×股数与市值现算。",
   "holdings": [
     {
       "ticker": "TSLA",
       "shares": 101,
       "cost": 216.95,
       "costTotal": 21911.95,
-      "weight": 25.59,
-      "price": 377.81,
-      "mv": 38158.81
+      "weight": 25.63,
+      "price": 375.0,
+      "mv": 37875.0
     },
     {
       "ticker": "QQQ",
       "shares": 15.14,
       "cost": 600.44,
       "costTotal": 9090.66,
-      "weight": 7.69,
-      "price": 757.73,
-      "mv": 11472.03
+      "weight": 7.66,
+      "price": 747.58,
+      "mv": 11318.36
     },
     {
       "ticker": "GOOGL",
       "shares": 30.19,
       "cost": 111.97,
       "costTotal": 3380.37,
-      "weight": 7.1,
-      "price": 350.5,
-      "mv": 10581.6
+      "weight": 7.12,
+      "price": 348.29,
+      "mv": 10514.88
     },
     {
       "ticker": "VOO",
       "shares": 14.22,
       "cost": 519.22,
       "costTotal": 7383.31,
-      "weight": 6.81,
-      "price": 714.34,
-      "mv": 10157.91
+      "weight": 6.84,
+      "price": 711.28,
+      "mv": 10114.4
     },
     {
       "ticker": "MSFT",
       "shares": 17.19,
       "cost": 350.61,
       "costTotal": 6026.99,
-      "weight": 6.11,
-      "price": 529.76,
-      "mv": 9106.57
+      "weight": 6.08,
+      "price": 522.61,
+      "mv": 8983.67
     },
     {
       "ticker": "NVDA",
       "shares": 41,
       "cost": 124.04,
       "costTotal": 5085.64,
-      "weight": 6.53,
-      "price": 237.47,
-      "mv": 9736.27
+      "weight": 6.39,
+      "price": 230.48,
+      "mv": 9449.68
     },
     {
       "ticker": "AMD",
       "shares": 8,
       "cost": -61.3,
       "costTotal": -490.4,
-      "weight": 3.47,
-      "price": 645.86,
-      "mv": 5166.88
+      "weight": 3.36,
+      "price": 620.68,
+      "mv": 4965.44
     },
     {
       "ticker": "META",
       "shares": 6.03,
       "cost": 80.34,
       "costTotal": 484.45,
-      "weight": 2.92,
-      "price": 721.31,
-      "mv": 4349.5
+      "weight": 2.94,
+      "price": 720.89,
+      "mv": 4346.97
     },
     {
       "ticker": "AMZN",
       "shares": 17,
       "cost": 202.06,
       "costTotal": 3435.02,
-      "weight": 2.96,
-      "price": 259.92,
-      "mv": 4418.64
+      "weight": 2.92,
+      "price": 254.06,
+      "mv": 4319.02
     },
     {
       "ticker": "BRK.B",
       "shares": 7,
       "cost": 507.06,
       "costTotal": 3549.42,
-      "weight": 2.38,
-      "price": 506.25,
-      "mv": 3543.75
+      "weight": 2.42,
+      "price": 511.05,
+      "mv": 3577.35
     },
     {
       "ticker": "SPCX",
       "shares": 20,
       "cost": 136.8,
       "costTotal": 2736.0,
-      "weight": 2.25,
-      "price": 167.6,
-      "mv": 3352.0
+      "weight": 2.17,
+      "price": 160.57,
+      "mv": 3211.4
     },
     {
       "ticker": "PLTR",
       "shares": 15,
       "cost": 3.59,
       "costTotal": 53.85,
-      "weight": 1.95,
-      "price": 194.12,
-      "mv": 2911.8
+      "weight": 2.02,
+      "price": 198.78,
+      "mv": 2981.7
     },
     {
       "ticker": "AAPL",
       "shares": 6.09,
       "cost": 145.1,
       "costTotal": 883.66,
-      "weight": 1.38,
-      "price": 336.67,
-      "mv": 2050.32
+      "weight": 1.4,
+      "price": 340.42,
+      "mv": 2073.16
     },
     {
       "ticker": "EUV",
       "shares": 50,
       "cost": 26.05,
       "costTotal": 1302.5,
-      "weight": 0.89,
-      "price": 26.49,
-      "mv": 1324.5
+      "weight": 0.86,
+      "price": 25.5,
+      "mv": 1275.0
     }
   ],
   "options": [
@@ -167,22 +167,22 @@
     }
   ],
   "prices": {
-    "TSLA": 377.81,
-    "QQQ": 757.73,
-    "GOOGL": 350.5,
-    "VOO": 714.34,
-    "MSFT": 529.76,
-    "NVDA": 237.47,
-    "AMD": 645.86,
-    "META": 721.31,
-    "AMZN": 259.92,
-    "BRK.B": 506.25,
-    "SPCX": 167.6,
-    "PLTR": 194.12,
-    "AAPL": 336.67,
-    "EUV": 26.49
+    "TSLA": 375.0,
+    "QQQ": 747.58,
+    "GOOGL": 348.29,
+    "VOO": 711.28,
+    "MSFT": 522.61,
+    "NVDA": 230.48,
+    "AMD": 620.68,
+    "META": 720.89,
+    "AMZN": 254.06,
+    "BRK.B": 511.05,
+    "SPCX": 160.57,
+    "PLTR": 198.78,
+    "AAPL": 340.42,
+    "EUV": 25.5
   },
-  "holdingsNote": "2026-10-07 收盘（10/3 券商表重构锚 + 官方收盘价重估）",
-  "cum_pnl_usd": 55134.2,
-  "annualized_return_pct": 15.58
+  "holdingsNote": "2026-10-08 收盘（10/3 券商表重构锚 + 官方收盘价重估）",
+  "cum_pnl_usd": 53809.63,
+  "annualized_return_pct": 15.25
 }
