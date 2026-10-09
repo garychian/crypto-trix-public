@@ -320,3 +320,9 @@ User prefers **zh-Hans**. Product UI is zh-first (portfolio page EN). Speak Chin
 - **每周更新**：改完 `cn-fund.json` 后，在 `series` **末尾追加**一个同结构对象（date=as_of，total_wan + categories 金额），再 commit + `scripts/deploy-prod.sh`。不要改历史点。
 - **前端**：`src/cn-fund-chart.js` + `cn-fund.html` `#cn-hist-chart`（统计卡下方、持仓 donut 上方）+ `src/styles/cn-fund.css`（`.cnh-*`）。粗金色总额线 + 渐变填充；分类细线；悬停十字线 + 日期/总额/各类金额；≤2 点时仍画点线并脚注「数据刚起步」。≥3 点出现 一月/三个月/半年/全部 range pills。
 - **颜色**：总额 `#F0B90B`；固收 `#4C6FF7`；A股 `#E8A838`（略偏暖以免与总额金线重合）；海外 `#0ECB81`；港股 `#F6465D`；商品 `#C084FC`。
+
+## 2026-10-09 — A股基金周度更新
+- `cn-fund.json` as_of 2026-10-09，总额 **105.43 万**（债券 42.55 / 黄金 3.77 / 红利低波 22.55 / 标普500 5.7 / 纳指100 10.54 / 中证A500 8.39 / 沪深300 5.38 / 恒生科技 5.41 / 科创和创业板 1.14）
+- 分类：固收 42.55 / A股 37.46 / 海外 16.24 / 港股 5.41 / 商品 3.77
+- 快照 `snapshots/2026-10-09-cn.json`；`cn-fund-history.json` series 追加同日一点（保留 9/21、10/05）
+- income 重算：固收年化 ¥14,893 · 红利低波 ¥11,275 · 合计 ¥26,168 · 月均 ¥2,181 · 相对总资产 2.48%
