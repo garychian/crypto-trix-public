@@ -1,0 +1,188 @@
+{
+  "as_of": "2026-10-09",
+  "day": 87,
+  "goal_usd": 2000000,
+  "cash_usd": 32962.33,
+  "total_assets_usd": 149354,
+  "handle": "CryptoTrix1",
+  "sub": "US EQUITIES",
+  "start": "2026-07-16",
+  "note": "券商实数锚定链：10/3 券商表重构锚（10/2 收盘 $147,121.23，现金 $32,778.61 权重反推，MSFT −1 / BRK.B +1 已入锚）→ 10/5 +$1,735.71 → $148,856.95 → 10/6 +$711.19 → $149,568.15 → 10/7 −$458.95 → $149,109.20 → 10/8 −$1,324.57 → $147,784.63 → 10/9 +$1,569.37 → $149,354（现金按权重反推 $32,962.33，持仓权重 77.93%；累计盈亏按券商成本口径 Σ(现价−成本)×股数，收益率 52.76%、年化 14.21%）。今年收益率见 capital.json；持仓累计盈亏由逐股成本×股数与市值现算。",
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "shares": 100,
+      "cost": 215.37,
+      "costTotal": 21537.42,
+      "weight": 25.63,
+      "price": 382.7,
+      "mv": 38270.0
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 15.14,
+      "cost": 600.44,
+      "costTotal": 9093.31,
+      "weight": 7.62,
+      "price": 751.27,
+      "mv": 11377.53
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 31.19,
+      "cost": 119.47,
+      "costTotal": 3726.34,
+      "weight": 7.34,
+      "price": 351.66,
+      "mv": 10968.52
+    },
+    {
+      "ticker": "VOO",
+      "shares": 14.22,
+      "cost": 519.22,
+      "costTotal": 7382.91,
+      "weight": 6.81,
+      "price": 715.59,
+      "mv": 10175.22
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 41,
+      "cost": 124.04,
+      "costTotal": 5085.63,
+      "weight": 6.29,
+      "price": 229.28,
+      "mv": 9400.48
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 17.19,
+      "cost": 350.61,
+      "costTotal": 6026.45,
+      "weight": 6.16,
+      "price": 535.07,
+      "mv": 9196.91
+    },
+    {
+      "ticker": "AMD",
+      "shares": 8,
+      "cost": -61.3,
+      "costTotal": -490.37,
+      "weight": 3.26,
+      "price": 608.1,
+      "mv": 4864.8
+    },
+    {
+      "ticker": "AMZN",
+      "shares": 17,
+      "cost": 202.06,
+      "costTotal": 3435.04,
+      "weight": 2.99,
+      "price": 262.43,
+      "mv": 4461.31
+    },
+    {
+      "ticker": "META",
+      "shares": 6.04,
+      "cost": 80.34,
+      "costTotal": 484.88,
+      "weight": 2.9,
+      "price": 718.67,
+      "mv": 4337.64
+    },
+    {
+      "ticker": "BRK.B",
+      "shares": 7,
+      "cost": 507.06,
+      "costTotal": 3549.41,
+      "weight": 2.42,
+      "price": 515.62,
+      "mv": 3609.34
+    },
+    {
+      "ticker": "SPCX",
+      "shares": 20,
+      "cost": 136.8,
+      "costTotal": 2736.0,
+      "weight": 2.18,
+      "price": 162.57,
+      "mv": 3251.4
+    },
+    {
+      "ticker": "PLTR",
+      "shares": 15,
+      "cost": 3.59,
+      "costTotal": 53.8,
+      "weight": 2.1,
+      "price": 209.05,
+      "mv": 3135.75
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6.09,
+      "cost": 145.1,
+      "costTotal": 884.4,
+      "weight": 1.37,
+      "price": 336.64,
+      "mv": 2051.82
+    },
+    {
+      "ticker": "EUV",
+      "shares": 50,
+      "cost": 26.05,
+      "costTotal": 1302.7,
+      "weight": 0.86,
+      "price": 25.81,
+      "mv": 1290.5
+    }
+  ],
+  "options": [
+    {
+      "symbol": "DRAM",
+      "type": "SELL PUT",
+      "strike": 50,
+      "expiry": "2026-11-20",
+      "premium": 789
+    },
+    {
+      "symbol": "RKLB",
+      "type": "SELL PUT",
+      "strike": 60,
+      "expiry": "2027-06-17",
+      "premium": 1740
+    },
+    {
+      "symbol": "SPCX",
+      "type": "SELL PUT",
+      "strike": 100,
+      "expiry": "2027-01-15",
+      "premium": 719
+    },
+    {
+      "symbol": "EUV",
+      "type": "SELL PUT",
+      "strike": 27,
+      "expiry": "2026-10-16",
+      "premium": 260
+    }
+  ],
+  "prices": {
+    "TSLA": 382.7,
+    "QQQ": 751.27,
+    "GOOGL": 351.66,
+    "VOO": 715.59,
+    "NVDA": 229.28,
+    "MSFT": 535.07,
+    "AMD": 608.1,
+    "AMZN": 262.43,
+    "META": 718.67,
+    "BRK.B": 515.62,
+    "SPCX": 162.57,
+    "PLTR": 209.05,
+    "AAPL": 336.64,
+    "EUV": 25.81
+  },
+  "holdingsNote": "2026-10-09 收盘（用户券商表粘贴；小数股由市值/现价还原）",
+  "cum_pnl_usd": 51583.3,
+  "annualized_return_pct": 14.21
+}

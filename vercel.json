@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    { "source": "/portfolio.html", "destination": "/fund.html", "permanent": true },
+    { "source": "/portfolio", "destination": "/fund.html", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ]
+}

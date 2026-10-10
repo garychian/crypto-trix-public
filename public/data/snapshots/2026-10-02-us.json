@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-02",
+  "source": "public/data/holdings.json",
+  "total_usd": 147121.23,
+  "cash_usd": 32778.61,
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "shares": 101,
+      "price": 370.59,
+      "mv": 37429.59,
+      "cost_total": 21911.95
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 15.14,
+      "price": 749.58,
+      "mv": 11348.64,
+      "cost_total": 9090.66
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 30.19,
+      "price": 343.5,
+      "mv": 10370.27,
+      "cost_total": 3380.37
+    },
+    {
+      "ticker": "VOO",
+      "shares": 14.22,
+      "price": 707.54,
+      "mv": 10061.22,
+      "cost_total": 7383.31
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 17.19,
+      "price": 517.53,
+      "mv": 8896.34,
+      "cost_total": 6026.99
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 41,
+      "price": 233.95,
+      "mv": 9591.95,
+      "cost_total": 5085.64
+    },
+    {
+      "ticker": "AMD",
+      "shares": 8,
+      "price": 633.91,
+      "mv": 5071.28,
+      "cost_total": -490.4
+    },
+    {
+      "ticker": "META",
+      "shares": 6.03,
+      "price": 728.08,
+      "mv": 4390.32,
+      "cost_total": 484.45
+    },
+    {
+      "ticker": "AMZN",
+      "shares": 17,
+      "price": 251.52,
+      "mv": 4275.84,
+      "cost_total": 3435.02
+    },
+    {
+      "ticker": "BRK.B",
+      "shares": 7,
+      "price": 502.65,
+      "mv": 3518.55,
+      "cost_total": 3549.42
+    },
+    {
+      "ticker": "SPCX",
+      "shares": 20,
+      "price": 158.96,
+      "mv": 3179.2,
+      "cost_total": 2736
+    },
+    {
+      "ticker": "PLTR",
+      "shares": 15,
+      "price": 188.75,
+      "mv": 2831.25,
+      "cost_total": 53.85
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6.09,
+      "price": 333.69,
+      "mv": 2032.17,
+      "cost_total": 883.66
+    },
+    {
+      "ticker": "EUV",
+      "shares": 50,
+      "price": 26.92,
+      "mv": 1346,
+      "cost_total": 1302.5
+    }
+  ]
+}
