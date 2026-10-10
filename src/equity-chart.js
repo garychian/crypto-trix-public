@@ -2,6 +2,8 @@
  * 净值走势 for 财富自由基金 tab.
  * Reconstructs total assets from fund-checkins daily pnl (x-axis = US close
  * date), anchored so the last point matches holdings.json total_assets_usd.
+ * 「本周/本月」chips use the same calendar windows as the WTD/MTD cards;
+ * 区间涨跌 = Σ daily pnl = NAV(end) − NAV(prior close before first day).
  *
  * Look: monotone-cubic gold line (no overshoot), gradient area, dashed grid,
  * glowing end dot + latest value, crosshair + tooltip card (date / NAV /
@@ -10,8 +12,10 @@
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const RANGES = {
-  week: { label: '一周', days: 7 },
-  month: { label: '一月', days: 30 },
+  // week/month = calendar period (Mon–latest / month-start–latest), same window as
+  // fund.js 本周盈亏 / 本月盈亏 via computePeriod(). Rolling windows for the rest.
+  week: { label: '本周', mode: 'calendar-week' },
+  month: { label: '本月', mode: 'calendar-month' },
   quarter: { label: '三个月', days: 92 },
   year: { label: '一年', days: 365 },
   all: { label: '全部', days: Infinity },
@@ -104,15 +108,50 @@ export function buildEquitySeries(checkins, anchorTotal) {
   });
 }
 
+/** ISO date string YYYY-MM-DD from a local Date. */
+function isoDate(dt) {
+  const y = dt.getFullYear();
+  const m = String(dt.getMonth() + 1).padStart(2, '0');
+  const d = String(dt.getDate()).padStart(2, '0');
+  return y + '-' + m + '-' + d;
+}
+
+/**
+ * Slice points for a range chip.
+ * week/month use the same calendar windows as computePeriod (本周/本月卡片).
+ */
 function filterRange(points, rangeKey) {
   if (!points.length) return [];
   const cfg = RANGES[rangeKey] || RANGES.month;
+  if (cfg.mode === 'calendar-week' || cfg.mode === 'calendar-month') {
+    const last = parseDate(points[points.length - 1].date);
+    let from;
+    if (cfg.mode === 'calendar-week') {
+      // Monday of the week that contains the latest close
+      const mon = new Date(last);
+      mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7));
+      from = isoDate(mon);
+    } else {
+      from = isoDate(new Date(last.getFullYear(), last.getMonth(), 1));
+    }
+    const filtered = points.filter((p) => p.date >= from);
+    return filtered.length ? filtered : points.slice(-1);
+  }
   if (!Number.isFinite(cfg.days)) return points;
   const last = parseDate(points[points.length - 1].date);
   const cutoff = new Date(last);
   cutoff.setDate(cutoff.getDate() - (cfg.days - 1));
   const filtered = points.filter((p) => parseDate(p.date) >= cutoff);
   return filtered.length >= 2 ? filtered : points.slice(-Math.min(points.length, 5));
+}
+
+/** NAV just before the first point's daily move (= prior close). */
+function rangeStartNav(slice) {
+  if (!slice.length) return null;
+  const first = slice[0];
+  const pnl = Number(first.pnl);
+  if (Number.isFinite(pnl)) return first.equity - pnl;
+  return first.equity;
 }
 
 /** Fritsch–Carlson monotone cubic through pts → SVG path (never overshoots). */
@@ -387,13 +426,18 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
     endEl.removeAttribute('hidden');
 
     // header stats
-    const first = slice[0].equity;
+    // 区间涨跌 = NAV(end) − NAV(start of range) = Σ daily pnl in the window.
+    // Start = equity before the first point's day move (prior close), NOT the
+    // first end-of-day point — otherwise Monday's pnl is dropped and 「本周」
+    // disagrees with the 本周盈亏 card (e.g. $496 vs $2,232).
     const last = slice[n - 1].equity;
-    const chg = first ? ((last - first) / first) * 100 : null;
+    const startNav = rangeStartNav(slice);
+    const chgAbs = last - startNav;
+    const chg = startNav ? (chgAbs / startNav) * 100 : null;
     lastEl.textContent = fmtMoney(last);
     chgEl.innerHTML =
-      `${fmtDelta(last - first)} <small>${fmtPct(chg)}</small>`;
-    chgEl.className = 'val ' + cls(last - first);
+      `${fmtDelta(chgAbs)} <small>${fmtPct(chg)}</small>`;
+    chgEl.className = 'val ' + cls(chgAbs);
     metaEl.textContent = `${slice[0].date} → ${slice[n - 1].date} · ${n} 个交易日 · 末值=持仓总资产`;
   }
 
@@ -460,14 +504,15 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
 
     const prevEq = p.equity - p.pnl;
     const dayPct = prevEq ? (p.pnl / prevEq) * 100 : null;
-    const cum = p.equity - slice[0].equity;
-    const cumPct = slice[0].equity ? (cum / slice[0].equity) * 100 : null;
+    const startNav = rangeStartNav(slice);
+    const cum = p.equity - startNav;
+    const cumPct = startNav ? (cum / startNav) * 100 : null;
     tipDate.textContent = fmtTipDate(p.date);
     tipVal.textContent = fmtFull(p.equity);
     tipDay.innerHTML = `${fmtDelta(p.pnl)} <small>${fmtPct(dayPct)}</small>`;
     tipDay.className = cls(p.pnl);
-    tipCum.innerHTML = i === 0 ? '—' : `${fmtDelta(cum)} <small>${fmtPct(cumPct)}</small>`;
-    tipCum.className = i === 0 ? '' : cls(cum);
+    tipCum.innerHTML = `${fmtDelta(cum)} <small>${fmtPct(cumPct)}</small>`;
+    tipCum.className = cls(cum);
     tipEl.hidden = false;
 
     // keep the card inside the chart: flip side + clamp
