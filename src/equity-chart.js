@@ -1,7 +1,7 @@
 /**
  * 净值走势 for 财富自由基金 tab.
- * Reconstructs total assets from fund-checkins daily pnl, anchored so the
- * last point matches holdings.json total_assets_usd when available.
+ * Reconstructs total assets from fund-checkins daily pnl (x-axis = US close
+ * date), anchored so the last point matches holdings.json total_assets_usd.
  *
  * Look: monotone-cubic gold line (no overshoot), gradient area, dashed grid,
  * glowing end dot + latest value, crosshair + tooltip card (date / NAV /
@@ -64,7 +64,29 @@ function fmtTipDate(s) {
 
 const cls = (v) => (v == null || v === 0 ? '' : v > 0 ? 'up' : 'down');
 
-/** Build equity series: { date, equity, pnl }[] */
+/** Market-close date a check-in row covers (发稿日 → previous weekday). */
+function closeDateOf(row) {
+  if (row && row.close_date) return row.close_date;
+  if (!row || !row.date) return null;
+  const [y, m, d] = String(row.date).split('-').map(Number);
+  if (!y || !m || !d) return row.date || null;
+  const dt = new Date(y, m - 1, d);
+  do {
+    dt.setDate(dt.getDate() - 1);
+  } while (dt.getDay() === 0 || dt.getDay() === 6);
+  const yy = dt.getFullYear();
+  const mm = String(dt.getMonth() + 1).padStart(2, '0');
+  const dd = String(dt.getDate()).padStart(2, '0');
+  return yy + '-' + mm + '-' + dd;
+}
+
+/**
+ * Build equity series: { date, equity, pnl }[]
+ * `date` = US market-close date (not 发稿日). Last point is forced to
+ * holdings.json total_assets_usd. Keep fund-checkins in sync with holdings
+ * as_of (one check-in row per new US close); otherwise the residual gap is
+ * absorbed into the baseline and recent peaks look too high.
+ */
 export function buildEquitySeries(checkins, anchorTotal) {
   const series = (checkins && checkins.series) || [];
   if (!series.length) return [];
@@ -78,7 +100,7 @@ export function buildEquitySeries(checkins, anchorTotal) {
   return sorted.map((p) => {
     const pnl = Number(p.pnl) || 0;
     eq += pnl;
-    return { date: p.date, equity: eq, pnl };
+    return { date: closeDateOf(p) || p.date, equity: eq, pnl };
   });
 }
 
@@ -372,7 +394,7 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
     chgEl.innerHTML =
       `${fmtDelta(last - first)} <small>${fmtPct(chg)}</small>`;
     chgEl.className = 'val ' + cls(last - first);
-    metaEl.textContent = `${slice[0].date} → ${slice[n - 1].date} · ${n} 个交易日`;
+    metaEl.textContent = `${slice[0].date} → ${slice[n - 1].date} · ${n} 个交易日 · 末值=持仓总资产`;
   }
 
   function draw(progress) {

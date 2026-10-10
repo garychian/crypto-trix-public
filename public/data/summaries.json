@@ -5,11 +5,11 @@
     "period_start": "2026-10-05",
     "period_end": "2026-10-09",
     "us": {
-      "pnl_usd": 663,
-      "pct": 0.45,
+      "pnl_usd": 2232,
+      "pct": 1.52,
       "total_start": 147121.23,
       "total_end": 149354,
-      "closes": 4,
+      "closes": 5,
       "daily": [
         {
           "date": "2026-10-05",
@@ -26,10 +26,13 @@
         {
           "date": "2026-10-08",
           "pnl_usd": -1325
+        },
+        {
+          "date": "2026-10-09",
+          "pnl_usd": 1569
         }
       ],
       "cash_pct_end": 22.07,
-      "unreconciled_usd": 1570,
       "cash_pct_start": 22.28,
       "top_gainers": [
         {
@@ -154,7 +157,7 @@
       "ytd_usd": 17431,
       "ytd_pct": 13.21
     },
-    "generated_at": "2026-10-10T02:01:56.371Z"
+    "generated_at": "2026-10-10T02:08:03.501Z"
   },
   {
     "type": "week",
