@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-09",
+  "as_of": "2026-10-12",
   "value": 5.24,
-  "prev": 5.23,
-  "chg": 0.01,
-  "chg_pct": -0.56,
+  "prev": 5.24,
+  "chg": 0.0,
+  "chg_pct": 0.0,
   "history": [
     {
       "date": "2026-07-08",
@@ -268,13 +268,17 @@
     {
       "date": "2026-10-09",
       "v": 5.24
+    },
+    {
+      "date": "2026-10-12",
+      "v": 5.24
     }
   ],
   "lo_52w": 4.38,
   "hi_52w": 5.3,
   "lo_90d": 4.38,
   "hi_90d": 5.3,
-  "source": "CBOE TNX 13:59 ET snapshot 52.37 (2026-10-01); Reuters: eased from 24-year high, first pause after 7 straight up days; Oct hike odds halved to ~35%",
+  "source": "CBOE TNX 13:59 ET snapshot 52.40 (2026-10-12); 债市哥伦布日休市，期货口径",
   "live": false,
-  "trade_time": "2026-09-28 13:59 ET (snapshot); settled 5.241% per WSJ"
+  "trade_time": "2026-10-12 13:59 ET (snapshot)"
 }
