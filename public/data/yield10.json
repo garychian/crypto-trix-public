@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-14",
-  "value": 5.19,
-  "prev": 5.22,
-  "chg": -0.03,
-  "chg_pct": -0.57,
+  "as_of": "2026-10-15",
+  "value": 5.09,
+  "prev": 5.19,
+  "chg": -0.1,
+  "chg_pct": -1.93,
   "history": [
     {
       "date": "2026-07-08",
@@ -280,13 +280,17 @@
     {
       "date": "2026-10-14",
       "v": 5.19
+    },
+    {
+      "date": "2026-10-15",
+      "v": 5.09
     }
   ],
   "lo_52w": 4.38,
   "hi_52w": 5.3,
   "lo_90d": 4.38,
   "hi_90d": 5.3,
-  "source": "CBOE TNX 13:59 ET snapshot 51.90 (2026-10-14)；热 CPI 当日 10Y 反而回落 −3bp，跌的是增长预期",
+  "source": "CBOE TNX snapshot 50.89 (2026-10-15)；−10bp 本周最大单日下行；科技抛售中资金避险涌向国债（CNBC）",
   "live": false,
-  "trade_time": "2026-10-14 13:59 ET (snapshot)"
+  "trade_time": "2026-10-15 snapshot"
 }
