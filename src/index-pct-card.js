@@ -2,6 +2,10 @@
  * Index price-percentile card — S&P 500 + Nasdaq-100 vs window high/low.
  * Range chips: 近一年 / 今年 / 两年 / 三年.
  * Live first (/api/index-percentile → Yahoo), static /data/index-percentile.json fallback.
+ *
+ * Note: 近一年 (≈252 sessions) and 今年 (Jan 1 YTD) can show the same % when
+ * both the window high and low fall inside the calendar year — not a shared
+ * window-start bug. UI surfaces high/low dates + a coincidence hint.
  */
 
 const DEFAULT_WINDOWS = [
@@ -52,6 +56,12 @@ function fmtPct(n) {
   return Number(n).toFixed(1) + '%';
 }
 
+/** MM-DD from YYYY-MM-DD (or full if malformed). */
+function fmtMD(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
+  return m ? `${m[2]}-${m[3]}` : iso || '—';
+}
+
 /** Color band: low = green (near lows), mid = gold, high = red-ish caution. */
 function pctTone(pct) {
   if (!Number.isFinite(pct)) return 'mid';
@@ -65,6 +75,31 @@ function barFill(pct) {
   return t.toFixed(1);
 }
 
+/** Same hi/lo levels → percentile collapses across two different windows. */
+function sameExtremes(a, b) {
+  if (!a || !b) return false;
+  return (
+    Number(a.high) === Number(b.high) &&
+    Number(a.low) === Number(b.low) &&
+    a.from !== b.from
+  );
+}
+
+function coincidenceNote(idx, rangeKey) {
+  if (!idx?.ranges) return '';
+  const cur = idx.ranges[rangeKey];
+  if (!cur) return '';
+  // When viewing 1y or ytd and they share extremes, explain why % matches.
+  if (rangeKey === '1y' && sameExtremes(cur, idx.ranges.ytd)) {
+    return `<div class="ipct-coinc muted">高低点均落在今年内 · 百分位与「今年」相同（窗口仍从 ${escapeHTML(cur.from)} 起，共 ${cur.n} 个交易日）</div>`;
+  }
+  if (rangeKey === 'ytd' && sameExtremes(cur, idx.ranges['1y'])) {
+    const y1 = idx.ranges['1y'];
+    return `<div class="ipct-coinc muted">与「近一年」高低点相同 · 近一年多出的 ${y1.n - cur.n} 个交易日未改区间极值</div>`;
+  }
+  return '';
+}
+
 function indexRowHTML(idx, rangeKey) {
   if (!idx) return '';
   const r = (idx.ranges && idx.ranges[rangeKey]) || null;
@@ -73,6 +108,8 @@ function indexRowHTML(idx, rangeKey) {
   const proxyNote = idx.proxy
     ? `<span class="ipct-proxy" title="指数不可用，使用 ETF 代理">代理 ${escapeHTML(idx.proxy)}</span>`
     : '';
+  const loDate = r?.low_date ? ` · ${fmtMD(r.low_date)}` : '';
+  const hiDate = r?.high_date ? ` · ${fmtMD(r.high_date)}` : '';
   return `
     <article class="ipct-idx" data-key="${escapeHTML(idx.key || '')}">
       <div class="ipct-idx-head">
@@ -97,8 +134,8 @@ function indexRowHTML(idx, rangeKey) {
             <div class="ipct-bar-thumb ${tone}" style="left:${barFill(pct)}%"></div>
           </div>
           <div class="ipct-bar-ends muted">
-            <span>低 ${r ? fmtLevel(r.low) : '—'}</span>
-            <span>高 ${r ? fmtLevel(r.high) : '—'}</span>
+            <span>低 ${r ? fmtLevel(r.low) : '—'}${loDate}</span>
+            <span>高 ${r ? fmtLevel(r.high) : '—'}${hiDate}</span>
           </div>
         </div>
       </div>
@@ -109,6 +146,7 @@ function indexRowHTML(idx, rangeKey) {
             : '暂无该窗口数据'
         }
       </div>
+      ${coincidenceNote(idx, rangeKey)}
     </article>`;
 }
 
@@ -134,13 +172,25 @@ function renderBody(root, data, rangeKey) {
     ? `as of ${escapeHTML(asOf)} · 实时接口`
     : `as of ${escapeHTML(asOf)} · 静态快照（可刷新）`;
 
+  // Chip hint under subtitle when 1y≈ytd across both indices
+  const bothCoincide =
+    INDEX_ORDER.every((k) => {
+      const idx = indices[k];
+      return idx && sameExtremes(idx.ranges?.['1y'], idx.ranges?.ytd);
+    }) && (rangeKey === '1y' || rangeKey === 'ytd');
+
+  const headHint = bothCoincide
+    ? `<p class="ipct-hint muted">近一年与今年窗口不同，但高低点都在今年内，故百分位相同。</p>`
+    : '';
+
   root.innerHTML = `
     <div class="ipct-card-inner">
       <div class="ipct-head">
         <div class="ipct-head-text">
           <div class="en">Index · Price Percentile</div>
           <h2 id="ipct-title">美股指数 · 历史价格百分位</h2>
-          <p class="ipct-sub muted">现价在所选窗口高低区间中的位置 · (现价−低)/(高−低)</p>
+          <p class="ipct-sub muted">现价在所选窗口高低区间中的位置 · (现价−低)/(高−低) · 近一年≈252交易日 · 今年=年初至今</p>
+          ${headHint}
         </div>
         <div class="ipct-range" role="tablist" aria-label="时间窗口">${chips}</div>
       </div>

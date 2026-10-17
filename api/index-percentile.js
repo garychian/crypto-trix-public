@@ -19,8 +19,10 @@ const PRIMARY = [
 ];
 
 const WINDOW_DEFS = [
+  // 1y: 365 calendar days ≈ ~252 US trading sessions back from as_of
   { key: '1y', label: '近一年', days: 365 },
-  { key: 'ytd', label: '今年', days: null }, // calendar YTD
+  // ytd: calendar year start (Jan 1 of as_of year); first session may be Jan 2
+  { key: 'ytd', label: '今年', days: null },
   { key: '2y', label: '两年', days: 730 },
   { key: '3y', label: '三年', days: 1095 },
 ];
@@ -76,9 +78,17 @@ function windowStats(rows, price, asOf, def) {
   if (win.length < 2) return null;
   let lo = Infinity;
   let hi = -Infinity;
+  let loDate = null;
+  let hiDate = null;
   for (const r of win) {
-    if (r.close < lo) lo = r.close;
-    if (r.close > hi) hi = r.close;
+    if (r.close < lo) {
+      lo = r.close;
+      loDate = r.date;
+    }
+    if (r.close > hi) {
+      hi = r.close;
+      hiDate = r.date;
+    }
   }
   const span = hi - lo;
   const pct = span > 1e-9 ? ((price - lo) / span) * 100 : 50;
@@ -86,6 +96,8 @@ function windowStats(rows, price, asOf, def) {
     pct: round1(Math.min(100, Math.max(0, pct))),
     high: round2(hi),
     low: round2(lo),
+    high_date: hiDate,
+    low_date: loDate,
     from: win[0].date,
     to: win[win.length - 1].date,
     n: win.length,
