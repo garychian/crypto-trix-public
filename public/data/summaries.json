@@ -1,6 +1,151 @@
 [
   {
     "type": "week",
+    "id": "2026-W42",
+    "period_start": "2026-10-12",
+    "period_end": "2026-10-16",
+    "us": {
+      "pnl_usd": -3344,
+      "pct": -2.24,
+      "total_start": 149354,
+      "total_end": 148210.25,
+      "closes": 5,
+      "daily": [
+        {
+          "date": "2026-10-12",
+          "pnl_usd": -554
+        },
+        {
+          "date": "2026-10-13",
+          "pnl_usd": -100
+        },
+        {
+          "date": "2026-10-14",
+          "pnl_usd": -2519
+        },
+        {
+          "date": "2026-10-15",
+          "pnl_usd": -655
+        },
+        {
+          "date": "2026-10-16",
+          "pnl_usd": 484
+        }
+      ],
+      "cash_pct_end": 23.61,
+      "cash_pct_start": 22.07,
+      "top_gainers": [
+        {
+          "ticker": "META",
+          "contribution_usd": 114,
+          "price_pct": 2.63
+        },
+        {
+          "ticker": "BRK.B",
+          "contribution_usd": 75,
+          "price_pct": 2.08
+        },
+        {
+          "ticker": "AAPL",
+          "contribution_usd": 38,
+          "price_pct": 1.88
+        }
+      ],
+      "top_losers": [
+        {
+          "ticker": "TSLA",
+          "contribution_usd": -1554,
+          "price_pct": -4.06
+        },
+        {
+          "ticker": "QQQ",
+          "contribution_usd": -338,
+          "price_pct": -2.97
+        },
+        {
+          "ticker": "NVDA",
+          "contribution_usd": -327,
+          "price_pct": -3.48
+        }
+      ],
+      "position_changes": []
+    },
+    "cn": {
+      "as_of": "2026-10-16",
+      "total_wan_end": 105.74,
+      "total_wan_start": 105.43,
+      "change_wan": 0.31,
+      "category_changes": [
+        {
+          "name": "固收",
+          "change_wan": 0.04
+        },
+        {
+          "name": "A股",
+          "change_wan": 0.58
+        },
+        {
+          "name": "海外",
+          "change_wan": -0.27
+        },
+        {
+          "name": "港股",
+          "change_wan": -0.02
+        },
+        {
+          "name": "商品",
+          "change_wan": -0.02
+        }
+      ],
+      "fund_changes": [
+        {
+          "name": "债券",
+          "change_wan": 0.04
+        },
+        {
+          "name": "黄金",
+          "change_wan": -0.02
+        },
+        {
+          "name": "红利低波",
+          "change_wan": 0.12
+        },
+        {
+          "name": "标普500",
+          "change_wan": 0.01
+        },
+        {
+          "name": "纳指100",
+          "change_wan": -0.28
+        },
+        {
+          "name": "中证A500",
+          "change_wan": 0.66
+        },
+        {
+          "name": "沪深300",
+          "change_wan": -0.11
+        },
+        {
+          "name": "恒生科技",
+          "change_wan": -0.02
+        },
+        {
+          "name": "科创和创业板",
+          "change_wan": -0.09
+        }
+      ]
+    },
+    "combined": {
+      "fx_usdcny": 6.7146,
+      "total_usd_end": 305688,
+      "ytd_usd": 14087,
+      "ytd_pct": 10.5
+    },
+    "generated_at": "2026-10-17T00:38:13.762Z"
+  },
+  {
+    "type": "week",
     "id": "2026-W41",
     "period_start": "2026-10-05",
     "period_end": "2026-10-09",
