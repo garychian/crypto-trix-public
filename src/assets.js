@@ -13,9 +13,12 @@ const CAT_COLORS = {
 };
 const KIND_LABEL = { live: '实时', derived: '估算', static: '静态约值' };
 const INITIAL_ROWS = 30;
+const LIVE_URL = '/api/assets-live';
 
 const state = {
   data: null,
+  baselineAsOf: null,
+  liveMeta: null, // { live, degraded, as_of, hits }
   cat: '全部',
   q: '',
   hideClasses: false,
@@ -80,6 +83,94 @@ function spark(arr, up) {
 
 function dateShort(s) {
   return s ? String(s).slice(0, 10) : '';
+}
+
+/* ───────── live merge ───────── */
+function scaleDerivedMcap(item, newPrice) {
+  const oldP = item.price;
+  if (!(Number.isFinite(oldP) && oldP > 0 && Number.isFinite(newPrice) && newPrice > 0)) return null;
+  if (!(Number.isFinite(item.mcap_usd) && item.mcap_usd > 0)) return null;
+  return Math.round(item.mcap_usd * (newPrice / oldP));
+}
+
+/** Overlay /api/assets-live updates onto the static baseline. Never invents values. */
+function mergeLive(data, live) {
+  if (!data?.items || !live?.updates) return { merged: 0, stock: 0, crypto: 0 };
+  let merged = 0;
+  let stock = 0;
+  let crypto = 0;
+  for (const item of data.items) {
+    const u = live.updates[item.id];
+    if (!u) continue;
+    let touched = false;
+    if (Number.isFinite(u.mcap_usd) && u.mcap_usd > 0) {
+      item.mcap_usd = u.mcap_usd;
+      touched = true;
+    } else if ((item.kind === 'derived' || item.id === 'gold' || item.id === 'silver') && Number.isFinite(u.price)) {
+      const scaled = scaleDerivedMcap(item, u.price);
+      if (scaled != null) {
+        item.mcap_usd = scaled;
+        touched = true;
+      }
+    }
+    if (Number.isFinite(u.price) && u.price > 0) {
+      item.price = u.price;
+      touched = true;
+    }
+    if (u.chg_24h != null && Number.isFinite(u.chg_24h)) {
+      item.chg_24h = u.chg_24h;
+      touched = true;
+    }
+    if (u.chg_1y != null && Number.isFinite(u.chg_1y)) {
+      item.chg_1y = u.chg_1y;
+      touched = true;
+    }
+    if (Array.isArray(u.spark) && u.spark.length >= 3) {
+      item.spark = u.spark;
+      touched = true;
+    }
+    if (!touched) continue;
+    if (u.data_date) item.data_date = u.data_date;
+    if (u.source) item.source = u.source;
+    item.live_refresh = true;
+    item.stale = false;
+    if (item.kind === 'static') {
+      /* keep static kind for class totals */
+    } else if (item.kind !== 'derived') {
+      item.kind = 'live';
+      item.approx = false;
+    }
+    merged++;
+    if (item.id.startsWith('co-')) stock++;
+    if (item.category === '加密' || item.category === '代币化RWA') crypto++;
+  }
+  if (live.crypto_total?.mcap_usd) {
+    data.crypto_total = live.crypto_total;
+  }
+  data.items.sort((a, b) => b.mcap_usd - a.mcap_usd);
+  data.live_as_of = live.as_of || null;
+  data.live_generated_at = live.generated_at || null;
+  return { merged, stock, crypto };
+}
+
+function setDataBadge(liveMeta, baselineAsOf) {
+  const el = $('data-badge');
+  if (!el) return;
+  el.classList.remove('badge-live', 'badge-delayed');
+  if (liveMeta?.live && !liveMeta.degraded) {
+    el.classList.add('badge-live');
+    const n = liveMeta.hits?.cmc || liveMeta.mergedStock || '';
+    el.textContent = n ? `LIVE · 股票市值` : 'LIVE';
+    el.title = `边缘缓存约 10 分钟 · CMC ${liveMeta.hits?.cmc ?? 0} · Yahoo ${liveMeta.hits?.yahoo ?? 0} · CG ${liveMeta.hits?.coingecko ?? 0}`;
+  } else if (liveMeta?.live) {
+    el.classList.add('badge-live');
+    el.textContent = 'LIVE · 部分';
+    el.title = '部分源成功；其余沿用静态基线';
+  } else {
+    el.classList.add('badge-delayed');
+    el.textContent = '延迟 · 静态基线';
+    el.title = baselineAsOf ? `基线 as_of ${baselineAsOf}` : '实时源不可用，显示静态 assets.json';
+  }
 }
 
 /* ───────── cards ───────── */
@@ -149,6 +240,7 @@ function rowHtml(i) {
   const col = CAT_COLORS[i.category] || '#9AA4B2';
   const est = i.approx || i.kind === 'static' || i.kind === 'derived';
   const estTag = est ? `<span class="est" title="${escapeHTML(i.source)}">${i.kind === 'static' ? '约' : '估'}</span>` : '';
+  const liveTag = i.live_refresh && !est ? `<span class="live-tag" title="已合并实时源">LIVE</span>` : '';
   const typeTag = i.type === 'class' ? '<span class="cls">大类</span>' : '';
   const sub = [i.symbol, i.rwa_type].filter(Boolean).join(' · ');
   const up1y = (i.chg_1y ?? 0) >= 0;
@@ -157,7 +249,7 @@ function rowHtml(i) {
     <td class="l c-rank"><span class="rk">${i._rank}</span></td>
     <td class="l c-name"><div class="nm"><b>${escapeHTML(i.name)}</b>${typeTag}</div><div class="sb">${escapeHTML(sub)}<span class="m-cat"> · ${escapeHTML(i.category)}</span></div></td>
     <td class="l c-cat"><span class="cat-dot" style="background:${col}"></span>${escapeHTML(i.category)}</td>
-    <td class="c-mc"><span class="mc">${fmtMcap(i.mcap_usd)}</span>${estTag}</td>
+    <td class="c-mc"><span class="mc">${fmtMcap(i.mcap_usd)}</span>${estTag}${liveTag}</td>
     <td class="c-24">${pct(i.chg_24h)}</td>
     <td class="c-1y">${pct(i.chg_1y)}</td>
     <td class="c-spark">${spark(i.spark, up1y)}</td>
@@ -171,6 +263,7 @@ function detailHtml(i) {
     `<span class="k k-${i.kind}">${kind}</span>`,
     `数据日期 ${escapeHTML(dateShort(i.data_date))}`,
     i.stock_date ? `存量口径 ${escapeHTML(dateShort(i.stock_date))}` : '',
+    i.live_refresh ? '<span class="k k-live">LIVE</span>' : '',
     i.stale ? '<span class="k k-static">上次抓取值</span>' : '',
   ].filter(Boolean);
   return `<tr class="adetail"><td colspan="7"><div class="dt-in">
@@ -222,14 +315,20 @@ function renderTable() {
 }
 
 function renderMeta(data) {
-  const gen = data.generated_at ? new Date(data.generated_at) : null;
+  const liveGen = data.live_generated_at ? new Date(data.live_generated_at) : null;
+  const baseGen = data.generated_at ? new Date(data.generated_at) : null;
+  const gen = liveGen || baseGen;
   const hhmm = gen
     ? gen.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }) + ' (北京时间)'
     : '';
-  $('asof').textContent = `数据日期 ${data.as_of}${hhmm ? ' · 更新 ' + hhmm : ''}`;
+  const asOf = data.live_as_of || data.as_of;
+  const baseNote = state.baselineAsOf && data.live_as_of && data.live_as_of !== state.baselineAsOf
+    ? ` · 基线 ${state.baselineAsOf}`
+    : '';
+  $('asof').textContent = `数据日期 ${asOf}${hhmm ? ' · 更新 ' + hhmm : ''}${baseNote}`;
   $('assets-note').innerHTML =
-    '「约」= 公开报告的近似静态值，「估」= 实时价格 × 公开存量估算；其余为实时抓取。点击任意一行查看来源与数据日期。' +
-    '股票 / 商品的 24h 为最近一个交易日涨跌，1年为近一年涨跌（价格口径，非市值口径）。大类（债券、房地产等）市值与单一资产口径不同，仅作量级参考。#NFA';
+    '「约」= 公开报告的近似静态值，「估」= 实时价格 × 公开存量估算；标 LIVE 的股票/加密为页面加载后从公开接口刷新（边缘缓存约 10 分钟）。点击任意一行查看来源与数据日期。' +
+    '股票 / 商品的 24h 为最近一个交易日涨跌，1年为近一年涨跌（价格口径，非市值口径）。大类（债券、房地产等）市值与单一资产口径不同，仅作量级参考。实时源失败时回退静态基线并标延迟。#NFA';
   $('src-list').innerHTML = (data.sources || [])
     .map(
       (s) =>
@@ -297,6 +396,30 @@ function syncUnit() {
   for (const b of document.querySelectorAll('#unit-seg button')) b.classList.toggle('on', b.dataset.unit === state.unit);
 }
 
+async function refreshLive() {
+  try {
+    const res = await fetch(LIVE_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('assets-live ' + res.status);
+    const live = await res.json();
+    const stats = mergeLive(state.data, live);
+    state.liveMeta = {
+      live: !!live.live,
+      degraded: !!live.degraded,
+      as_of: live.as_of,
+      hits: live.hits || {},
+      mergedStock: stats.stock,
+    };
+    setDataBadge(state.liveMeta, state.baselineAsOf);
+    renderMeta(state.data);
+    renderCards(state.data);
+    renderTable();
+  } catch (err) {
+    console.warn('assets-live failed; keeping baseline', err);
+    state.liveMeta = { live: false, degraded: true, as_of: null, hits: {} };
+    setDataBadge(state.liveMeta, state.baselineAsOf);
+  }
+}
+
 async function init() {
   syncUnit();
   bind();
@@ -305,10 +428,14 @@ async function init() {
     if (!res.ok) throw new Error('assets.json ' + res.status);
     const data = await res.json();
     state.data = data;
+    state.baselineAsOf = data.as_of || null;
+    setDataBadge({ live: false, degraded: true }, state.baselineAsOf);
     renderMeta(data);
     renderCards(data);
     renderTable();
     attachSnapshotButton('#assets-panel', 'global-assets');
+    // Non-blocking live refresh over the static baseline
+    refreshLive();
   } catch (err) {
     console.warn('assets load failed', err);
     $('asof').textContent = '数据加载失败';
