@@ -3,6 +3,7 @@ import { attachSnapshotButton } from './lib/snapshot.js';
 import { renderDividendHint } from './dividends.js';
 import { renderVixGauge } from './vix-gauge.js';
 import { renderYield10Card } from './yield10-card.js';
+import { renderIndexPctCard } from './index-pct-card.js';
 import { renderJourneyRings } from './journey-rings.js';
 import { renderNetWorth } from './net-worth.js';
 import { renderSummaryFeed } from './summary-feed.js';
@@ -345,6 +346,7 @@ async function boot() {
   renderJourneyRings(data);
   await renderVixGauge();
   await renderYield10Card();
+  await renderIndexPctCard();
   await renderSummaryFeed();
 }
 
@@ -354,6 +356,7 @@ async function boot() {
   ['#journey-rings', 'journey-rings'],
   ['#vix-gauge', 'fear-greed'],
   ['#fund-checkin', 'checkin-heatmap'],
+  ['#index-pct', 'index-percentile'],
 ].forEach(([sel, name]) => attachSnapshotButton(sel, name));
 
 boot();

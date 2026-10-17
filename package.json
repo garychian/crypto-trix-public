@@ -13,7 +13,8 @@
     "assets": "node scripts/generate-assets.mjs",
     "13f": "node scripts/generate-13f.mjs",
     "dividends": "node scripts/generate-dividends.mjs",
-    "valuation": "node scripts/generate-valuation.mjs"
+    "valuation": "node scripts/generate-valuation.mjs",
+    "index-pct": "node scripts/generate-index-percentile.mjs"
   },
   "repository": {
     "type": "git",
