@@ -312,16 +312,19 @@ function computeAndRender() {
   });
 
   const srcLabel = priceSourceLabel(prices);
-  const useSnapshotTotals =
-    (srcLabel === 'snapshot' || srcLabel === 'demo') &&
-    snapshotTotal != null;
-
-  let totalAssets = holdingsMV + (cashUSD != null ? cashUSD : 0);
+  const liveTotal =
+    holdingsMV + (cashUSD != null ? cashUSD : 0);
+  // Headline 总资产 = holdings.json broker anchor (never override with live MV+cash).
+  // Live quotes still drive per-row prices / 当日盈亏 / 持仓累计; allocation uses live MV.
+  const totalAssets =
+    snapshotTotal != null && Number.isFinite(snapshotTotal) ? snapshotTotal : liveTotal;
   // 持仓累计盈亏 = Σ(市值 − 成本) over current stock positions (no cash); 收益率 = pnl / Σ成本
   const displayCumPnL = hasCost ? cumPnL : null;
   const totalInvested = hasCost ? cumCost : null;
-
-  if (useSnapshotTotals) totalAssets = snapshotTotal;
+  const brokerHoldingsMV =
+    snapshotTotal != null && cashUSD != null && Number.isFinite(snapshotTotal)
+      ? snapshotTotal - cashUSD
+      : null;
 
   const cashW = cashUSD != null && totalAssets > 0 ? (cashUSD / totalAssets) * 100 : 0;
   const retPct = totalInvested > 0 && displayCumPnL != null ? (displayCumPnL / totalInvested) * 100 : null;
@@ -344,10 +347,26 @@ function computeAndRender() {
   }
 
   setPlain('d-total', totalAssets);
-  document.getElementById('d-total-sub').textContent =
-    cashUSD != null
-      ? '持仓 ' + usd(holdingsMV) + ' · 现金 ' + usd(cashUSD)
-      : '持仓市值';
+  {
+    const sub = document.getElementById('d-total-sub');
+    if (cashUSD == null) {
+      sub.textContent = '持仓市值';
+    } else if (brokerHoldingsMV != null) {
+      const liveGap =
+        srcLabel === 'live' &&
+        Math.abs(liveTotal - totalAssets) >= 50
+          ? ' · 实时盯市 ' + usd(liveTotal)
+          : '';
+      sub.textContent =
+        '券商锚 · 持仓 ' +
+        usd(brokerHoldingsMV) +
+        ' · 现金 ' +
+        usd(cashUSD) +
+        liveGap;
+    } else {
+      sub.textContent = '持仓 ' + usd(holdingsMV) + ' · 现金 ' + usd(cashUSD);
+    }
+  }
   setMoney('d-daypnl', dailyPnL);
   document.getElementById('d-daypnl-sub').textContent = holdings.length + ' 只持仓';
   setMoney('d-cumpnl', displayCumPnL);
