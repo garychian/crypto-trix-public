@@ -3,7 +3,7 @@
  * Reconstructs total assets from fund-checkins daily pnl (x-axis = US close
  * date), anchored so the last point matches holdings.json total_assets_usd.
  * 「本周/本月」chips use the same calendar windows as the WTD/MTD cards;
- * 区间涨跌 = Σ daily pnl = NAV(end) − NAV(prior close before first day).
+ * 区间涨跌 = NAV(end) − NAV(start) − deposits_in_window (= Σ trading pnl).
  *
  * Look: monotone-cubic gold line (no overshoot), gradient area, dashed grid,
  * glowing end dot + latest value, crosshair + tooltip card (date / NAV /
@@ -85,26 +85,45 @@ function closeDateOf(row) {
 }
 
 /**
- * Build equity series: { date, equity, pnl }[]
- * `date` = US market-close date (not 发稿日). Last point is forced to
- * holdings.json total_assets_usd. Keep fund-checkins in sync with holdings
- * as_of (one check-in row per new US close); otherwise the residual gap is
- * absorbed into the baseline and recent peaks look too high.
+ * Build equity series: { date, equity, pnl, deposit? }[]
+ * `date` = US market-close date (not 发稿日). Last point = holdings total.
+ * Check-in `pnl` is trading-only. Dated capital.json deposits are applied as a
+ * separate wealth jump on that close (not mixed into `pnl`), so
+ * 区间涨跌 = NAV(end)−NAV(start)−deposits matches WTD Σpnl.
  */
-export function buildEquitySeries(checkins, anchorTotal) {
+export function buildEquitySeries(checkins, anchorTotal, deposits = []) {
   const series = (checkins && checkins.series) || [];
   if (!series.length) return [];
 
   const sorted = [...series].sort((a, b) => a.date.localeCompare(b.date));
+  const depByDate = new Map();
+  for (const d of deposits || []) {
+    const date = String(d.date || '');
+    const amt = Number(d.amount_usd);
+    if (!date || !Number.isFinite(amt) || amt === 0) continue;
+    depByDate.set(date, (depByDate.get(date) || 0) + amt);
+  }
+
+  const closes = sorted.map((p) => closeDateOf(p) || p.date);
   const sumPnl = sorted.reduce((s, p) => s + (Number(p.pnl) || 0), 0);
+  let sumDep = 0;
+  for (const c of closes) {
+    if (depByDate.has(c)) sumDep += depByDate.get(c);
+  }
+
   const lastAnchor = Number(anchorTotal);
-  const base = Number.isFinite(lastAnchor) ? lastAnchor - sumPnl : 137_000;
+  const base = Number.isFinite(lastAnchor) ? lastAnchor - sumPnl - sumDep : 137_000;
 
   let eq = base;
-  return sorted.map((p) => {
+  return sorted.map((p, i) => {
     const pnl = Number(p.pnl) || 0;
+    const close = closes[i];
     eq += pnl;
-    return { date: closeDateOf(p) || p.date, equity: eq, pnl };
+    const deposit = depByDate.get(close) || 0;
+    if (deposit) eq += deposit;
+    const row = { date: close, equity: eq, pnl };
+    if (deposit) row.deposit = deposit;
+    return row;
   });
 }
 
@@ -461,19 +480,25 @@ export function mountEquityChart(root, { points, defaultRange = 'month', deposit
     endEl.removeAttribute('hidden');
 
     // header stats
-    // 区间涨跌 = NAV(end) − NAV(start of range) = Σ daily pnl in the window.
-    // Start = equity before the first point's day move (prior close), NOT the
-    // first end-of-day point — otherwise Monday's pnl is dropped and 「本周」
-    // disagrees with the 本周盈亏 card (e.g. $496 vs $2,232).
+    // 区间涨跌 = NAV(end) − NAV(start) − deposits_in_window (= Σ trading pnl).
+    // Deposits are wealth jumps on the curve, not trading profit — same as WTD card.
     const last = slice[n - 1].equity;
     const startNav = rangeStartNav(slice);
-    const chgAbs = last - startNav;
+    const depIn = depositList
+      .filter((d) => d.date >= slice[0].date && d.date <= slice[n - 1].date)
+      .reduce((s, d) => s + d.amount, 0);
+    const chgAbs = last - startNav - depIn;
     const chg = startNav ? (chgAbs / startNav) * 100 : null;
     lastEl.textContent = fmtMoney(last);
     chgEl.innerHTML =
-      `${fmtDelta(chgAbs)} <small>${fmtPct(chg)}</small>`;
+      `${fmtDelta(chgAbs)} <small>${fmtPct(chg)}</small>` +
+      (depIn
+        ? `<small class="eq-dep-excl" title="入金已从区间涨跌中剔除">不含入金 $${Math.round(depIn).toLocaleString('en-US')}</small>`
+        : '');
     chgEl.className = 'val ' + cls(chgAbs);
-    metaEl.textContent = `${slice[0].date} → ${slice[n - 1].date} · ${n} 个交易日 · 末值=持仓总资产`;
+    metaEl.textContent =
+      `${slice[0].date} → ${slice[n - 1].date} · ${n} 个交易日 · 末值=持仓总资产` +
+      (depIn ? ` · 入金 $${Math.round(depIn).toLocaleString('en-US')} 未计入涨跌` : '');
   }
 
   function draw(progress) {
@@ -540,7 +565,10 @@ export function mountEquityChart(root, { points, defaultRange = 'month', deposit
     const prevEq = p.equity - p.pnl;
     const dayPct = prevEq ? (p.pnl / prevEq) * 100 : null;
     const startNav = rangeStartNav(slice);
-    const cum = p.equity - startNav;
+    const depToHere = depositList
+      .filter((d) => d.date >= slice[0].date && d.date <= p.date)
+      .reduce((s, d) => s + d.amount, 0);
+    const cum = p.equity - startNav - depToHere; // trading only since range start
     const cumPct = startNav ? (cum / startNav) * 100 : null;
     tipDate.textContent = fmtTipDate(p.date);
     tipVal.textContent = fmtFull(p.equity);
@@ -635,7 +663,7 @@ export async function initEquityChart(el, { anchorTotal, deposits } = {}) {
         depList = [];
       }
     }
-    const points = buildEquitySeries(checkins, anchorTotal);
+    const points = buildEquitySeries(checkins, anchorTotal, depList);
     if (!points.length) {
       el.innerHTML = '<div class="eq-empty muted">暂无净值序列（fund-checkins.json）</div>';
       return null;

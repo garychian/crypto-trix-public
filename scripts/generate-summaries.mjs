@@ -208,11 +208,12 @@ function build(type, id, start, end) {
   const totalStart = baseOk ? baseSnap.total_usd : totalEnd - pnl - dep;
   if (type === 'week' && !baseOk) return null; // weeks need a real opening snapshot
   const us = {
-    pnl_usd: r0(pnl),
+    pnl_usd: r0(pnl), // Σ check-in pnl only — deposits are NOT trading profit
     pct: totalStart > 0 ? r2((pnl / totalStart) * 100) : undefined,
     total_start: r2(totalStart),
     total_end: r2(totalEnd),
     ...(baseOk ? {} : { start_derived: true }),
+    ...(dep > 0 ? { deposits_usd: r0(dep) } : {}),
     closes: inP.length,
     daily: inP.map((r) => ({ date: r.close, pnl_usd: r0(r.pnl) })),
     cash_pct_end: totalEnd > 0 ? r2((endSnap.cash_usd / totalEnd) * 100) : undefined,

@@ -456,6 +456,19 @@
   pointer-events: none;
 }
 .eq-tip-dep b { color: var(--accent, #F0B90B); }
+.eq-stat .val small.eq-dep-excl {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #f0d78c;
+  background: rgba(240, 185, 11, 0.12);
+  border: 1px solid rgba(240, 185, 11, 0.45);
+  opacity: 1;
+  vertical-align: middle;
+}
 
 .eq-tip {
   position: absolute;

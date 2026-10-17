@@ -38,10 +38,14 @@ function cardHTML(e, child) {
     (isMonth ? '' : `<em>${escapeHTML(e.id.slice(5))}</em>`) +
     `</span>${e.partial ? '<span class="sm-flag">进行中</span>' : ''}</header>`;
 
+  const dep = u.deposits_usd != null && u.deposits_usd > 0 ? u.deposits_usd : 0;
   const main =
     `<div class="sm-main"><div class="sm-pnl ${pnlCls}">${usdSigned(u.pnl_usd)}</div>` +
     (u.pct != null ? `<div class="sm-pct ${pnlCls}">${pctSigned(u.pct)}</div>` : '') +
-    `<div class="sm-sub">美股账户盈亏 · ${usd(u.total_start)} → ${usd(u.total_end)}</div></div>`;
+    (dep
+      ? `<div class="sm-dep-banner"><span class="sm-dep-tag">入金</span>本${isMonth ? '月' : '周'}入金 <b>${usd(dep)}</b> · 未计入盈亏</div>`
+      : '') +
+    `<div class="sm-sub">美股交易盈亏${dep ? '（不含入金）' : ''} · ${usd(u.total_start)} → ${usd(u.total_end)}</div></div>`;
 
   const tiles = [];
   tiles.push(tile('美股', usd(u.total_end), ''));
@@ -94,6 +98,7 @@ function cardHTML(e, child) {
   );
 
   const notes = [];
+  if (dep) notes.push(`本${isMonth ? '月' : '周'}入金 ${usd(dep)} 未计入上方盈亏（盈亏 = 打卡交易日 Σpnl）`);
   if ((u.top_gainers && u.top_gainers.length) || (u.top_losers && u.top_losers.length)) notes.push('贡献 = 期初持仓 × 价格变动，不含交易与现金');
   if (u.start_derived) notes.push('期初按打卡盈亏反推');
   if (u.unreconciled_usd != null) notes.push(`期初→期末与打卡盈亏相差 ${usdSigned(u.unreconciled_usd)}（券商校准 / 资金变动）`);
