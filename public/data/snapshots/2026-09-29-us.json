@@ -1,0 +1,106 @@
+{
+  "date": "2026-09-29",
+  "source": "git 5464c8a public/data/holdings.json (backfilled)",
+  "total_usd": 144314.15,
+  "cash_usd": 33067.75,
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "shares": 101,
+      "price": 352.84,
+      "mv": 35636.84,
+      "cost_total": 21911.95
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 15.14,
+      "price": 737.93,
+      "mv": 11172.26,
+      "cost_total": 9090.66
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 30.19,
+      "price": 340.92,
+      "mv": 10292.37,
+      "cost_total": 3380.37
+    },
+    {
+      "ticker": "VOO",
+      "shares": 14.22,
+      "price": 702.46,
+      "mv": 9988.98,
+      "cost_total": 7383.31
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 41,
+      "price": 227.21,
+      "mv": 9315.61,
+      "cost_total": 5085.64
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 18.19,
+      "price": 508.96,
+      "mv": 9257.98,
+      "cost_total": 6545.13
+    },
+    {
+      "ticker": "AMD",
+      "shares": 8,
+      "price": 607.57,
+      "mv": 4860.56,
+      "cost_total": -490.4
+    },
+    {
+      "ticker": "META",
+      "shares": 6.03,
+      "price": 738.79,
+      "mv": 4454.9,
+      "cost_total": 484.45
+    },
+    {
+      "ticker": "AMZN",
+      "shares": 17,
+      "price": 246.67,
+      "mv": 4193.39,
+      "cost_total": 3435.02
+    },
+    {
+      "ticker": "BRK.B",
+      "shares": 6,
+      "price": 502.35,
+      "mv": 3014.1,
+      "cost_total": 3049.44
+    },
+    {
+      "ticker": "SPCX",
+      "shares": 20,
+      "price": 149.24,
+      "mv": 2984.8,
+      "cost_total": 2736
+    },
+    {
+      "ticker": "PLTR",
+      "shares": 15,
+      "price": 186.97,
+      "mv": 2804.55,
+      "cost_total": 53.85
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6.09,
+      "price": 329.4,
+      "mv": 2006.05,
+      "cost_total": 883.66
+    },
+    {
+      "ticker": "EUV",
+      "shares": 50,
+      "price": 25.28,
+      "mv": 1264,
+      "cost_total": 1302.5
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+import { defineConfig } from 'vite';
+import { resolve } from 'path';
+
+export default defineConfig({
+  root: '.',
+  publicDir: 'public',
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        fund: resolve(__dirname, 'fund.html'),
+        'cn-fund': resolve(__dirname, 'cn-fund.html'),
+        assets: resolve(__dirname, 'assets.html'),
+        f13: resolve(__dirname, '13f.html'),
+        options: resolve(__dirname, 'options.html'),
+        articles: resolve(__dirname, 'articles.html'),
+      },
+    },
+  },
+  server: {
+    port: 5173,
+    open: false,
+  },
+});

@@ -1,0 +1,58 @@
+{
+  "updated": "2026-09-28",
+  "intro": "深度、科普与系列长文，点标题看原文。",
+  "cta": {
+    "label": "去 X 看 @CryptoTrix1 的全部文章",
+    "href": "https://x.com/CryptoTrix1/articles"
+  },
+  "items": [
+    {
+      "title": "AMD 万亿逆袭：苏姿丰的下一场硬仗",
+      "tag": "观察",
+      "status": "published",
+      "date": "2026-09-28",
+      "desc": "从 17 亿到 1 万亿：AMD 和苏姿丰逆袭的 14 年。",
+      "url": "https://x.com/CryptoTrix1/status/2104423339360141340"
+    },
+    {
+      "title": "马斯克央视专访：为什么偏偏在这个时候发布？",
+      "tag": "观察",
+      "status": "published",
+      "date": "2026-09-27",
+      "desc": "马斯克接受央视采访，值得关注。但更值得关注的是：为什么偏偏选在这个时候播？",
+      "url": "https://x.com/CryptoTrix1/status/2104045313455464505"
+    },
+    {
+      "title": "Tesla 估值全拆解（2026 年 7 月）：SOTP + DCF 实战 + 我的仓位管理思路",
+      "tag": "估值",
+      "status": "published",
+      "date": "2026-07-26",
+      "desc": "用 SOTP 分部估值法，对汽车、能源、FSD 订阅、Robotaxi 四块业务分别做三情景分析。",
+      "url": "https://x.com/CryptoTrix1/status/2081233801657643478"
+    },
+    {
+      "title": "Tesla 与 Big Tech 估值全方法指南：从入门到实战",
+      "tag": "科普",
+      "status": "published",
+      "date": "2026-07-20",
+      "desc": "系统介绍绝对估值、相对估值、SOTP 等核心框架，并结合 Tesla 和 Big Tech 实战。",
+      "url": "https://x.com/CryptoTrix1/status/2079158638426611848"
+    },
+    {
+      "title": "为什么我要把美股账户做到200万美元？以及如何在10年内实现它",
+      "tag": "长文",
+      "status": "published",
+      "date": "2026-07-19",
+      "desc": "2026 年 7 月立下 10 年誓约：把美股账户从约 13 万美元做到 200 万美元。",
+      "url": "https://x.com/CryptoTrix1/status/2078693532639146202"
+    },
+    {
+      "title": "韩国存储杠杆泡沫：最严监管来了，这波杀估值到底杀到哪？",
+      "tag": "观察",
+      "status": "published",
+      "date": "2026-07-18",
+      "desc": "韩国暂停新批杠杆 ETF、提高保证金，这波杀估值还没结束？",
+      "url": "https://x.com/CryptoTrix1/status/2078487699275788796"
+    }
+  ]
+}
