@@ -6,25 +6,22 @@
  *   1y / ytd / 2y / 3y
  *   percentile = (price - low) / (high - low)   // current vs window range
  *
- * Also YTD max drawdown for SPY + QQQ (user-requested ETF pair):
- *   for each daily close from Jan 1: dd = close/running_max - 1; mdd = min(dd)
+ * Also calendar-year max drawdown for cash indices (^GSPC / ^NDX):
+ *   for each day in year Y: dd = close/running_max − 1; mdd = min(dd)
+ *   running_max resets at the start of each calendar year.
+ *   Current year = YTD (Jan 1 → latest close).
+ *   ^NDX history starts ~1985-10 — no invented pre-launch years.
  *
- * Free source: Yahoo Finance chart API (same UA pattern as /api/prices).
- * Frontend falls back to /data/index-percentile.json if this fails.
+ * Free source: Yahoo Finance chart API (period1/period2 daily; range=max
+ * downsamples). Frontend falls back to /data/index-percentile.json.
  *
  * ESM export — package.json has "type": "module".
  */
 
 const YAHOO_UA = 'Mozilla/5.0';
 const PRIMARY = [
-  { key: 'spx', symbol: '^GSPC', fallback: 'SPY', name: '标普500', name_en: 'S&P 500' },
-  { key: 'ndx', symbol: '^NDX', fallback: 'QQQ', name: '纳斯达克100', name_en: 'Nasdaq-100' },
-];
-
-/** SPY / QQQ — YTD max drawdown strip (ETF closes, not the cash indices). */
-const MDD_ETFS = [
-  { key: 'spy', symbol: 'SPY', name: 'SPY', name_zh: '标普500 ETF' },
-  { key: 'qqq', symbol: 'QQQ', name: 'QQQ', name_zh: '纳斯达克100 ETF' },
+  { key: 'spx', symbol: '^GSPC', fallback: 'SPY', name: '标普500', name_en: 'S&P 500', name_zh: '标普500' },
+  { key: 'ndx', symbol: '^NDX', fallback: 'QQQ', name: '纳斯达克100', name_en: 'Nasdaq-100', name_zh: '纳斯达克100' },
 ];
 
 const WINDOW_DEFS = [
@@ -35,6 +32,9 @@ const WINDOW_DEFS = [
   { key: '2y', label: '两年', days: 730 },
   { key: '3y', label: '三年', days: 1095 },
 ];
+
+/** ~50y lookback for annual MDD; period1/period2 keeps daily bars (range=max does not). */
+const HISTORY_START_ISO = '1975-01-01';
 
 const round2 = (n) => Math.round(n * 100) / 100;
 const round1 = (n) => Math.round(n * 10) / 10;
@@ -50,10 +50,17 @@ function yearStartISO(iso) {
   return `${iso.slice(0, 4)}-01-01`;
 }
 
-async function yahooDaily(sym) {
-  const url =
+async function yahooDaily(sym, { fromISO = null } = {}) {
+  let url =
     `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}` +
-    `?range=5y&interval=1d&includePrePost=false`;
+    `?interval=1d&includePrePost=false`;
+  if (fromISO) {
+    const period1 = Math.floor(new Date(`${fromISO}T00:00:00Z`).getTime() / 1000);
+    const period2 = Math.floor(Date.now() / 1000);
+    url += `&period1=${period1}&period2=${period2}`;
+  } else {
+    url += `&range=5y`;
+  }
   const r = await fetch(url, {
     headers: { 'User-Agent': YAHOO_UA, Accept: 'application/json' },
   });
@@ -77,6 +84,7 @@ async function yahooDaily(sym) {
     price: round2(price),
     as_of: rows[rows.length - 1].date,
     symbol_used: res.meta?.symbol || sym,
+    history_from: rows[0].date,
   };
 }
 
@@ -113,11 +121,12 @@ function windowStats(rows, price, asOf, def) {
   };
 }
 
-
-/** YTD max drawdown on daily closes: min(close / running_max - 1). */
-function ytdMdd(rows, asOf) {
-  const from = yearStartISO(asOf);
-  const win = rows.filter((r) => r.date >= from);
+/**
+ * Max drawdown on daily closes within [from, to] inclusive.
+ * running_max starts at the first close in the window (calendar-year MDD).
+ */
+function windowMdd(rows, from, to) {
+  const win = rows.filter((r) => r.date >= from && r.date <= to);
   if (win.length < 2) return null;
   let peak = win[0].close;
   let peakDate = win[0].date;
@@ -153,28 +162,41 @@ function ytdMdd(rows, asOf) {
   };
 }
 
-async function loadMddEtf(cfg) {
-  const data = await yahooDaily(cfg.symbol);
-  const mdd = ytdMdd(data.rows, data.as_of);
-  if (!mdd) throw new Error(`mdd empty ${cfg.symbol}`);
-  return {
-    key: cfg.key,
-    symbol: cfg.symbol,
-    name: cfg.name,
-    name_zh: cfg.name_zh,
-    as_of: data.as_of,
-    ...mdd,
-  };
+function ytdMdd(rows, asOf) {
+  return windowMdd(rows, yearStartISO(asOf), asOf);
 }
 
-async function loadIndex(cfg) {
+/** Per calendar year MDD; newest year first. Current year flagged ytd:true. */
+function annualMddSeries(rows, asOf) {
+  if (!rows.length) return { history_from: null, years: [] };
+  const historyFrom = rows[0].date;
+  const firstYear = Number(historyFrom.slice(0, 4));
+  const lastYear = Number(asOf.slice(0, 4));
+  const years = [];
+  for (let y = lastYear; y >= firstYear; y--) {
+    const from = `${y}-01-01`;
+    const to = y === lastYear ? asOf : `${y}-12-31`;
+    const mdd = windowMdd(rows, from, to);
+    if (!mdd) continue;
+    // Skip a partial first year with too few sessions (e.g. NDX late-1985)
+    if (y === firstYear && mdd.n < 20) continue;
+    years.push({
+      year: y,
+      ytd: y === lastYear,
+      ...mdd,
+    });
+  }
+  return { history_from: historyFrom, years };
+}
+
+async function loadIndexBundle(cfg) {
   let used = cfg.symbol;
   let data;
   try {
-    data = await yahooDaily(cfg.symbol);
+    data = await yahooDaily(cfg.symbol, { fromISO: HISTORY_START_ISO });
   } catch (err) {
     if (!cfg.fallback) throw err;
-    data = await yahooDaily(cfg.fallback);
+    data = await yahooDaily(cfg.fallback, { fromISO: HISTORY_START_ISO });
     used = cfg.fallback;
   }
   const ranges = {};
@@ -182,16 +204,46 @@ async function loadIndex(cfg) {
     const s = windowStats(data.rows, data.price, data.as_of, def);
     if (s) ranges[def.key] = s;
   }
+  const mdd = ytdMdd(data.rows, data.as_of);
+  const annual = annualMddSeries(data.rows, data.as_of);
+  // Only attach cash-index MDD when we actually used the primary index symbol
+  // (not an ETF proxy fallback).
+  const isCashIndex = used === cfg.symbol;
   return {
-    key: cfg.key,
-    symbol: used,
-    primary: cfg.symbol,
-    proxy: used !== cfg.symbol ? used : null,
-    name: cfg.name,
-    name_en: cfg.name_en,
-    price: data.price,
-    as_of: data.as_of,
-    ranges,
+    index: {
+      key: cfg.key,
+      symbol: used,
+      primary: cfg.symbol,
+      proxy: used !== cfg.symbol ? used : null,
+      name: cfg.name,
+      name_en: cfg.name_en,
+      price: data.price,
+      as_of: data.as_of,
+      ranges,
+    },
+    mdd_ytd: isCashIndex && mdd
+      ? {
+          key: cfg.key,
+          symbol: cfg.symbol,
+          name: cfg.name,
+          name_en: cfg.name_en,
+          name_zh: cfg.name_zh,
+          as_of: data.as_of,
+          history_from: annual.history_from,
+          ...mdd,
+        }
+      : null,
+    mdd_annual: isCashIndex
+      ? {
+          key: cfg.key,
+          symbol: cfg.symbol,
+          name: cfg.name,
+          name_en: cfg.name_en,
+          name_zh: cfg.name_zh,
+          history_from: annual.history_from,
+          years: annual.years,
+        }
+      : null,
   };
 }
 
@@ -204,29 +256,31 @@ export default async function handler(req, res) {
   }
 
   try {
-    const results = await Promise.allSettled(PRIMARY.map(loadIndex));
-    const mddResults = await Promise.allSettled(MDD_ETFS.map(loadMddEtf));
+    const results = await Promise.allSettled(PRIMARY.map(loadIndexBundle));
     const out = {
       live: true,
       as_of: null,
-      source: 'Yahoo Finance daily closes · ^GSPC / ^NDX · SPY/QQQ MDD',
+      source: 'Yahoo Finance daily closes · ^GSPC / ^NDX · 历年最大回撤',
       windows: WINDOW_DEFS.map((w) => ({ key: w.key, label: w.label })),
       indices: {},
       mdd_ytd: {},
+      mdd_annual: {},
+      mdd_notes: {
+        ndx_history_start: '1985-10',
+        ndx_note: '纳斯达克100指数（^NDX）自1985年10月起有日线数据；此前年份无数据。',
+        method: '每个自然年内：日线收盘相对年内滚动最高的最大回撤；当年=年初至今。',
+      },
     };
     let ok = 0;
     results.forEach((r, i) => {
       const cfg = PRIMARY[i];
       if (r.status !== 'fulfilled') return;
-      out.indices[cfg.key] = r.value;
-      if (!out.as_of || r.value.as_of > out.as_of) out.as_of = r.value.as_of;
+      const bundle = r.value;
+      out.indices[cfg.key] = bundle.index;
+      if (!out.as_of || bundle.index.as_of > out.as_of) out.as_of = bundle.index.as_of;
+      if (bundle.mdd_ytd) out.mdd_ytd[cfg.key] = bundle.mdd_ytd;
+      if (bundle.mdd_annual) out.mdd_annual[cfg.key] = bundle.mdd_annual;
       ok++;
-    });
-    mddResults.forEach((r, i) => {
-      const cfg = MDD_ETFS[i];
-      if (r.status !== 'fulfilled') return;
-      out.mdd_ytd[cfg.key] = r.value;
-      if (!out.as_of || r.value.as_of > out.as_of) out.as_of = r.value.as_of;
     });
     if (ok === 0) {
       res.status(502).json({ error: 'index-percentile upstream failed' });

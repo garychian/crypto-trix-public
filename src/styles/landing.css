@@ -1260,7 +1260,7 @@
 }
 
 
-/* SPY / QQQ YTD max-drawdown strip under percentile indices */
+/* Cash-index (^GSPC / ^NDX) YTD max-drawdown strip under percentile indices */
 .ipct-mdd {
   margin-top: 14px;
   padding: 12px 14px 10px;
@@ -1359,6 +1359,151 @@
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   line-height: 1.4;
+}
+
+/* 历年最大回撤 — compact scrollable annual table */
+.ipct-ann {
+  margin-top: 12px;
+  padding: 12px 14px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(240, 185, 11, 0.16);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.ipct-ann-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  margin-bottom: 8px;
+}
+
+.ipct-ann-title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.ipct-ann-sub {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.ipct-ann-scroll {
+  max-height: min(42vh, 360px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(11, 13, 16, 0.4);
+}
+
+.ipct-ann-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+  font-size: 12.5px;
+}
+
+.ipct-ann-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: rgba(18, 20, 24, 0.96);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-align: right;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(240, 185, 11, 0.18);
+}
+
+.ipct-ann-table thead th:first-child {
+  text-align: left;
+}
+
+.ipct-ann-table tbody th,
+.ipct-ann-table tbody td {
+  padding: 7px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  text-align: right;
+  font-weight: 650;
+}
+
+.ipct-ann-table tbody th {
+  text-align: left;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.ipct-ann-table tbody tr:last-child th,
+.ipct-ann-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ipct-ann-table tbody tr:hover {
+  background: rgba(240, 185, 11, 0.04);
+}
+
+.ipct-ann-ytd {
+  background: rgba(240, 185, 11, 0.06);
+}
+
+.ipct-ann-ytd .ipct-ann-year::after {
+  content: '';
+}
+
+.ipct-ann-pct {
+  color: var(--down);
+  font-weight: 750;
+  letter-spacing: -0.2px;
+}
+
+.ipct-ann-na {
+  font-weight: 600;
+}
+
+.ipct-ann-toggle {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 185, 11, 0.35);
+  background: rgba(240, 185, 11, 0.08);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+}
+
+.ipct-ann-toggle:hover {
+  background: rgba(240, 185, 11, 0.16);
+}
+
+.ipct-ann-note {
+  margin: 8px 0 0;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+@media (max-width: 480px) {
+  .ipct-ann {
+    padding: 10px 10px 8px;
+  }
+  .ipct-ann-table {
+    font-size: 12px;
+  }
+  .ipct-ann-table thead th,
+  .ipct-ann-table tbody th,
+  .ipct-ann-table tbody td {
+    padding: 6px 8px;
+  }
 }
 .ipct-error { padding: 12px 0; font-size: 13px; }
 .ipct-loading p { margin-top: 8px; font-size: 13px; }

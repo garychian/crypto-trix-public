@@ -7,11 +7,12 @@
  * both the window high and low fall inside the calendar year — not a shared
  * window-start bug. UI surfaces high/low dates + a coincidence hint.
  *
- * Also SPY / QQQ 本年最大回撤 (YTD max drawdown on daily closes).
+ * Also ^GSPC / ^NDX 本年最大回撤 + 历年最大回撤 (~50y SPX, NDX from 1985).
  */
 
-const MDD_ORDER = ['spy', 'qqq'];
-
+const MDD_ORDER = ['spx', 'ndx'];
+/** Default visible rows in 历年最大回撤 (newest first); expand for full history. */
+const ANNUAL_PREVIEW = 12;
 
 const DEFAULT_WINDOWS = [
   { key: '1y', label: '近一年' },
@@ -25,7 +26,7 @@ const INDEX_ORDER = ['spx', 'ndx'];
 async function loadIndexPct() {
   try {
     const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 5000);
+    const timer = setTimeout(() => ctrl.abort(), 8000);
     const res = await fetch('/api/index-percentile', { cache: 'no-store', signal: ctrl.signal });
     clearTimeout(timer);
     if (res.ok) {
@@ -155,7 +156,6 @@ function indexRowHTML(idx, rangeKey) {
     </article>`;
 }
 
-
 function fmtMdd(n) {
   if (!Number.isFinite(Number(n))) return '—';
   const v = Number(n);
@@ -168,12 +168,14 @@ function fmtMdd(n) {
 function mddCardHTML(row) {
   if (!row) return '';
   const mdd = Number(row.mdd_pct);
+  const label = row.name_zh || row.name || row.symbol || '';
+  const en = row.name_en || row.symbol || '';
   return `
     <article class="ipct-mdd-item" data-key="${escapeHTML(row.key || '')}">
       <div class="ipct-mdd-top">
         <div class="ipct-mdd-names">
-          <span class="ipct-mdd-sym">${escapeHTML(row.symbol || row.name || '')}</span>
-          <span class="ipct-mdd-zh muted">${escapeHTML(row.name_zh || '')}</span>
+          <span class="ipct-mdd-sym">${escapeHTML(label)}</span>
+          <span class="ipct-mdd-zh muted">${escapeHTML(en)}</span>
         </div>
         <div class="ipct-mdd-val" title="本年最大回撤 = min(收盘/滚动最高 − 1)">
           <span class="ipct-mdd-num">${fmtMdd(mdd)}</span>
@@ -193,16 +195,101 @@ function mddStripHTML(mddYtd) {
   const cards = MDD_ORDER.map((k) => mddCardHTML(mddYtd[k])).filter(Boolean);
   if (!cards.length) return '';
   return `
-    <div class="ipct-mdd" aria-label="SPY QQQ 本年最大回撤">
+    <div class="ipct-mdd" aria-label="指数本年最大回撤">
       <div class="ipct-mdd-head">
-        <span class="ipct-mdd-title">ETF · 本年最大回撤</span>
+        <span class="ipct-mdd-title">指数 · 本年最大回撤</span>
         <span class="ipct-mdd-sub muted">年初至今 · 日线收盘 · min(收盘/滚动最高−1)</span>
       </div>
       <div class="ipct-mdd-grid">${cards.join('')}</div>
     </div>`;
 }
 
-function renderBody(root, data, rangeKey) {
+/** Merge annual series into year → {spx, ndx} rows, newest first. */
+function mergeAnnualRows(mddAnnual) {
+  if (!mddAnnual || typeof mddAnnual !== 'object') return [];
+  const byYear = new Map();
+  for (const key of MDD_ORDER) {
+    const series = mddAnnual[key];
+    const years = Array.isArray(series?.years) ? series.years : [];
+    for (const row of years) {
+      const y = Number(row.year);
+      if (!Number.isFinite(y)) continue;
+      if (!byYear.has(y)) byYear.set(y, { year: y, ytd: Boolean(row.ytd), spx: null, ndx: null });
+      const slot = byYear.get(y);
+      if (row.ytd) slot.ytd = true;
+      slot[key] = row;
+    }
+  }
+  return Array.from(byYear.values()).sort((a, b) => b.year - a.year);
+}
+
+function annualCellHTML(row) {
+  if (!row) return `<td class="ipct-ann-na muted">—</td>`;
+  const tip = `峰值 ${fmtLevel(row.peak)} (${fmtMD(row.peak_date)}) → 谷底 ${fmtLevel(row.trough)} (${fmtMD(row.trough_date)})`;
+  return `<td class="ipct-ann-mdd" title="${escapeHTML(tip)}"><span class="ipct-ann-pct">${fmtMdd(row.mdd_pct)}</span></td>`;
+}
+
+function annualTableHTML(mddAnnual, notes, expanded) {
+  const rows = mergeAnnualRows(mddAnnual);
+  if (!rows.length) return '';
+  const spxFrom = mddAnnual?.spx?.history_from || '';
+  const ndxFrom = mddAnnual?.ndx?.history_from || '';
+  const note =
+    notes?.ndx_note ||
+    (ndxFrom
+      ? `纳斯达克100指数（^NDX）自 ${ndxFrom.slice(0, 7)} 起有日线数据；此前年份无数据。`
+      : '');
+  const visible = expanded ? rows : rows.slice(0, ANNUAL_PREVIEW);
+  const hidden = Math.max(0, rows.length - visible.length);
+  const body = visible
+    .map((r) => {
+      const yLabel = r.ytd ? `${r.year} YTD` : String(r.year);
+      return `<tr class="${r.ytd ? 'ipct-ann-ytd' : ''}">
+        <th scope="row" class="ipct-ann-year">${escapeHTML(yLabel)}</th>
+        ${annualCellHTML(r.spx)}
+        ${annualCellHTML(r.ndx)}
+      </tr>`;
+    })
+    .join('');
+
+  const toggle =
+    rows.length > ANNUAL_PREVIEW
+      ? `<button type="button" class="ipct-ann-toggle" data-ann-toggle="1" aria-expanded="${expanded ? 'true' : 'false'}">${
+          expanded ? '收起历年回撤' : `展开全部 ${rows.length} 年${hidden ? `（还有 ${hidden} 年）` : ''}`
+        }</button>`
+      : '';
+
+  const rangeHint = [
+    spxFrom ? `标普500自 ${escapeHTML(spxFrom.slice(0, 4))} 年` : '',
+    ndxFrom ? `纳指100自 ${escapeHTML(ndxFrom.slice(0, 4))} 年` : '',
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
+  return `
+    <div class="ipct-ann" aria-label="历年最大回撤">
+      <div class="ipct-ann-head">
+        <span class="ipct-ann-title">历年最大回撤</span>
+        <span class="ipct-ann-sub muted">自然年 · 年内滚动最高 · ${escapeHTML(rangeHint || '日线收盘')}</span>
+      </div>
+      <div class="ipct-ann-scroll">
+        <table class="ipct-ann-table">
+          <thead>
+            <tr>
+              <th scope="col">年份</th>
+              <th scope="col">标普500</th>
+              <th scope="col">纳斯达克100</th>
+            </tr>
+          </thead>
+          <tbody>${body}</tbody>
+        </table>
+      </div>
+      ${toggle}
+      ${note ? `<p class="ipct-ann-note muted">${escapeHTML(note)}</p>` : ''}
+    </div>`;
+}
+
+function renderBody(root, data, rangeKey, annExpanded) {
   const windows = Array.isArray(data.windows) && data.windows.length ? data.windows : DEFAULT_WINDOWS;
   const indices = data.indices || {};
   const asOf = data.as_of || '—';
@@ -248,6 +335,7 @@ function renderBody(root, data, rangeKey) {
       </div>
       <div class="ipct-body">${rows || '<p class="muted">暂无指数数据</p>'}</div>
       ${mddStripHTML(data.mdd_ytd)}
+      ${annualTableHTML(data.mdd_annual, data.mdd_notes, annExpanded)}
       <div class="ipct-foot">
         <span class="ipct-asof muted">${asOfLine}</span>
         <span class="ipct-nfa muted">#NFA · ${escapeHTML(source)}</span>
@@ -269,11 +357,12 @@ export async function renderIndexPctCard() {
   }
 
   let rangeKey = '1y';
+  let annExpanded = false;
   const windows = Array.isArray(data.windows) && data.windows.length ? data.windows : DEFAULT_WINDOWS;
   if (!windows.some((w) => w.key === rangeKey)) rangeKey = windows[0].key;
 
   function paint() {
-    renderBody(root, data, rangeKey);
+    renderBody(root, data, rangeKey, annExpanded);
     root.querySelectorAll('.ipct-pill').forEach((btn) => {
       btn.addEventListener('click', () => {
         const next = btn.dataset.range;
@@ -282,6 +371,13 @@ export async function renderIndexPctCard() {
         paint();
       });
     });
+    const toggle = root.querySelector('[data-ann-toggle]');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        annExpanded = !annExpanded;
+        paint();
+      });
+    }
   }
 
   paint();
