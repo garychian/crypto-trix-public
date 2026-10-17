@@ -1259,6 +1259,107 @@
   letter-spacing: 0.3px;
 }
 
+
+/* SPY / QQQ YTD max-drawdown strip under percentile indices */
+.ipct-mdd {
+  margin-top: 14px;
+  padding: 12px 14px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(240, 185, 11, 0.22);
+  background:
+    linear-gradient(135deg, rgba(240, 185, 11, 0.06) 0%, transparent 55%),
+    rgba(255, 255, 255, 0.02);
+}
+
+.ipct-mdd-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  margin-bottom: 10px;
+}
+
+.ipct-mdd-title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.ipct-mdd-sub {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.ipct-mdd-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+}
+
+@media (max-width: 640px) {
+  .ipct-mdd-grid { grid-template-columns: 1fr; }
+}
+
+.ipct-mdd-item {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(11, 13, 16, 0.35);
+}
+
+.ipct-mdd-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ipct-mdd-sym {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.ipct-mdd-zh {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.ipct-mdd-val {
+  text-align: right;
+}
+
+.ipct-mdd-num {
+  display: block;
+  font-size: clamp(22px, 3.2vw, 28px);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.6px;
+  line-height: 1;
+  color: var(--down);
+  text-shadow: 0 0 14px rgba(246, 70, 93, 0.35);
+}
+
+.ipct-mdd-lbl {
+  display: block;
+  margin-top: 3px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.2px;
+}
+
+.ipct-mdd-meta {
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
 .ipct-error { padding: 12px 0; font-size: 13px; }
 .ipct-loading p { margin-top: 8px; font-size: 13px; }
 

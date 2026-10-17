@@ -1,7 +1,7 @@
 {
   "live": false,
   "as_of": "2026-10-16",
-  "generated_at": "2026-10-17T06:35:20.210Z",
+  "generated_at": "2026-10-17T09:18:57.015Z",
   "source": "Yahoo Finance daily closes · static snapshot (refresh: npm run index-pct)",
   "windows": [
     {
@@ -125,6 +125,40 @@
           "n": 753
         }
       }
+    }
+  },
+  "mdd_ytd": {
+    "spy": {
+      "key": "spy",
+      "symbol": "SPY",
+      "name": "SPY",
+      "name_zh": "标普500 ETF",
+      "as_of": "2026-10-16",
+      "mdd_pct": -9.13,
+      "peak": 695.49,
+      "trough": 631.97,
+      "peak_date": "2026-01-27",
+      "trough_date": "2026-03-30",
+      "from": "2026-01-02",
+      "to": "2026-10-16",
+      "n": 199,
+      "price": 763.25
+    },
+    "qqq": {
+      "key": "qqq",
+      "symbol": "QQQ",
+      "name": "QQQ",
+      "name_zh": "纳斯达克100 ETF",
+      "as_of": "2026-10-16",
+      "mdd_pct": -11.83,
+      "peak": 633.22,
+      "trough": 558.28,
+      "peak_date": "2026-01-28",
+      "trough_date": "2026-03-30",
+      "from": "2026-01-02",
+      "to": "2026-10-16",
+      "n": 199,
+      "price": 709.8
     }
   }
 }

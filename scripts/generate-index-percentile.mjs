@@ -2,9 +2,8 @@
  * node scripts/generate-index-percentile.mjs
  * → public/data/index-percentile.json
  *
- * Static snapshot of S&P 500 / Nasdaq-100 price-range percentiles.
- * Same math as /api/index-percentile (Yahoo daily closes). Re-run to refresh
- * when the live API is unreachable; the homepage card notes the as-of date.
+ * Static snapshot of S&P 500 / Nasdaq-100 price-range percentiles + SPY/QQQ
+ * YTD max drawdown. Same math as /api/index-percentile (Yahoo daily closes).
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -17,6 +16,10 @@ const YAHOO_UA = 'Mozilla/5.0';
 const PRIMARY = [
   { key: 'spx', symbol: '^GSPC', fallback: 'SPY', name: '标普500', name_en: 'S&P 500' },
   { key: 'ndx', symbol: '^NDX', fallback: 'QQQ', name: '纳斯达克100', name_en: 'Nasdaq-100' },
+];
+const MDD_ETFS = [
+  { key: 'spy', symbol: 'SPY', name: 'SPY', name_zh: '标普500 ETF' },
+  { key: 'qqq', symbol: 'QQQ', name: 'QQQ', name_zh: '纳斯达克100 ETF' },
 ];
 const WINDOW_DEFS = [
   { key: '1y', label: '近一年', days: 365 },
@@ -101,6 +104,45 @@ function windowStats(rows, price, asOf, def) {
   };
 }
 
+/** YTD max drawdown: min(close / running_max - 1) from Jan 1. */
+function ytdMdd(rows, asOf) {
+  const from = yearStartISO(asOf);
+  const win = rows.filter((r) => r.date >= from);
+  if (win.length < 2) return null;
+  let peak = win[0].close;
+  let peakDate = win[0].date;
+  let mdd = 0;
+  let trough = win[0].close;
+  let troughDate = win[0].date;
+  let peakAtMdd = peak;
+  let peakDateAtMdd = peakDate;
+  for (const r of win) {
+    if (r.close > peak) {
+      peak = r.close;
+      peakDate = r.date;
+    }
+    const dd = r.close / peak - 1;
+    if (dd < mdd) {
+      mdd = dd;
+      trough = r.close;
+      troughDate = r.date;
+      peakAtMdd = peak;
+      peakDateAtMdd = peakDate;
+    }
+  }
+  return {
+    mdd_pct: round2(mdd * 100),
+    peak: round2(peakAtMdd),
+    trough: round2(trough),
+    peak_date: peakDateAtMdd,
+    trough_date: troughDate,
+    from: win[0].date,
+    to: win[win.length - 1].date,
+    n: win.length,
+    price: round2(win[win.length - 1].close),
+  };
+}
+
 async function loadIndex(cfg) {
   let used = cfg.symbol;
   let data;
@@ -130,6 +172,20 @@ async function loadIndex(cfg) {
   };
 }
 
+async function loadMddEtf(cfg) {
+  const data = await yahooDaily(cfg.symbol);
+  const mdd = ytdMdd(data.rows, data.as_of);
+  if (!mdd) throw new Error(`mdd empty ${cfg.symbol}`);
+  return {
+    key: cfg.key,
+    symbol: cfg.symbol,
+    name: cfg.name,
+    name_zh: cfg.name_zh,
+    as_of: data.as_of,
+    ...mdd,
+  };
+}
+
 const indices = {};
 let asOf = null;
 for (const cfg of PRIMARY) {
@@ -141,6 +197,16 @@ for (const cfg of PRIMARY) {
   );
 }
 
+const mdd_ytd = {};
+for (const cfg of MDD_ETFS) {
+  const row = await loadMddEtf(cfg);
+  mdd_ytd[cfg.key] = row;
+  if (!asOf || row.as_of > asOf) asOf = row.as_of;
+  console.log(
+    `mdd ${row.symbol} ${row.mdd_pct}%  peak ${row.peak}@${row.peak_date} → ${row.trough}@${row.trough_date}`
+  );
+}
+
 const payload = {
   live: false,
   as_of: asOf,
@@ -148,6 +214,7 @@ const payload = {
   source: 'Yahoo Finance daily closes · static snapshot (refresh: npm run index-pct)',
   windows: WINDOW_DEFS.map((w) => ({ key: w.key, label: w.label })),
   indices,
+  mdd_ytd,
 };
 
 await fs.writeFile(OUT, JSON.stringify(payload, null, 2) + '\n');

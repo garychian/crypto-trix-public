@@ -6,7 +6,12 @@
  * Note: 近一年 (≈252 sessions) and 今年 (Jan 1 YTD) can show the same % when
  * both the window high and low fall inside the calendar year — not a shared
  * window-start bug. UI surfaces high/low dates + a coincidence hint.
+ *
+ * Also SPY / QQQ 本年最大回撤 (YTD max drawdown on daily closes).
  */
+
+const MDD_ORDER = ['spy', 'qqq'];
+
 
 const DEFAULT_WINDOWS = [
   { key: '1y', label: '近一年' },
@@ -150,6 +155,53 @@ function indexRowHTML(idx, rangeKey) {
     </article>`;
 }
 
+
+function fmtMdd(n) {
+  if (!Number.isFinite(Number(n))) return '—';
+  const v = Number(n);
+  // Always show sign for drawdowns (0 → 0.00%)
+  if (v === 0) return '0.00%';
+  const sign = v > 0 ? '+' : '−';
+  return sign + Math.abs(v).toFixed(2) + '%';
+}
+
+function mddCardHTML(row) {
+  if (!row) return '';
+  const mdd = Number(row.mdd_pct);
+  return `
+    <article class="ipct-mdd-item" data-key="${escapeHTML(row.key || '')}">
+      <div class="ipct-mdd-top">
+        <div class="ipct-mdd-names">
+          <span class="ipct-mdd-sym">${escapeHTML(row.symbol || row.name || '')}</span>
+          <span class="ipct-mdd-zh muted">${escapeHTML(row.name_zh || '')}</span>
+        </div>
+        <div class="ipct-mdd-val" title="本年最大回撤 = min(收盘/滚动最高 − 1)">
+          <span class="ipct-mdd-num">${fmtMdd(mdd)}</span>
+          <span class="ipct-mdd-lbl">本年最大回撤</span>
+        </div>
+      </div>
+      <div class="ipct-mdd-meta muted">
+        峰值 ${fmtLevel(row.peak)} · ${fmtMD(row.peak_date)}
+        → 谷底 ${fmtLevel(row.trough)} · ${fmtMD(row.trough_date)}
+        · ${row.n || '—'} 个交易日
+      </div>
+    </article>`;
+}
+
+function mddStripHTML(mddYtd) {
+  if (!mddYtd || typeof mddYtd !== 'object') return '';
+  const cards = MDD_ORDER.map((k) => mddCardHTML(mddYtd[k])).filter(Boolean);
+  if (!cards.length) return '';
+  return `
+    <div class="ipct-mdd" aria-label="SPY QQQ 本年最大回撤">
+      <div class="ipct-mdd-head">
+        <span class="ipct-mdd-title">ETF · 本年最大回撤</span>
+        <span class="ipct-mdd-sub muted">年初至今 · 日线收盘 · min(收盘/滚动最高−1)</span>
+      </div>
+      <div class="ipct-mdd-grid">${cards.join('')}</div>
+    </div>`;
+}
+
 function renderBody(root, data, rangeKey) {
   const windows = Array.isArray(data.windows) && data.windows.length ? data.windows : DEFAULT_WINDOWS;
   const indices = data.indices || {};
@@ -195,6 +247,7 @@ function renderBody(root, data, rangeKey) {
         <div class="ipct-range" role="tablist" aria-label="时间窗口">${chips}</div>
       </div>
       <div class="ipct-body">${rows || '<p class="muted">暂无指数数据</p>'}</div>
+      ${mddStripHTML(data.mdd_ytd)}
       <div class="ipct-foot">
         <span class="ipct-asof muted">${asOfLine}</span>
         <span class="ipct-nfa muted">#NFA · ${escapeHTML(source)}</span>
