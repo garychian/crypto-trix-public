@@ -377,9 +377,15 @@ function computeAndRender() {
     }
     el.className = 'value ' + moneyCls(r.pnl ?? r.profit);
     const money = r.pnl ?? r.profit;
+    const dep = r.deposits != null && r.deposits > 0 ? r.deposits : 0;
     el.innerHTML =
       usdSigned(money) +
-      (r.pct != null && Number.isFinite(r.pct) ? '<small>' + pctSigned(r.pct) + '</small>' : '');
+      (r.pct != null && Number.isFinite(r.pct) ? '<small>' + pctSigned(r.pct) + '</small>' : '') +
+      (dep
+        ? '<small class="dep-excl" title="入金已从盈亏中剔除，不计入交易收益">不含入金 ' +
+          usd(dep) +
+          '</small>'
+        : '');
     document.getElementById(subId).textContent = subText;
   };
   const ytd = computeYtd(totalAssets, capital);
@@ -399,7 +405,9 @@ function computeAndRender() {
       : null;
   const periodSub = (r, label) => {
     if (!r) return '';
-    const base = label + ' ≈ ' + usd(r.startVal) + ' · ';
+    const dep = r.deposits != null && r.deposits > 0 ? r.deposits : 0;
+    const head = dep ? '交易盈亏 · 入金 ' + usd(dep) + ' 已剔除 · ' : '';
+    const base = head + label + ' ≈ ' + usd(r.startVal) + ' · ';
     if (r.mode === 'live') {
       return base + (r.n ? r.n + ' 日打卡 + ' : '') + '今日实时 ' + usdSigned(r.live) + '（含实时）';
     }

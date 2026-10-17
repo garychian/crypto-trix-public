@@ -110,7 +110,8 @@ function periodStart(dateISO, kind) {
  *
  * @param {'week'|'month'} kind
  * @returns {{pnl:number, pct:number|null, startVal:number, from:string, n:number,
- *            live:number, liveIncluded:boolean, mode:'live'|'closed'|'checkins'}|null}
+ *            live:number, liveIncluded:boolean, mode:'live'|'closed'|'checkins',
+ *            deposits:number}|null}
  */
 export function computePeriod(checkins, total, capital, kind, ref = null, now = new Date()) {
   const series = (checkins && checkins.series) || [];
@@ -135,7 +136,7 @@ export function computePeriod(checkins, total, capital, kind, ref = null, now = 
     const dep = deps.filter((x) => x.date >= from).reduce((s, x) => s + x.amount_usd, 0);
     const startVal = total - pnl - dep;
     return { pnl, pct: startVal > 0 ? (pnl / startVal) * 100 : null, startVal, from, n: inP.length,
-      live: 0, liveIncluded: false, mode: 'checkins' };
+      live: 0, liveIncluded: false, mode: 'checkins', deposits: dep };
   }
 
   const today = nyToday(now);
@@ -154,6 +155,11 @@ export function computePeriod(checkins, total, capital, kind, ref = null, now = 
   const live = newSession ? total - ref.total - depAfter : 0;
   const pnl = completed + live;
   const startVal = ref.total - completed - depBefore;
+  // Deposits dated in this calendar week/month (for UI: 不含入金).
+  const depEnd = newSession ? today : latestClose;
+  const deposits = deps
+    .filter((x) => x.date >= from && x.date <= depEnd)
+    .reduce((s, x) => s + x.amount_usd, 0);
   if (!inP.length && !newSession) return null;
   return {
     pnl,
@@ -164,5 +170,6 @@ export function computePeriod(checkins, total, capital, kind, ref = null, now = 
     live,
     liveIncluded: newSession,
     mode: newSession ? 'live' : 'closed',
+    deposits,
   };
 }
