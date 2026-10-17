@@ -367,26 +367,37 @@ function computeAndRender() {
   }, { maxNamed: Infinity, twoColFrom: 9 }); // every stock its own slice, no 其他
 
   // Account-level returns (deposit-aware) — see lib/capital.js
-  const setAcct = (id, subId, r, subText) => {
+  const setAcct = (id, subId, r, subText, { showDeposit } = {}) => {
     const el = document.getElementById(id);
+    const subEl = document.getElementById(subId);
     if (!r) {
       el.textContent = '—';
       el.className = 'value muted';
-      document.getElementById(subId).textContent = '数据未就绪';
+      subEl.textContent = '数据未就绪';
       return;
     }
     el.className = 'value ' + moneyCls(r.pnl ?? r.profit);
     const money = r.pnl ?? r.profit;
-    const dep = r.deposits != null && r.deposits > 0 ? r.deposits : 0;
+    const dep = showDeposit && r.deposits != null && r.deposits > 0 ? r.deposits : 0;
     el.innerHTML =
       usdSigned(money) +
-      (r.pct != null && Number.isFinite(r.pct) ? '<small>' + pctSigned(r.pct) + '</small>' : '') +
-      (dep
-        ? '<small class="dep-excl" title="入金已从盈亏中剔除，不计入交易收益">不含入金 ' +
-          usd(dep) +
-          '</small>'
-        : '');
-    document.getElementById(subId).textContent = subText;
+      (r.pct != null && Number.isFinite(r.pct) ? '<small>' + pctSigned(r.pct) + '</small>' : '');
+    // Dedicated banner under the number — much more visible than a tiny inline pill.
+    if (dep) {
+      subEl.innerHTML =
+        '<div class="dep-banner" title="入金已从盈亏中剔除，不计入交易收益">' +
+        '<span class="dep-banner-tag">入金</span>' +
+        '<span>本' +
+        (id === 'd-wtd' ? '周' : id === 'd-mtd' ? '月' : '') +
+        '入金 <b>' +
+        usd(dep) +
+        '</b> · 未计入盈亏</span></div>' +
+        '<div class="dep-sub-rest">' +
+        escapeHTML(subText) +
+        '</div>';
+    } else {
+      subEl.textContent = subText;
+    }
   };
   const ytd = computeYtd(totalAssets, capital);
   setAcct(
@@ -405,9 +416,7 @@ function computeAndRender() {
       : null;
   const periodSub = (r, label) => {
     if (!r) return '';
-    const dep = r.deposits != null && r.deposits > 0 ? r.deposits : 0;
-    const head = dep ? '交易盈亏 · 入金 ' + usd(dep) + ' 已剔除 · ' : '';
-    const base = head + label + ' ≈ ' + usd(r.startVal) + ' · ';
+    const base = '交易盈亏 · ' + label + ' ≈ ' + usd(r.startVal) + ' · ';
     if (r.mode === 'live') {
       return base + (r.n ? r.n + ' 日打卡 + ' : '') + '今日实时 ' + usdSigned(r.live) + '（含实时）';
     }
@@ -415,9 +424,9 @@ function computeAndRender() {
     return base + r.n + ' 个交易日 · 仅打卡数据';
   };
   const wtd = computePeriod(checkins, totalAssets, capital, 'week', periodRef);
-  setAcct('d-wtd', 'd-wtd-sub', wtd, periodSub(wtd, '周初'));
+  setAcct('d-wtd', 'd-wtd-sub', wtd, periodSub(wtd, '周初'), { showDeposit: true });
   const mtd = computePeriod(checkins, totalAssets, capital, 'month', periodRef);
-  setAcct('d-mtd', 'd-mtd-sub', mtd, periodSub(mtd, '月初'));
+  setAcct('d-mtd', 'd-mtd-sub', mtd, periodSub(mtd, '月初'), { showDeposit: true });
 
   const rows = holdings.map((h) => {
     const p = getP(h);
@@ -662,6 +671,7 @@ async function boot() {
   computeAndRender();
   await initEquityChart(document.getElementById('equity-chart'), {
     anchorTotal: snapshotTotal ?? data.total_assets_usd,
+    deposits: (capital && capital.deposits) || [],
   });
 }
 

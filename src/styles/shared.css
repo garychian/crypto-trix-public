@@ -321,19 +321,38 @@ img { max-width: 100%; display: block; }
 }
 
 .card .value small { font-size: .6em; font-weight: 700; margin-left: 8px; opacity: .95; }
-.card .value small.dep-excl {
-  display: inline-block;
-  margin-left: 8px;
-  padding: 1px 6px;
-  border-radius: 999px;
-  font-size: .52em;
+.card .dep-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0 4px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  color: #f0d78c;
+  background: rgba(240, 185, 11, 0.12);
+  border: 1px solid rgba(240, 185, 11, 0.45);
+  line-height: 1.35;
+}
+.card .dep-banner b {
+  color: var(--accent, #F0B90B);
+  font-variant-numeric: tabular-nums;
+}
+.card .dep-banner-tag {
+  flex: 0 0 auto;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: #0B0D10;
+  background: var(--accent, #F0B90B);
+}
+.card .dep-sub-rest {
   color: var(--muted);
-  background: var(--panel-2);
-  border: 1px solid var(--border);
-  opacity: 1;
-  vertical-align: middle;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 .card .value.up { color: var(--up); }
 .card .value.down { color: var(--down); }

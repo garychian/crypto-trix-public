@@ -236,7 +236,7 @@ function pickAxisTicks(n, maxTicks) {
   return out;
 }
 
-export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) {
+export function mountEquityChart(root, { points, defaultRange = 'month', deposits = [] } = {}) {
   if (!root) return { destroy() {} };
 
   let range = defaultRange;
@@ -246,6 +246,12 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
   let W = 720;
   let H = 280;
   let uid = Math.random().toString(36).slice(2, 7);
+  const depositList = (deposits || [])
+    .map((d) => ({
+      date: String(d.date || ''),
+      amount: Number(d.amount_usd),
+    }))
+    .filter((d) => d.date && Number.isFinite(d.amount) && d.amount !== 0);
   const reduced =
     typeof matchMedia !== 'undefined' &&
     matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -295,6 +301,7 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
           <path class="eq-area" fill="url(#eqArea-${uid})" d=""></path>
           <path class="eq-line" fill="none" stroke="url(#eqLine-${uid})" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d=""></path>
         </g>
+        <g class="eq-deposits" aria-hidden="true"></g>
         <g class="eq-end" hidden>
           <circle class="eq-end-halo" r="9"></circle>
           <circle class="eq-end-dot" r="4.2"></circle>
@@ -307,6 +314,7 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
         <div class="eq-tip-date" data-eq-tip-date></div>
         <div class="eq-tip-val" data-eq-tip-val></div>
         <div class="eq-tip-row"><span>当日</span><b data-eq-tip-day></b></div>
+        <div class="eq-tip-row eq-tip-dep" data-eq-tip-dep-row hidden><span>入金</span><b data-eq-tip-dep></b></div>
         <div class="eq-tip-row"><span>较区间起点</span><b data-eq-tip-cum></b></div>
       </div>
     </div>
@@ -331,6 +339,9 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
   const tipVal = $('[data-eq-tip-val]');
   const tipDay = $('[data-eq-tip-day]');
   const tipCum = $('[data-eq-tip-cum]');
+  const tipDepRow = $('[data-eq-tip-dep-row]');
+  const tipDep = $('[data-eq-tip-dep]');
+  const depEl = $('.eq-deposits');
   const metaEl = $('[data-eq-meta]');
   const lastEl = $('[data-eq-last]');
   const chgEl = $('[data-eq-chg]');
@@ -366,6 +377,7 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
     hideHover();
     if (!slice.length) {
       gridEl.innerHTML = xAxisEl.innerHTML = '';
+      if (depEl) depEl.innerHTML = '';
       lineEl.setAttribute('d', '');
       areaEl.setAttribute('d', '');
       endEl.setAttribute('hidden', '');
@@ -412,6 +424,29 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
         return `<text class="eq-x-label" x="${x.toFixed(1)}" y="${H - 8}" text-anchor="${anchor}">${fmtAxisDate(slice[i].date)}</text>`;
       })
       .join('');
+
+    // Deposit markers (capital.json) — annotation only; never added to pnl/equity.
+    if (depEl) {
+      const yTop = pad.t + 2;
+      const yBot = H - pad.b;
+      depEl.innerHTML = depositList
+        .map((dep) => {
+          const i = slice.findIndex((p) => p.date === dep.date);
+          if (i < 0) return '';
+          const x = px(i);
+          const y = py(slice[i].equity);
+          const label = '入金 +$' + Math.round(Math.abs(dep.amount)).toLocaleString('en-US');
+          const labelX = x + 8 > W - pad.r - 70 ? x - 8 : x + 8;
+          const anchor = labelX < x ? 'end' : 'start';
+          return (
+            `<line class="eq-dep-line" x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${yTop}" y2="${yBot}"/>` +
+            `<circle class="eq-dep-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5.5"/>` +
+            `<circle class="eq-dep-dot-core" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6"/>` +
+            `<text class="eq-dep-label" x="${labelX.toFixed(1)}" y="${(yTop + 11).toFixed(1)}" text-anchor="${anchor}">${label}</text>`
+          );
+        })
+        .join('');
+    }
 
     // end point: glowing dot + latest value
     const [ex, ey] = pts[n - 1];
@@ -511,6 +546,14 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
     tipVal.textContent = fmtFull(p.equity);
     tipDay.innerHTML = `${fmtDelta(p.pnl)} <small>${fmtPct(dayPct)}</small>`;
     tipDay.className = cls(p.pnl);
+    const depHit = depositList.find((d) => d.date === p.date);
+    if (depHit && tipDepRow && tipDep) {
+      tipDepRow.hidden = false;
+      tipDep.textContent = '+$' + Math.round(Math.abs(depHit.amount)).toLocaleString('en-US') + '（不计入盈亏）';
+      tipDep.className = 'up';
+    } else if (tipDepRow) {
+      tipDepRow.hidden = true;
+    }
     tipCum.innerHTML = `${fmtDelta(cum)} <small>${fmtPct(cumPct)}</small>`;
     tipCum.className = cls(cum);
     tipEl.hidden = false;
@@ -570,7 +613,7 @@ export function mountEquityChart(root, { points, defaultRange = 'month' } = {}) 
   };
 }
 
-export async function initEquityChart(el, { anchorTotal } = {}) {
+export async function initEquityChart(el, { anchorTotal, deposits } = {}) {
   if (!el) return null;
   try {
     let checkins = null;
@@ -580,12 +623,40 @@ export async function initEquityChart(el, { anchorTotal } = {}) {
     } catch {
       /* ignore */
     }
+    let depList = Array.isArray(deposits) ? deposits : null;
+    if (!depList) {
+      try {
+        const cres = await fetch('/data/capital.json', { cache: 'no-store' });
+        if (cres.ok) {
+          const cj = await cres.json();
+          depList = Array.isArray(cj.deposits) ? cj.deposits : [];
+        }
+      } catch {
+        depList = [];
+      }
+    }
     const points = buildEquitySeries(checkins, anchorTotal);
     if (!points.length) {
       el.innerHTML = '<div class="eq-empty muted">暂无净值序列（fund-checkins.json）</div>';
       return null;
     }
-    return mountEquityChart(el, { points, defaultRange: 'month' });
+    // Default to 本周 when a deposit falls in the latest ISO week — makes the marker obvious.
+    let defaultRange = 'month';
+    if (depList.length && points.length) {
+      const last = points[points.length - 1].date;
+      const [y, m, d] = last.split('-').map(Number);
+      const lastDt = new Date(y, m - 1, d);
+      const mon = new Date(lastDt);
+      mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7));
+      const from =
+        mon.getFullYear() +
+        '-' +
+        String(mon.getMonth() + 1).padStart(2, '0') +
+        '-' +
+        String(mon.getDate()).padStart(2, '0');
+      if (depList.some((dep) => dep.date >= from && dep.date <= last)) defaultRange = 'week';
+    }
+    return mountEquityChart(el, { points, defaultRange, deposits: depList });
   } catch (err) {
     console.warn('equity chart failed', err);
     el.innerHTML = '<div class="eq-empty muted">净值走势暂时无法显示</div>';
