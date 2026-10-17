@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-15",
-  "value": 5.09,
-  "prev": 5.19,
-  "chg": -0.1,
-  "chg_pct": -1.93,
+  "as_of": "2026-10-16",
+  "value": 5.1,
+  "prev": 5.09,
+  "chg": 0.01,
+  "chg_pct": 0.2,
   "history": [
     {
       "date": "2026-07-08",
@@ -284,13 +284,17 @@
     {
       "date": "2026-10-15",
       "v": 5.09
+    },
+    {
+      "date": "2026-10-16",
+      "v": 5.1
     }
   ],
   "lo_52w": 4.38,
   "hi_52w": 5.3,
   "lo_90d": 4.38,
   "hi_90d": 5.3,
-  "source": "CBOE TNX snapshot 50.89 (2026-10-15)；−10bp 本周最大单日下行；科技抛售中资金避险涌向国债（CNBC）",
+  "source": "FT/MarketWatch 收盘口径 2026-10-16（较周四 +2bp；CBOE TNX CDN 故障；暴跌日收益率不跌反升）",
   "live": false,
-  "trade_time": "2026-10-15 snapshot"
+  "trade_time": "2026-10-16 close"
 }
