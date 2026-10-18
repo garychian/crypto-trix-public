@@ -50,7 +50,7 @@
 }
 
 .goal-block {
-  padding: 20px 22px 18px;
+  padding: 20px 22px 16px;
   margin-bottom: 16px;
 }
 
@@ -59,17 +59,46 @@
   justify-content: space-between;
   align-items: flex-end;
   margin-bottom: 16px;
-  gap: 12px;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .goal-left {
   display: flex;
+  align-items: flex-end;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.goal-assets {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.goal-assets .assets-lbl {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+.goal-assets .assets-val {
+  font-size: clamp(26px, 4.5vw, 34px);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.6px;
+  line-height: 1;
+  color: var(--text);
+}
+
+.goal-pct-wrap {
+  display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: 8px;
 }
 
 .pct-big {
-  font-size: 36px;
+  font-size: clamp(28px, 4vw, 36px);
   font-weight: 800;
   color: var(--accent);
   font-variant-numeric: tabular-nums;
@@ -83,6 +112,23 @@
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
+}
+
+.goal-meta {
+  text-align: right;
+}
+.goal-meta-lbl {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+.goal-meta-val {
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin: 2px 0 4px;
 }
 
 .goal-right {
@@ -168,6 +214,112 @@
 .bar-labels .lab.edge-l { transform: translateX(0); }
 .bar-labels .lab.edge-r { transform: translateX(-100%); }
 
+.bar-ticks .tick.lh-tick {
+  width: 3px;
+  top: -4px;
+  bottom: -4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.22);
+}
+.bar-ticks .tick.lh-tick.reached {
+  background: rgba(240, 185, 11, 0.85);
+  box-shadow: 0 0 8px rgba(240, 185, 11, 0.55);
+}
+
+.lh-chips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.lh-chip {
+  position: relative;
+  padding: 12px 14px 11px;
+  border-radius: 14px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  min-width: 0;
+}
+.lh-chip.next {
+  border-color: rgba(240, 185, 11, 0.45);
+  box-shadow: 0 0 0 1px rgba(240, 185, 11, 0.12), 0 8px 22px rgba(0, 0, 0, 0.25);
+}
+.lh-chip.reached {
+  border-color: rgba(14, 203, 129, 0.35);
+  background: linear-gradient(180deg, rgba(14, 203, 129, 0.08), transparent 70%), var(--panel-2);
+}
+
+.lh-chip-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.lh-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.4px;
+}
+.lh-chip.reached .lh-name { color: var(--up); }
+.lh-short {
+  font-size: 12px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.lh-chip-pct {
+  font-size: 22px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  color: var(--text);
+}
+.lh-chip.reached .lh-chip-pct { color: var(--up); font-size: 18px; }
+
+.lh-mini-track {
+  position: relative;
+  height: 6px;
+  margin: 8px 0 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.lh-mini-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #F0B90B, #FFD75E);
+  box-shadow: 0 0 8px rgba(240, 185, 11, 0.4);
+  transition: width .9s cubic-bezier(.2, .7, .2, 1);
+}
+.lh-chip.reached .lh-mini-fill {
+  background: linear-gradient(90deg, #0A8F5A, #0ECB81);
+  box-shadow: 0 0 8px rgba(14, 203, 129, 0.4);
+}
+
+.lh-rem {
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.lh-chip.reached .lh-rem { color: var(--up); }
+
+.lh-reason {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--muted-2, #7A8494);
+}
+
 .goal-status {
   margin-top: 14px;
   display: inline-flex;
@@ -180,8 +332,17 @@
   border-radius: 999px;
   font-size: 12.5px;
   font-weight: 600;
+  max-width: 100%;
+  flex-wrap: wrap;
 }
 .goal-status b { color: #FFE89A; font-weight: 800; }
+
+.lh-pace {
+  margin: 10px 0 0;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.4;
+}
 
 .stat-cards {
   display: grid;
@@ -239,9 +400,15 @@
 @media (max-width: 960px) {
   .stat-cards { grid-template-columns: repeat(2, 1fr); }
 }
+@media (max-width: 860px) {
+  .lh-chips { grid-template-columns: 1fr; }
+}
 @media (max-width: 520px) {
   .stat-cards { grid-template-columns: 1fr 1fr; }
-  .pct-big { font-size: 28px; }
+  .pct-big { font-size: 26px; }
+  .goal-left { gap: 14px; }
+  .goal-meta { text-align: left; width: 100%; }
+  .goal-block { padding: 16px 14px 14px; }
 }
 
 /* —— Equity chart (净值走势) —— */

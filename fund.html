@@ -54,21 +54,33 @@
       </div>
     </section>
 
-    <section class="goal-block panel">
+    <section class="goal-block panel" aria-labelledby="lh-title">
       <div class="goal-top">
         <div class="goal-left">
-          <span class="pct-big" id="d-pct">—%</span>
-          <span class="pct-sub">已达成</span>
+          <div class="goal-assets">
+            <span class="assets-lbl" id="lh-title">当前总资产</span>
+            <span class="assets-val" id="d-assets">—</span>
+          </div>
+          <div class="goal-pct-wrap">
+            <span class="pct-big" id="d-pct">—%</span>
+            <span class="pct-sub">2M 进度</span>
+          </div>
         </div>
-        <div class="goal-right" id="d-dist">距目标 —</div>
+        <div class="goal-meta">
+          <div class="goal-meta-lbl">终极灯塔 · 财务自由</div>
+          <div class="goal-meta-val" id="d-goal-inline">$2,000,000</div>
+          <div class="goal-right" id="d-dist">距目标 —</div>
+        </div>
       </div>
-      <div class="bar-track">
+      <div class="bar-track" aria-hidden="true">
         <div class="bar-fill" id="d-fill"></div>
         <div class="bar-ticks" id="d-ticks"></div>
         <div class="bar-knob" id="d-knob"></div>
       </div>
       <div class="bar-labels" id="d-labels"></div>
+      <div class="lh-chips" id="d-lighthouses" role="list"></div>
       <div class="goal-status" id="d-status"></div>
+      <p class="lh-pace muted">路径上的三座灯塔 · 终极目标仍是 $2M（4% 法则）· 节奏参考首页「年化目标 20%」</p>
     </section>
 
     <section class="stat-cards" id="stat-cards">

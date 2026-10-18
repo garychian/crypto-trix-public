@@ -18,7 +18,27 @@ import { renderAllocation } from './allocation-chart.js';
 import { computeYtd, computePeriod, loadCheckins } from './lib/capital.js';
 
 
-const MILESTONES = [100_000, 250_000, 500_000, 1_000_000, 2_000_000];
+/** Three "灯塔" waypoints on the path to $2M FI (pinned-tweet framing). */
+const LIGHTHOUSES = [
+  {
+    usd: 300_000,
+    name: '灯塔一',
+    short: '$300K',
+    reason: '资产年增值 ≈ 年储蓄 · ~$30K/年（按 10% 回报）',
+  },
+  {
+    usd: 800_000,
+    name: '灯塔二',
+    short: '$800K',
+    reason: '预期年回报 ≈ 家庭开支 · ~$80K/年（美中西部一家三口）',
+  },
+  {
+    usd: 2_000_000,
+    name: '灯塔三',
+    short: '$2M',
+    reason: '4% 法则 / 30 年国债 · ~$100K 被动收入 · 真·财务自由',
+  },
+];
 const CFG = {
   start: '2026-07-16',
   goal: 2_000_000,
@@ -124,19 +144,32 @@ function autoNoteHTML(r) {
   return spans.length ? spans.join(' · ') : '—';
 }
 
-function renderMilestones(progress, total) {
+function lhPct(total, milestone) {
+  if (!(milestone > 0) || !(total > 0)) return 0;
+  return (total / milestone) * 100;
+}
+
+function renderLighthouses(progress, total) {
   const ticksEl = document.getElementById('d-ticks');
   const labsEl = document.getElementById('d-labels');
-  const reached = MILESTONES.filter((v) => total >= v);
-  const next = MILESTONES.find((v) => total < v);
+  const chipsEl = document.getElementById('d-lighthouses');
+  const reached = LIGHTHOUSES.filter((lh) => total >= lh.usd);
+  const next = LIGHTHOUSES.find((lh) => total < lh.usd);
+
   let tHtml = '';
   let lHtml = '';
-  MILESTONES.forEach((v) => {
-    const pos = Math.min(100, (v / CFG.goal) * 100);
-    const got = total >= v;
+  LIGHTHOUSES.forEach((lh) => {
+    const pos = Math.min(100, (lh.usd / CFG.goal) * 100);
+    const got = total >= lh.usd;
     const edge = pos >= 99 ? 'edge-r' : pos <= 3 ? 'edge-l' : '';
     tHtml +=
-      '<div class="tick' + (got ? ' reached' : '') + '" style="left:' + pos + '%"></div>';
+      '<div class="tick lh-tick' +
+      (got ? ' reached' : '') +
+      '" style="left:' +
+      pos +
+      '%" title="' +
+      escapeHTML(lh.name + ' · ' + lh.short) +
+      '"></div>';
     lHtml +=
       '<span class="lab' +
       (got ? ' reached' : '') +
@@ -145,26 +178,75 @@ function renderMilestones(progress, total) {
       '" style="left:' +
       pos +
       '%">' +
-      (got ? '✓ ' : '') +
-      msLabel(v) +
+      (got ? '✓ ' : '🔦 ') +
+      lh.short +
       '</span>';
   });
   ticksEl.innerHTML = tHtml;
   labsEl.innerHTML = lHtml;
 
+  chipsEl.innerHTML = LIGHTHOUSES.map((lh) => {
+    const pct = lhPct(total, lh.usd);
+    const rem = Math.max(0, lh.usd - total);
+    const got = total >= lh.usd;
+    const fill = Math.min(100, pct);
+    const pctLabel = got ? '已达成' : pct.toFixed(1) + '%';
+    const remLabel = got ? '已点亮' : '还差 ' + usd(rem);
+    return (
+      '<article class="lh-chip' +
+      (got ? ' reached' : '') +
+      (next && next.usd === lh.usd ? ' next' : '') +
+      '" role="listitem">' +
+      '<div class="lh-chip-top">' +
+      '<span class="lh-name">' +
+      escapeHTML(lh.name) +
+      '</span>' +
+      '<span class="lh-short">' +
+      escapeHTML(lh.short) +
+      '</span>' +
+      '</div>' +
+      '<div class="lh-chip-pct">' +
+      pctLabel +
+      '</div>' +
+      '<div class="lh-mini-track" aria-hidden="true">' +
+      '<div class="lh-mini-fill" style="width:' +
+      fill +
+      '%"></div>' +
+      '</div>' +
+      '<div class="lh-rem">' +
+      remLabel +
+      '</div>' +
+      '<p class="lh-reason">' +
+      escapeHTML(lh.reason) +
+      '</p>' +
+      '</article>'
+    );
+  }).join('');
+
   let st;
-  if (!next) st = '🎉 全部里程碑达成 · 目标进度 ' + progress.toFixed(1) + '%';
-  else if (reached.length) {
+  if (!next) {
+    st = '🎉 三座灯塔全部点亮 · 2M 进度 ' + progress.toFixed(1) + '%';
+  } else if (reached.length) {
     const last = reached[reached.length - 1];
     st =
       '🏆 已过 ' +
-      msLabel(last) +
-      ' · 下一站 <b>' +
-      msLabel(next) +
+      last.name +
+      '（' +
+      last.short +
+      '）· 下一座 <b>' +
+      next.name +
+      ' ' +
+      next.short +
       '</b> · 还差 ' +
-      usd(next - total);
+      usd(next.usd - total);
   } else {
-    st = '🚀 下一站 <b>' + msLabel(next) + '</b> · 还差 ' + usd(next - total);
+    st =
+      '🚀 下一座灯塔 <b>' +
+      next.name +
+      ' ' +
+      next.short +
+      '</b> · 还差 ' +
+      usd(next.usd - total);
   }
   document.getElementById('d-status').innerHTML = st;
 }
@@ -338,12 +420,16 @@ function computeAndRender() {
   document.getElementById('d-sub').textContent = CFG.sub;
 
   if (progress != null) {
+    const assetsEl = document.getElementById('d-assets');
+    if (assetsEl) assetsEl.textContent = usd(totalAssets);
+    const goalInline = document.getElementById('d-goal-inline');
+    if (goalInline) goalInline.textContent = usd(CFG.goal);
     document.getElementById('d-pct').textContent = progress.toFixed(2) + '%';
     document.getElementById('d-fill').style.width = Math.min(100, progress) + '%';
     document.getElementById('d-knob').style.left = Math.min(100, progress) + '%';
     document.getElementById('d-dist').innerHTML =
-      '距目标 <b>' + usd(Math.max(0, CFG.goal - totalAssets)) + '</b>';
-    renderMilestones(progress, totalAssets);
+      '距 $2M <b>' + usd(Math.max(0, CFG.goal - totalAssets)) + '</b>';
+    renderLighthouses(progress, totalAssets);
   }
 
   setPlain('d-total', totalAssets);
