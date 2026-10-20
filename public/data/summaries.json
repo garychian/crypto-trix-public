@@ -3,48 +3,57 @@
     "type": "week",
     "id": "2026-W43",
     "period_start": "2026-10-19",
-    "period_end": "2026-10-19",
+    "period_end": "2026-10-20",
     "us": {
-      "pnl_usd": 2259,
-      "pct": 1.56,
+      "pnl_usd": 2577,
+      "pct": 1.78,
       "total_start": 145040.63,
-      "total_end": 147299.18,
-      "closes": 1,
+      "total_end": 147617.2,
+      "closes": 2,
       "daily": [
         {
           "date": "2026-10-19",
           "pnl_usd": 2259
+        },
+        {
+          "date": "2026-10-20",
+          "pnl_usd": 318
         }
       ],
-      "cash_pct_end": 23.76,
+      "cash_pct_end": 23.71,
       "cash_pct_start": 24.13,
       "top_gainers": [
         {
           "ticker": "TSLA",
-          "contribution_usd": 1334,
-          "price_pct": 3.76
+          "contribution_usd": 1899,
+          "price_pct": 5.35
         },
         {
           "ticker": "AMZN",
-          "contribution_usd": 212,
-          "price_pct": 4.98
+          "contribution_usd": 215,
+          "price_pct": 5.05
         },
         {
           "ticker": "QQQ",
-          "contribution_usd": 130,
-          "price_pct": 1.21
+          "contribution_usd": 119,
+          "price_pct": 1.1
         }
       ],
       "top_losers": [
         {
           "ticker": "META",
-          "contribution_usd": -23,
-          "price_pct": -0.55
+          "contribution_usd": -91,
+          "price_pct": -2.13
         },
         {
           "ticker": "AAPL",
-          "contribution_usd": -3,
-          "price_pct": -0.15
+          "contribution_usd": -24,
+          "price_pct": -1.15
+        },
+        {
+          "ticker": "GOOGL",
+          "contribution_usd": -10,
+          "price_pct": -0.09
         }
       ],
       "position_changes": []
@@ -55,12 +64,12 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 304777,
-      "ytd_usd": 13176,
-      "ytd_pct": 9.82
+      "total_usd_end": 305095,
+      "ytd_usd": 13494,
+      "ytd_pct": 10.06
     },
     "partial": true,
-    "generated_at": "2026-10-20T01:35:53.875Z"
+    "generated_at": "2026-10-20T23:59:18.354Z"
   },
   {
     "type": "week",
