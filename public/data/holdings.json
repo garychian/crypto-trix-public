@@ -164,6 +164,13 @@
       "strike": 100,
       "expiry": "2027-01-15",
       "premium": 719
+    },
+    {
+      "symbol": "QQQ",
+      "type": "BULL PUT SPREAD 660/640",
+      "strike": 660,
+      "expiry": "2026-11-27",
+      "premium": 175
     }
   ],
   "prices": {

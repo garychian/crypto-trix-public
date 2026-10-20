@@ -14,6 +14,7 @@ let sub = 'US EQUITIES';
 
 function typeZh(t) {
   return String(t || '')
+    .replace(/BULL PUT SPREAD (\S+)/, '牛市看跌价差 $1')
     .replace('SELL PUT', '卖出看跌')
     .replace('BUY PUT', '买入看跌')
     .replace('SELL CALL', '卖出看涨')
