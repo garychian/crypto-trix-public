@@ -166,3 +166,53 @@ export function holdingsSourceBadge(data) {
   if (data?.source === 'live') return '仓库持仓';
   return '示例持仓';
 }
+
+/**
+ * Headline total = broker anchor (holdings.json total_assets_usd, as_of close)
+ *   + Σ shares × (live price − anchor price).  Anchor prices = holdings.json `prices`
+ *   (official close on as_of). Cash/SGOV held constant. Only live quotes move it.
+ * @returns {{ total:number|null, anchor:number|null, delta:number, n:number, live:boolean }}
+ */
+export function markToMarketTotal(data, prices) {
+  const anchor =
+    data && data.total_assets_usd != null && Number.isFinite(Number(data.total_assets_usd))
+      ? Number(data.total_assets_usd)
+      : null;
+  const live = !!(prices && prices.__source === 'live');
+  if (anchor == null || !live || !data.prices) return { total: anchor, anchor, delta: 0, n: 0, live };
+  let delta = 0;
+  let n = 0;
+  for (const h of data.holdings || []) {
+    const key = String(h.ticker || '').toUpperCase();
+    const p0 = Number(data.prices[key]);
+    const q = prices[key];
+    const p1 = q && q.price != null ? Number(q.price) : NaN;
+    const sh = Number(h.shares);
+    if (!Number.isFinite(p0) || !Number.isFinite(p1) || !Number.isFinite(sh)) continue;
+    delta += sh * (p1 - p0);
+    n++;
+  }
+  return { total: anchor + delta, anchor, delta, n, live };
+}
+
+/** Landing helper: fetch live quotes and return data with marked-to-market total/ytd. */
+export async function loadHoldingsMarked() {
+  const data = await loadHoldingsData();
+  if (data.source !== 'live') return data;
+  try {
+    const { fetchPrices } = await import('./prices.js');
+    const syms = [...new Set(data.holdings.map((h) => h.ticker))];
+    const prices = await fetchPrices(syms);
+    const m = markToMarketTotal(data, prices);
+    if (m.total == null || m.n === 0) return data;
+    return {
+      ...data,
+      anchor_total_usd: m.anchor,
+      mtm_delta_usd: m.delta,
+      total_assets_usd: m.total,
+      ytd: computeYtd(m.total, data.capital),
+    };
+  } catch {
+    return data;
+  }
+}

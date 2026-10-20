@@ -7,7 +7,7 @@ import { renderIndexPctCard } from './index-pct-card.js';
 import { renderJourneyRings } from './journey-rings.js';
 import { renderNetWorth } from './net-worth.js';
 import { renderSummaryFeed } from './summary-feed.js';
-import { loadHoldingsData } from './lib/holdings.js';
+import { loadHoldingsMarked } from './lib/holdings.js';
 import { escapeHTML } from './lib/format.js';
 
 /** Mon→Sun labels (weekend rows keep Saturday check-ins visible). */
@@ -339,7 +339,7 @@ async function renderLatestArticle() {
 
 async function boot() {
   renderLatestArticle(); // independent of other cards
-  const data = await loadHoldingsData();
+  const data = await loadHoldingsMarked();
 
   renderNetWorth(data); // independent; handles its own failures
   await renderHeatmap();

@@ -2,7 +2,7 @@ import './nav.js';
 import { attachSnapshotButton } from './lib/snapshot.js';
 import { renderDividendCard } from './dividends.js';
 import { DEMO_NOTES } from './data/demo.js';
-import { loadHoldingsData, holdingsSourceBadge } from './lib/holdings.js';
+import { loadHoldingsData, holdingsSourceBadge, markToMarketTotal } from './lib/holdings.js';
 import { fetchPrices, priceSourceLabel, priceSourceBadge, pricesFromHoldings } from './lib/prices.js';
 import { marketStatus } from './lib/market.js';
 import {
@@ -396,16 +396,17 @@ function computeAndRender() {
   const srcLabel = priceSourceLabel(prices);
   const liveTotal =
     holdingsMV + (cashUSD != null ? cashUSD : 0);
-  // Headline 总资产 = holdings.json broker anchor (never override with live MV+cash).
-  // Live quotes still drive per-row prices / 当日盈亏 / 持仓累计; allocation uses live MV.
+  // Headline 总资产 = broker anchor (holdings.json total @ as_of close) + Σ shares×(live − anchor price).
+  // Equals the anchor at the anchor close; moves with live/closing quotes afterwards. Cash constant.
+  const mtm = markToMarketTotal(holdingsMeta, prices);
   const totalAssets =
-    snapshotTotal != null && Number.isFinite(snapshotTotal) ? snapshotTotal : liveTotal;
+    snapshotTotal != null && Number.isFinite(snapshotTotal) ? mtm.total : liveTotal;
   // 持仓累计盈亏 = Σ(市值 − 成本) over current stock positions (no cash); 收益率 = pnl / Σ成本
   const displayCumPnL = hasCost ? cumPnL : null;
   const totalInvested = hasCost ? cumCost : null;
   const brokerHoldingsMV =
     snapshotTotal != null && cashUSD != null && Number.isFinite(snapshotTotal)
-      ? snapshotTotal - cashUSD
+      ? totalAssets - cashUSD
       : null;
 
   const cashW = cashUSD != null && totalAssets > 0 ? (cashUSD / totalAssets) * 100 : 0;
@@ -439,9 +440,8 @@ function computeAndRender() {
       sub.textContent = '持仓市值';
     } else if (brokerHoldingsMV != null) {
       const liveGap =
-        srcLabel === 'live' &&
-        Math.abs(liveTotal - totalAssets) >= 50
-          ? ' · 实时盯市 ' + usd(liveTotal)
+        mtm.n > 0
+          ? ' · 自 ' + ((holdingsMeta && holdingsMeta.as_of) || '锚') + ' 盯市 ' + usdSigned(mtm.delta)
           : '';
       sub.textContent =
         '券商锚 · 持仓 ' +
