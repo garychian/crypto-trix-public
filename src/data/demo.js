@@ -32,10 +32,10 @@ export const DEMO_HOLDINGS = [
 
 /** Cash secured puts — aligned with holdings.json options */
 export const DEMO_OPTIONS = [
-  { symbol: 'DRAM', type: 'SELL PUT', strike: 50,  expiry: '2026-11-20', premium: 789 },
-  { symbol: 'RKLB', type: 'SELL PUT', strike: 60,  expiry: '2027-06-17', premium: 1740 },
+  { symbol: 'EUV',  type: 'SELL PUT', strike: 27,  expiry: '2026-11-20', premium: 330 },
+  { symbol: 'DRAM', type: 'SELL PUT', strike: 50,  expiry: '2027-01-15', premium: 929 },
+  { symbol: 'RKLB', type: 'SELL PUT', strike: 60,  expiry: '2028-01-21', premium: 2390 },
   { symbol: 'SPCX', type: 'SELL PUT', strike: 100, expiry: '2027-01-15', premium: 719 },
-  { symbol: 'EUV',  type: 'SELL PUT', strike: 27,  expiry: '2026-10-16', premium: 260 },
 ];
 
 export const DEMO_CASH = 32038;
