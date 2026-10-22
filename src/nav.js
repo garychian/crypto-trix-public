@@ -8,6 +8,7 @@
  */
 
 import './chat-widget.js';
+import './presence.js';
 
 const ICON = {
   home: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>',
