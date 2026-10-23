@@ -3,13 +3,13 @@
     "type": "week",
     "id": "2026-W43",
     "period_start": "2026-10-19",
-    "period_end": "2026-10-21",
+    "period_end": "2026-10-22",
     "us": {
-      "pnl_usd": 4667,
-      "pct": 3.22,
+      "pnl_usd": 863,
+      "pct": 0.6,
       "total_start": 145040.63,
-      "total_end": 149707.67,
-      "closes": 3,
+      "total_end": 145903.99,
+      "closes": 4,
       "daily": [
         {
           "date": "2026-10-19",
@@ -22,37 +22,46 @@
         {
           "date": "2026-10-21",
           "pnl_usd": 2090
+        },
+        {
+          "date": "2026-10-22",
+          "pnl_usd": -3804
         }
       ],
-      "cash_pct_end": 23.37,
+      "cash_pct_end": 23.98,
       "cash_pct_start": 24.13,
       "top_gainers": [
         {
           "ticker": "TSLA",
-          "contribution_usd": 3175,
-          "price_pct": 8.95
+          "contribution_usd": 1986,
+          "price_pct": 5.6
         },
         {
-          "ticker": "NVDA",
-          "contribution_usd": 321,
-          "price_pct": 3.66
+          "ticker": "PLTR",
+          "contribution_usd": 152,
+          "price_pct": 5.46
         },
         {
-          "ticker": "SPCX",
-          "contribution_usd": 266,
-          "price_pct": 9.09
+          "ticker": "BRK.B",
+          "contribution_usd": 105,
+          "price_pct": 2.81
         }
       ],
       "top_losers": [
         {
           "ticker": "GOOGL",
-          "contribution_usd": -182,
-          "price_pct": -1.71
+          "contribution_usd": -511,
+          "price_pct": -4.81
         },
         {
           "ticker": "META",
-          "contribution_usd": -71,
-          "price_pct": -1.66
+          "contribution_usd": -365,
+          "price_pct": -8.53
+        },
+        {
+          "ticker": "AMD",
+          "contribution_usd": -167,
+          "price_pct": -3.94
         }
       ],
       "position_changes": []
@@ -63,12 +72,12 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 307185,
-      "ytd_usd": 15585,
-      "ytd_pct": 11.62
+      "total_usd_end": 303382,
+      "ytd_usd": 11781,
+      "ytd_pct": 8.78
     },
     "partial": true,
-    "generated_at": "2026-10-21T23:30:16.279Z"
+    "generated_at": "2026-10-23T00:08:28.014Z"
   },
   {
     "type": "week",
