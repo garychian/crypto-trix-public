@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-23",
+  "source": "public/data/holdings.json",
+  "total_usd": 145525.72,
+  "cash_usd": 34992.98,
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "shares": 100,
+      "price": 372.22,
+      "mv": 37222,
+      "cost_total": 21537.42
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 15.14,
+      "price": 704.4,
+      "mv": 10664.62,
+      "cost_total": 9093.31
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 31.19,
+      "price": 320.21,
+      "mv": 9987.35,
+      "cost_total": 3726.34
+    },
+    {
+      "ticker": "VOO",
+      "shares": 14.22,
+      "price": 698.58,
+      "mv": 9933.81,
+      "cost_total": 7382.91
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 17.19,
+      "price": 524.51,
+      "mv": 9016.33,
+      "cost_total": 6026.45
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 41,
+      "price": 210.96,
+      "mv": 8649.36,
+      "cost_total": 5085.63
+    },
+    {
+      "ticker": "AMD",
+      "shares": 8,
+      "price": 516.79,
+      "mv": 4134.32,
+      "cost_total": -490.37
+    },
+    {
+      "ticker": "META",
+      "shares": 6.04,
+      "price": 642.62,
+      "mv": 3881.42,
+      "cost_total": 484.88
+    },
+    {
+      "ticker": "AMZN",
+      "shares": 17,
+      "price": 248,
+      "mv": 4216,
+      "cost_total": 3435.04
+    },
+    {
+      "ticker": "BRK.B",
+      "shares": 7,
+      "price": 542.19,
+      "mv": 3795.33,
+      "cost_total": 3549.41
+    },
+    {
+      "ticker": "SPCX",
+      "shares": 20,
+      "price": 147.49,
+      "mv": 2949.8,
+      "cost_total": 2736
+    },
+    {
+      "ticker": "PLTR",
+      "shares": 15,
+      "price": 196.75,
+      "mv": 2951.25,
+      "cost_total": 53.8
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6.09,
+      "price": 347.73,
+      "mv": 2117.68,
+      "cost_total": 884.4
+    },
+    {
+      "ticker": "EUV",
+      "shares": 50,
+      "price": 20.27,
+      "mv": 1013.5,
+      "cost_total": 1302.7
+    }
+  ]
+}
