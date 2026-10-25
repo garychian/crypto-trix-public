@@ -1,7 +1,7 @@
 {
   "date": "2026-10-23",
   "source": "public/data/holdings.json",
-  "total_usd": 145525.72,
+  "total_usd": 145365.52,
   "cash_usd": 34992.98,
   "holdings": [
     {
@@ -20,31 +20,31 @@
     },
     {
       "ticker": "GOOGL",
-      "shares": 31.19,
+      "shares": 31,
       "price": 320.21,
-      "mv": 9987.35,
+      "mv": 9926.51,
       "cost_total": 3726.34
     },
     {
       "ticker": "VOO",
-      "shares": 14.22,
+      "shares": 14,
       "price": 698.58,
-      "mv": 9933.81,
+      "mv": 9780.12,
       "cost_total": 7382.91
     },
     {
       "ticker": "MSFT",
-      "shares": 17.19,
+      "shares": 17,
       "price": 524.51,
-      "mv": 9016.33,
+      "mv": 8916.67,
       "cost_total": 6026.45
     },
     {
       "ticker": "NVDA",
-      "shares": 41,
+      "shares": 42,
       "price": 210.96,
-      "mv": 8649.36,
-      "cost_total": 5085.63
+      "mv": 8860.32,
+      "cost_total": 5300.63
     },
     {
       "ticker": "AMD",
@@ -55,9 +55,9 @@
     },
     {
       "ticker": "META",
-      "shares": 6.04,
+      "shares": 6,
       "price": 642.62,
-      "mv": 3881.42,
+      "mv": 3855.72,
       "cost_total": 484.88
     },
     {
@@ -90,9 +90,9 @@
     },
     {
       "ticker": "AAPL",
-      "shares": 6.09,
+      "shares": 6,
       "price": 347.73,
-      "mv": 2117.68,
+      "mv": 2086.38,
       "cost_total": 884.4
     },
     {

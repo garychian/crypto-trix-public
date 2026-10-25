@@ -8,7 +8,7 @@
       "pnl_usd": 485,
       "pct": 0.33,
       "total_start": 145040.63,
-      "total_end": 145525.72,
+      "total_end": 145365.52,
       "closes": 5,
       "daily": [
         {
@@ -32,7 +32,8 @@
           "pnl_usd": -378
         }
       ],
-      "cash_pct_end": 24.05,
+      "cash_pct_end": 24.07,
+      "unreconciled_usd": -160,
       "cash_pct_start": 24.13,
       "top_gainers": [
         {
@@ -68,7 +69,36 @@
           "price_pct": -1.48
         }
       ],
-      "position_changes": []
+      "position_changes": [
+        {
+          "ticker": "GOOGL",
+          "kind": "trimmed",
+          "shares_delta": -0.19,
+          "shares_start": 31.19,
+          "shares_end": 31
+        },
+        {
+          "ticker": "MSFT",
+          "kind": "trimmed",
+          "shares_delta": -0.19,
+          "shares_start": 17.19,
+          "shares_end": 17
+        },
+        {
+          "ticker": "NVDA",
+          "kind": "added",
+          "shares_delta": 1,
+          "shares_start": 41,
+          "shares_end": 42
+        },
+        {
+          "ticker": "VOO",
+          "kind": "trimmed",
+          "shares_delta": -0.22,
+          "shares_start": 14.22,
+          "shares_end": 14
+        }
+      ]
     },
     "cn": {
       "as_of": "2026-10-16",
@@ -76,11 +106,11 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 303003,
-      "ytd_usd": 11403,
-      "ytd_pct": 8.5
+      "total_usd_end": 302843,
+      "ytd_usd": 11243,
+      "ytd_pct": 8.38
     },
-    "generated_at": "2026-10-24T01:53:49.239Z"
+    "generated_at": "2026-10-25T04:16:17.233Z"
   },
   {
     "type": "week",
