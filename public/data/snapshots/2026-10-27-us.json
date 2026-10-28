@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-27",
+  "source": "public/data/holdings.json",
+  "total_usd": 150113.56,
+  "cash_usd": 34992.98,
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "shares": 100,
+      "price": 407.46,
+      "mv": 40746,
+      "cost_total": 21537.42
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 15.14,
+      "price": 721.25,
+      "mv": 10919.73,
+      "cost_total": 9093.31
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 31,
+      "price": 320.58,
+      "mv": 9937.98,
+      "cost_total": 3726.34
+    },
+    {
+      "ticker": "VOO",
+      "shares": 14,
+      "price": 707.52,
+      "mv": 9905.28,
+      "cost_total": 7382.91
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 17,
+      "price": 531.33,
+      "mv": 9032.61,
+      "cost_total": 6026.45
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 42,
+      "price": 217.94,
+      "mv": 9153.48,
+      "cost_total": 5300.63
+    },
+    {
+      "ticker": "AMD",
+      "shares": 8,
+      "price": 560.26,
+      "mv": 4482.08,
+      "cost_total": -490.37
+    },
+    {
+      "ticker": "META",
+      "shares": 6,
+      "price": 620.19,
+      "mv": 3721.14,
+      "cost_total": 484.88
+    },
+    {
+      "ticker": "AMZN",
+      "shares": 17,
+      "price": 253.1,
+      "mv": 4302.7,
+      "cost_total": 3435.04
+    },
+    {
+      "ticker": "BRK.B",
+      "shares": 7,
+      "price": 542.99,
+      "mv": 3800.93,
+      "cost_total": 3549.41
+    },
+    {
+      "ticker": "SPCX",
+      "shares": 20,
+      "price": 148.58,
+      "mv": 2971.6,
+      "cost_total": 2736
+    },
+    {
+      "ticker": "PLTR",
+      "shares": 15,
+      "price": 198.73,
+      "mv": 2980.95,
+      "cost_total": 53.8
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6,
+      "price": 347.1,
+      "mv": 2082.6,
+      "cost_total": 884.4
+    },
+    {
+      "ticker": "EUV",
+      "shares": 50,
+      "price": 21.67,
+      "mv": 1083.5,
+      "cost_total": 1302.7
+    }
+  ]
+}
