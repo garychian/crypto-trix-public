@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-28",
+  "source": "public/data/holdings.json",
+  "total_usd": 149933.31,
+  "cash_usd": 34992.98,
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "shares": 100,
+      "price": 404.22,
+      "mv": 40422,
+      "cost_total": 21537.42
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 15.14,
+      "price": 725.61,
+      "mv": 10985.74,
+      "cost_total": 9093.31
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 31,
+      "price": 324.89,
+      "mv": 10071.59,
+      "cost_total": 3726.34
+    },
+    {
+      "ticker": "VOO",
+      "shares": 14,
+      "price": 709.9,
+      "mv": 9938.6,
+      "cost_total": 7382.91
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 17,
+      "price": 531.01,
+      "mv": 9027.17,
+      "cost_total": 6026.45
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 42,
+      "price": 215.38,
+      "mv": 9045.96,
+      "cost_total": 5300.63
+    },
+    {
+      "ticker": "AMD",
+      "shares": 8,
+      "price": 578.44,
+      "mv": 4627.52,
+      "cost_total": -490.37
+    },
+    {
+      "ticker": "META",
+      "shares": 6,
+      "price": 612.49,
+      "mv": 3674.94,
+      "cost_total": 484.88
+    },
+    {
+      "ticker": "AMZN",
+      "shares": 17,
+      "price": 254.6,
+      "mv": 4328.2,
+      "cost_total": 3435.04
+    },
+    {
+      "ticker": "BRK.B",
+      "shares": 7,
+      "price": 540.34,
+      "mv": 3782.38,
+      "cost_total": 3549.41
+    },
+    {
+      "ticker": "SPCX",
+      "shares": 20,
+      "price": 145.23,
+      "mv": 2904.6,
+      "cost_total": 2736
+    },
+    {
+      "ticker": "PLTR",
+      "shares": 15,
+      "price": 196.81,
+      "mv": 2952.15,
+      "cost_total": 53.8
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6,
+      "price": 343.83,
+      "mv": 2062.98,
+      "cost_total": 884.4
+    },
+    {
+      "ticker": "EUV",
+      "shares": 50,
+      "price": 22.33,
+      "mv": 1116.5,
+      "cost_total": 1302.7
+    }
+  ]
+}
