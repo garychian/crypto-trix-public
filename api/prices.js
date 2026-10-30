@@ -167,7 +167,8 @@ async function finnhubQuote(symbol, token) {
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+  // Cache only successful responses at the CDN; errors are marked no-store below.
+  res.setHeader('Cache-Control', 'no-store');
   if (req.method === 'OPTIONS') {
     res.status(204).end();
     return;
@@ -233,5 +234,6 @@ export default async function handler(req, res) {
 
   out.__source = liveHits > 0 ? 'live' : histHits > 0 ? 'live' : 'snapshot';
   out.__hist = histHits;
+  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
   res.status(200).json(out);
 }

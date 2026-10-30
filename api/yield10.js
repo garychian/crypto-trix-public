@@ -86,7 +86,8 @@ async function loadDailySeries() {
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=120, stale-while-revalidate=600');
+  // Cache only successful responses at the CDN; errors are marked no-store below.
+  res.setHeader('Cache-Control', 'no-store');
   if (req.method === 'OPTIONS') {
     res.status(204).end();
     return;
@@ -149,6 +150,8 @@ export default async function handler(req, res) {
   const hi = round2(Math.max(...series.map((p) => p.v)));
   const hLo = round2(Math.min(...history.map((p) => p.v)));
   const hHi = round2(Math.max(...history.map((p) => p.v)));
+
+  res.setHeader('Cache-Control', 'public, s-maxage=120, stale-while-revalidate=600');
 
   res.status(200).json({
     live: Boolean(live),

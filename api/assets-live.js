@@ -172,7 +172,8 @@ async function mapPool(items, concurrency, fn) {
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate=1800');
+  // Cache only successful responses at the CDN; errors are marked no-store below.
+  res.setHeader('Cache-Control', 'no-store');
   if (req.method === 'OPTIONS') {
     res.status(204).end();
     return;
@@ -343,6 +344,11 @@ export default async function handler(req, res) {
 
   const live = cmcHits > 0 || yahooHits > 0 || cgHits > 0;
   const degraded = !live || (cmcHits === 0 && yahooHits === 0);
+
+  res.setHeader(
+    'Cache-Control',
+    degraded ? 'public, s-maxage=30, stale-while-revalidate=60' : 'public, s-maxage=600, stale-while-revalidate=1800'
+  );
 
   res.status(200).json({
     as_of: asOf,

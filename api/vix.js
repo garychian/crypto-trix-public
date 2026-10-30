@@ -28,7 +28,8 @@ const round2 = (n) => Math.round(n * 100) / 100;
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   // VIX only ticks during US hours; 5 min at the edge is plenty and keeps CBOE load tiny
-  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
+  // Cache only successful responses at the CDN; errors are marked no-store below.
+  res.setHeader('Cache-Control', 'no-store');
   if (req.method === 'OPTIONS') {
     res.status(204).end();
     return;
@@ -46,6 +47,8 @@ export default async function handler(req, res) {
     const chgPct = Number(d && d.price_change_percent);
     const asOf = toDateOnly(d && d.last_trade_time);
     const lastTrade = String((d && d.last_trade_time) || '').trim() || null;
+
+    res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');
 
     res.status(200).json({
       as_of: asOf,

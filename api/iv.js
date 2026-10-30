@@ -136,7 +136,8 @@ async function ivFor(sym) {
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=900');
+  // Cache only successful responses at the CDN; errors are marked no-store below.
+  res.setHeader('Cache-Control', 'no-store');
   if (req.method === 'OPTIONS') {
     res.status(204).end();
     return;
@@ -148,6 +149,7 @@ export default async function handler(req, res) {
     return;
   }
   const out = await Promise.all(syms.map(async (s) => [s, await ivFor(s)]));
+  res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=900');
   res.status(200).json({
     fetched_at: new Date().toISOString(),
     note: 'iv = 30-day implied vol in %, ~15 min delayed (CBOE). as_of = last trade time ET.',

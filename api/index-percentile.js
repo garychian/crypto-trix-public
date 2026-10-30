@@ -249,7 +249,8 @@ async function loadIndexBundle(cfg) {
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=900');
+  // Cache only successful responses at the CDN; errors are marked no-store below.
+  res.setHeader('Cache-Control', 'no-store');
   if (req.method === 'OPTIONS') {
     res.status(204).end();
     return;
@@ -292,6 +293,7 @@ export default async function handler(req, res) {
     if (proxies.length) {
       out.source += ` · proxy ${proxies.join(', ')}`;
     }
+    res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=900');
     res.status(200).json(out);
   } catch (err) {
     res.status(502).json({
