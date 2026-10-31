@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-25",
+  "source": "public/data/cn-fund.json",
+  "total_wan": 104.06,
+  "categories": [
+    {
+      "name": "固收",
+      "amount_wan": 41.86
+    },
+    {
+      "name": "A股",
+      "amount_wan": 37.84
+    },
+    {
+      "name": "海外",
+      "amount_wan": 15.59
+    },
+    {
+      "name": "港股",
+      "amount_wan": 5.18
+    },
+    {
+      "name": "商品",
+      "amount_wan": 3.59
+    }
+  ],
+  "funds": [
+    {
+      "name": "债券",
+      "amount_wan": 41.86,
+      "category": "固收"
+    },
+    {
+      "name": "黄金",
+      "amount_wan": 3.59,
+      "category": "商品"
+    },
+    {
+      "name": "红利低波",
+      "amount_wan": 22.28,
+      "category": "A股"
+    },
+    {
+      "name": "标普500",
+      "amount_wan": 5.66,
+      "category": "海外"
+    },
+    {
+      "name": "纳指100",
+      "amount_wan": 9.93,
+      "category": "海外"
+    },
+    {
+      "name": "中证A500",
+      "amount_wan": 9.04,
+      "category": "A股"
+    },
+    {
+      "name": "沪深300",
+      "amount_wan": 5.27,
+      "category": "A股"
+    },
+    {
+      "name": "恒生科技",
+      "amount_wan": 5.18,
+      "category": "港股"
+    },
+    {
+      "name": "科创和创业板",
+      "amount_wan": 1.25,
+      "category": "A股"
+    }
+  ]
+}

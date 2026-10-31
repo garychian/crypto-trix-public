@@ -1,0 +1,195 @@
+{
+  "as_of": "2026-10-30",
+  "day": 108,
+  "goal_usd": 2000000,
+  "cash_usd": 34992.98,
+  "total_assets_usd": 145452.78,
+  "handle": "CryptoTrix1",
+  "sub": "US EQUITIES",
+  "start": "2026-07-16",
+  "note": "券商实数锚定链：10/3 券商表重构锚（10/2 收盘 $147,121.23）→ 10/5 +$1,735.71 → $148,856.95 → 10/6 +$711.19 → $149,568.15 → 10/7 −$458.95 → $149,109.20 → 10/8 −$1,324.57 → $147,784.63 → 10/9 +$1,569.37 → $149,354 → 10/12 −$554.50 → $148,799.50 → 10/13 −$99.70 → $148,699.80 → 10/14 −$2,519.06 → $146,180.74 → 10/15 −$654.69 → $145,526.05（旧链止于此，权重反推现金低估 ~$2,030）→ 10/16 券商快照重锚：用户券商表市值口径为 10/14 收盘 $113,217.27 + 入金 $2,200 后现金 $34,992.98 = $148,210.25（现金原数首获）→ 回填 10/15 收盘 $147,555.56 → 10/16 市值 −$2,514.93 → $145,040.63（每股价格已刷为 Finnhub 10/16 官方收盘）。用户确认 $145,040.63 为正确总资产（10/16 收盘市值+现金），入金 $2,200 不计入打卡盈亏。 → 10/19 市值 +$2,258.55（Yahoo 10/19 官方收盘 mark-to-market，无交易无入金）→ $147,299.18（用户确认） → 10/20 市值 +$318.02（Yahoo 10/20 官方收盘 mark-to-market，无交易无入金）→ $147,617.20 → 10/21 市值 +$2,090.47（Yahoo 10/21 官方收盘 mark-to-market，无交易无入金）→ $149,707.67 → 10/22 市值 −$3,803.68（Yahoo 10/22 官方收盘 mark-to-market，无交易无入金）→ $145,903.99 → 10/23 市值 −$378.27（Yahoo 10/23 官方收盘 mark-to-market，无交易无入金）→ $145,525.72 → 10/25 券商表股数同步（非整股→整股：GOOGL 31.19→31 / VOO 14.22→14 / MSFT 17.19→17 / META 6.04→6 / AAPL 6.09→6；NVDA 41→42 @cost 126.21）：按 10/23 收盘价重算市值 → $145,365.52（现金 $34,992.98 不变；非打卡，仅持仓股数对齐） → 10/26 市值 +$2,500.52（Yahoo 10/26 官方收盘 mark-to-market，无交易无入金）→ $147,866.04 → 10/27 市值 +$2,247.52（Yahoo 10/27 收盘 regularMarketPrice 16:00 ET 兜底价 mark-to-market，无交易无入金）→ $150,113.56 → 10/28 市值 −$180.25（Yahoo 10/28 收盘 regularMarketPrice 16:00 ET 兜底价 mark-to-market，无交易无入金）→ $149,933.31 → 10/29 市值 −$1,860.89（Yahoo 10/29 收盘 regularMarketPrice 16:00 ET 兜底价 mark-to-market，无交易无入金）→ $148,072.42 → 10/30 市值 −$2,619.64（Yahoo 10/30 收盘 regularMarketPrice 16:00 ET 兜底价 mark-to-market，无交易无入金）→ **$145,452.78**。",
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "shares": 100,
+      "cost": 215.37,
+      "costTotal": 21537.42,
+      "weight": 27.49,
+      "price": 399.81,
+      "mv": 39981.0
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 15.14,
+      "cost": 600.44,
+      "costTotal": 9093.31,
+      "weight": 7.19,
+      "price": 690.49,
+      "mv": 10454.02
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 31,
+      "cost": 119.47,
+      "costTotal": 3726.34,
+      "weight": 5.96,
+      "price": 279.84,
+      "mv": 8675.04
+    },
+    {
+      "ticker": "VOO",
+      "shares": 14,
+      "cost": 519.22,
+      "costTotal": 7382.91,
+      "weight": 6.69,
+      "price": 694.81,
+      "mv": 9727.34
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 17,
+      "cost": 350.61,
+      "costTotal": 6026.45,
+      "weight": 6.1,
+      "price": 521.91,
+      "mv": 8872.47
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 42,
+      "cost": 126.21,
+      "costTotal": 5300.63,
+      "weight": 5.91,
+      "price": 204.64,
+      "mv": 8594.88
+    },
+    {
+      "ticker": "AMD",
+      "shares": 8,
+      "cost": -61.3,
+      "costTotal": -490.37,
+      "weight": 2.78,
+      "price": 504.8,
+      "mv": 4038.4
+    },
+    {
+      "ticker": "META",
+      "shares": 6,
+      "cost": 80.34,
+      "costTotal": 484.88,
+      "weight": 2.54,
+      "price": 614.99,
+      "mv": 3689.94
+    },
+    {
+      "ticker": "AMZN",
+      "shares": 17,
+      "cost": 202.06,
+      "costTotal": 3435.04,
+      "weight": 2.81,
+      "price": 240.35,
+      "mv": 4085.95
+    },
+    {
+      "ticker": "BRK.B",
+      "shares": 7,
+      "cost": 507.06,
+      "costTotal": 3549.41,
+      "weight": 2.61,
+      "price": 542.49,
+      "mv": 3797.43
+    },
+    {
+      "ticker": "SPCX",
+      "shares": 20,
+      "cost": 136.8,
+      "costTotal": 2736.0,
+      "weight": 1.85,
+      "price": 134.72,
+      "mv": 2694.4
+    },
+    {
+      "ticker": "PLTR",
+      "shares": 15,
+      "cost": 3.59,
+      "costTotal": 53.8,
+      "weight": 1.9,
+      "price": 184.11,
+      "mv": 2761.65
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6,
+      "cost": 145.1,
+      "costTotal": 884.4,
+      "weight": 1.42,
+      "price": 344.63,
+      "mv": 2067.78
+    },
+    {
+      "ticker": "EUV",
+      "shares": 50,
+      "cost": 26.05,
+      "costTotal": 1302.7,
+      "weight": 0.7,
+      "price": 20.39,
+      "mv": 1019.5
+    }
+  ],
+  "options": [
+    {
+      "symbol": "EUV",
+      "type": "SELL PUT",
+      "strike": 27,
+      "expiry": "2026-11-20",
+      "premium": 330
+    },
+    {
+      "symbol": "DRAM",
+      "type": "SELL PUT",
+      "strike": 50,
+      "expiry": "2027-01-15",
+      "premium": 929
+    },
+    {
+      "symbol": "RKLB",
+      "type": "SELL PUT",
+      "strike": 60,
+      "expiry": "2028-01-21",
+      "premium": 2390
+    },
+    {
+      "symbol": "SPCX",
+      "type": "SELL PUT",
+      "strike": 100,
+      "expiry": "2027-01-15",
+      "premium": 719
+    },
+    {
+      "symbol": "QQQ",
+      "type": "BULL PUT SPREAD 660/640",
+      "strike": 660,
+      "expiry": "2026-11-27",
+      "premium": 175
+    }
+  ],
+  "prices": {
+    "TSLA": 399.81,
+    "QQQ": 690.49,
+    "GOOGL": 279.84,
+    "VOO": 694.81,
+    "MSFT": 521.91,
+    "NVDA": 204.64,
+    "AMD": 504.8,
+    "META": 614.99,
+    "AMZN": 240.35,
+    "BRK.B": 542.49,
+    "SPCX": 134.72,
+    "PLTR": 184.11,
+    "AAPL": 344.63,
+    "EUV": 20.39
+  },
+  "holdingsNote": "2026-10-30 收盘（总资产 $145,452.78 = 10/29 $148,072.42 + 10/30 收盘市值变动 −$2,619.64；现金 $34,992.98 不变；无交易/入金；打卡盈亏 −$2,620；价格为 Yahoo regularMarketPrice 16:00 ET 兜底）",
+  "cum_pnl_usd": 45436.88,
+  "annualized_return_pct": 12.44
+}

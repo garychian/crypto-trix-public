@@ -1,0 +1,114 @@
+{
+  "as_of": "2026-10-25",
+  "currency": "CNY",
+  "unit": "万元",
+  "title": "A股基金",
+  "subtitle": "人民币国内配置 · 资产配置快照",
+  "total_wan": 104.06,
+  "note": "配置快照（非实时行情）· 数据来自仓库 cn-fund.json · #NFA",
+  "categories": [
+    {
+      "name": "固收",
+      "amount_wan": 41.86,
+      "weight_pct": 40.23
+    },
+    {
+      "name": "A股",
+      "amount_wan": 37.84,
+      "weight_pct": 36.36
+    },
+    {
+      "name": "海外",
+      "amount_wan": 15.59,
+      "weight_pct": 14.98
+    },
+    {
+      "name": "港股",
+      "amount_wan": 5.18,
+      "weight_pct": 4.98
+    },
+    {
+      "name": "商品",
+      "amount_wan": 3.59,
+      "weight_pct": 3.45
+    }
+  ],
+  "holdings": [
+    {
+      "name": "债券",
+      "amount_wan": 41.86,
+      "weight_pct": 40.23,
+      "category": "固收"
+    },
+    {
+      "name": "黄金",
+      "amount_wan": 3.59,
+      "weight_pct": 3.45,
+      "category": "商品"
+    },
+    {
+      "name": "红利低波",
+      "amount_wan": 22.28,
+      "weight_pct": 21.41,
+      "category": "A股"
+    },
+    {
+      "name": "标普500",
+      "amount_wan": 5.66,
+      "weight_pct": 5.44,
+      "category": "海外"
+    },
+    {
+      "name": "纳指100",
+      "amount_wan": 9.93,
+      "weight_pct": 9.54,
+      "category": "海外"
+    },
+    {
+      "name": "中证A500",
+      "amount_wan": 9.04,
+      "weight_pct": 8.69,
+      "category": "A股"
+    },
+    {
+      "name": "沪深300",
+      "amount_wan": 5.27,
+      "weight_pct": 5.06,
+      "category": "A股"
+    },
+    {
+      "name": "恒生科技",
+      "amount_wan": 5.18,
+      "weight_pct": 4.98,
+      "category": "港股"
+    },
+    {
+      "name": "科创和创业板",
+      "amount_wan": 1.25,
+      "weight_pct": 1.2,
+      "category": "A股"
+    }
+  ],
+  "income": {
+    "note": "按当前配置金额 × 约定年化估算（固收 3.5%、红利低波 5%），税前，非实际到账 · #NFA",
+    "items": [
+      {
+        "name": "固收",
+        "source": "债券",
+        "amount_wan": 41.86,
+        "yield_pct": 3.5,
+        "annual_yuan": 14651
+      },
+      {
+        "name": "红利低波",
+        "source": "红利低波",
+        "amount_wan": 22.28,
+        "yield_pct": 5.0,
+        "annual_yuan": 11140
+      }
+    ],
+    "total_annual_yuan": 25791,
+    "monthly_avg_yuan": 2149,
+    "portfolio_yield_pct": 2.48
+  }
+}
