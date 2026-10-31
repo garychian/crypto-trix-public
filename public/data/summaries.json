@@ -1,15 +1,273 @@
 [
   {
+    "type": "month",
+    "id": "2026-10",
+    "period_start": "2026-10-01",
+    "period_end": "2026-10-30",
+    "us": {
+      "pnl_usd": -869,
+      "pct": -0.6,
+      "total_start": 144755.62,
+      "total_end": 145452.78,
+      "deposits_usd": 2200,
+      "closes": 22,
+      "daily": [
+        {
+          "date": "2026-10-01",
+          "pnl_usd": -42
+        },
+        {
+          "date": "2026-10-02",
+          "pnl_usd": 2711
+        },
+        {
+          "date": "2026-10-05",
+          "pnl_usd": 1736
+        },
+        {
+          "date": "2026-10-06",
+          "pnl_usd": 711
+        },
+        {
+          "date": "2026-10-07",
+          "pnl_usd": -459
+        },
+        {
+          "date": "2026-10-08",
+          "pnl_usd": -1325
+        },
+        {
+          "date": "2026-10-09",
+          "pnl_usd": 1569
+        },
+        {
+          "date": "2026-10-12",
+          "pnl_usd": -554
+        },
+        {
+          "date": "2026-10-13",
+          "pnl_usd": -100
+        },
+        {
+          "date": "2026-10-14",
+          "pnl_usd": -2519
+        },
+        {
+          "date": "2026-10-15",
+          "pnl_usd": -655
+        },
+        {
+          "date": "2026-10-16",
+          "pnl_usd": -2515
+        },
+        {
+          "date": "2026-10-19",
+          "pnl_usd": 2259
+        },
+        {
+          "date": "2026-10-20",
+          "pnl_usd": 318
+        },
+        {
+          "date": "2026-10-21",
+          "pnl_usd": 2090
+        },
+        {
+          "date": "2026-10-22",
+          "pnl_usd": -3804
+        },
+        {
+          "date": "2026-10-23",
+          "pnl_usd": -378
+        },
+        {
+          "date": "2026-10-26",
+          "pnl_usd": 2501
+        },
+        {
+          "date": "2026-10-27",
+          "pnl_usd": 2248
+        },
+        {
+          "date": "2026-10-28",
+          "pnl_usd": -180
+        },
+        {
+          "date": "2026-10-29",
+          "pnl_usd": -1861
+        },
+        {
+          "date": "2026-10-30",
+          "pnl_usd": -2620
+        }
+      ],
+      "cash_pct_end": 24.06,
+      "unreconciled_usd": -634,
+      "cash_pct_start": 22.84,
+      "top_gainers": [
+        {
+          "ticker": "TSLA",
+          "contribution_usd": 4545,
+          "price_pct": 12.68
+        },
+        {
+          "ticker": "BRK.B",
+          "contribution_usd": 267,
+          "price_pct": 8.94
+        },
+        {
+          "ticker": "MSFT",
+          "contribution_usd": 164,
+          "price_pct": 1.76
+        }
+      ],
+      "top_losers": [
+        {
+          "ticker": "GOOGL",
+          "contribution_usd": -1939,
+          "price_pct": -18.67
+        },
+        {
+          "ticker": "NVDA",
+          "contribution_usd": -973,
+          "price_pct": -10.39
+        },
+        {
+          "ticker": "AMD",
+          "contribution_usd": -856,
+          "price_pct": -17.48
+        }
+      ],
+      "position_changes": [
+        {
+          "ticker": "BRK.B",
+          "kind": "added",
+          "shares_delta": 1,
+          "shares_start": 6,
+          "shares_end": 7
+        },
+        {
+          "ticker": "GOOGL",
+          "kind": "added",
+          "shares_delta": 0.81,
+          "shares_start": 30.19,
+          "shares_end": 31
+        },
+        {
+          "ticker": "MSFT",
+          "kind": "trimmed",
+          "shares_delta": -1.19,
+          "shares_start": 18.19,
+          "shares_end": 17
+        },
+        {
+          "ticker": "NVDA",
+          "kind": "added",
+          "shares_delta": 1,
+          "shares_start": 41,
+          "shares_end": 42
+        },
+        {
+          "ticker": "TSLA",
+          "kind": "trimmed",
+          "shares_delta": -1,
+          "shares_start": 101,
+          "shares_end": 100
+        },
+        {
+          "ticker": "VOO",
+          "kind": "trimmed",
+          "shares_delta": -0.22,
+          "shares_start": 14.22,
+          "shares_end": 14
+        }
+      ]
+    },
+    "cn": {
+      "as_of": "2026-10-25",
+      "total_wan_end": 104.06,
+      "total_wan_start": 107.16,
+      "change_wan": -3.1,
+      "category_changes": [
+        {
+          "name": "固收",
+          "change_wan": -4.41
+        },
+        {
+          "name": "A股",
+          "change_wan": 1.66
+        },
+        {
+          "name": "海外",
+          "change_wan": 0.14
+        },
+        {
+          "name": "港股",
+          "change_wan": -0.2
+        },
+        {
+          "name": "商品",
+          "change_wan": -0.29
+        }
+      ],
+      "fund_changes": [
+        {
+          "name": "债券",
+          "change_wan": -4.41
+        },
+        {
+          "name": "黄金",
+          "change_wan": -0.29
+        },
+        {
+          "name": "红利低波",
+          "change_wan": 0.12
+        },
+        {
+          "name": "标普500",
+          "change_wan": 0.06
+        },
+        {
+          "name": "纳指100",
+          "change_wan": 0.08
+        },
+        {
+          "name": "中证A500",
+          "change_wan": 1.31
+        },
+        {
+          "name": "沪深300",
+          "change_wan": 0.19
+        },
+        {
+          "name": "恒生科技",
+          "change_wan": -0.2
+        },
+        {
+          "name": "科创和创业板",
+          "change_wan": 0.04
+        }
+      ]
+    },
+    "combined": {
+      "fx_usdcny": 6.7146,
+      "total_usd_end": 300429,
+      "ytd_usd": 11330,
+      "ytd_pct": 8.45
+    },
+    "generated_at": "2026-10-31T00:06:29.863Z"
+  },
+  {
     "type": "week",
     "id": "2026-W44",
     "period_start": "2026-10-26",
-    "period_end": "2026-10-29",
+    "period_end": "2026-10-30",
     "us": {
-      "pnl_usd": 2708,
-      "pct": 1.86,
+      "pnl_usd": 88,
+      "pct": 0.06,
       "total_start": 145365.52,
-      "total_end": 148072.42,
-      "closes": 4,
+      "total_end": 145452.78,
+      "closes": 5,
       "daily": [
         {
           "date": "2026-10-26",
@@ -26,42 +284,46 @@
         {
           "date": "2026-10-29",
           "pnl_usd": -1861
+        },
+        {
+          "date": "2026-10-30",
+          "pnl_usd": -2620
         }
       ],
-      "cash_pct_end": 23.63,
+      "cash_pct_end": 24.06,
       "cash_pct_start": 24.07,
       "top_gainers": [
         {
           "ticker": "TSLA",
-          "contribution_usd": 3108,
-          "price_pct": 8.35
+          "contribution_usd": 2759,
+          "price_pct": 7.41
         },
         {
-          "ticker": "AMD",
-          "contribution_usd": 397,
-          "price_pct": 9.6
+          "ticker": "EUV",
+          "contribution_usd": 6,
+          "price_pct": 0.59
         },
         {
-          "ticker": "QQQ",
-          "contribution_usd": 166,
-          "price_pct": 1.55
+          "ticker": "BRK.B",
+          "contribution_usd": 2,
+          "price_pct": 0.06
         }
       ],
       "top_losers": [
         {
           "ticker": "GOOGL",
-          "contribution_usd": -1128,
-          "price_pct": -11.36
+          "contribution_usd": -1251,
+          "price_pct": -12.61
         },
         {
-          "ticker": "META",
-          "contribution_usd": -109,
-          "price_pct": -2.82
+          "ticker": "NVDA",
+          "contribution_usd": -265,
+          "price_pct": -3
         },
         {
-          "ticker": "AMZN",
-          "contribution_usd": -72,
-          "price_pct": -1.7
+          "ticker": "SPCX",
+          "contribution_usd": -255,
+          "price_pct": -8.66
         }
       ],
       "position_changes": []
@@ -72,12 +334,11 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 303048,
-      "ytd_usd": 13949,
-      "ytd_pct": 10.4
+      "total_usd_end": 300429,
+      "ytd_usd": 11330,
+      "ytd_pct": 8.45
     },
-    "partial": true,
-    "generated_at": "2026-10-30T00:01:54.370Z"
+    "generated_at": "2026-10-31T00:06:29.862Z"
   },
   {
     "type": "week",
