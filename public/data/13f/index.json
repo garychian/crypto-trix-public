@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-04T03:14:06.142Z",
+ "generated_at": "2026-11-02T04:19:26.835Z",
  "source": "SEC EDGAR",
  "ticker_map_coverage": {
   "positions": 9780,
@@ -80,13 +80,13 @@
    "cik": "0001021944",
    "initials": "TM",
    "color": "#FF6B6B",
+   "avatar": "/img/13f/temasek.webp",
    "status": "ok",
    "quarters": 6,
-   "latest_period": "2026-06-30",
-   "latest_filing_date": "2026-08-07",
-   "latest_value_usd": 36501865797,
-   "latest_n": 176,
-   "avatar": "/img/13f/temasek.webp"
+   "latest_period": "2026-09-30",
+   "latest_filing_date": "2026-10-28",
+   "latest_value_usd": 36397341872,
+   "latest_n": 179
   },
   {
    "id": "bridgewater",
@@ -272,13 +272,13 @@
    "cik": "0002046333",
    "initials": "OH",
    "color": "#FF6B9D",
+   "avatar": "/img/13f/oriental.webp",
    "status": "ok",
    "quarters": 6,
-   "latest_period": "2026-06-30",
-   "latest_filing_date": "2026-08-11",
-   "latest_value_usd": 1649592644,
-   "latest_n": 13,
-   "avatar": "/img/13f/oriental.webp"
+   "latest_period": "2026-09-30",
+   "latest_filing_date": "2026-10-22",
+   "latest_value_usd": 1468720054,
+   "latest_n": 13
   }
  ]
 }

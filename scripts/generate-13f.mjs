@@ -221,8 +221,16 @@ function mapTicker(row, idx) {
 // ── 单个机构 ──────────────────────────────────────────────────────────────────────
 async function filingXmls(cikInt, acc) {
   const accNo = acc.replace(/-/g, '');
-  const idx = await get(`https://www.sec.gov/Archives/edgar/data/${cikInt}/${accNo}/index.json`, { json: true });
-  const xmls = idx.directory.item.filter((i) => i.name.toLowerCase().endsWith('.xml'));
+  let items;
+  try {
+    items = (await get(`https://www.sec.gov/Archives/edgar/data/${cikInt}/${accNo}/index.json`, { json: true })).directory.item;
+  } catch (e) {
+    // 个别旧申报的 index.json 在 SEC 端持续 503（如 Oriental Harbor 2025–2026Q1）：回退到 HTML 目录列表
+    const html = await get(`https://www.sec.gov/Archives/edgar/data/${cikInt}/${accNo}/`);
+    items = [...html.matchAll(/href="[^"]*\/([^"\/]+\.xml)"><img[^>]*>[^<]*<\/a><\/td><td>(\d*)<\/td>/gi)].map((m) => ({ name: m[1], size: m[2] }));
+    if (!items.length) throw e;
+  }
+  const xmls = items.filter((i) => i.name.toLowerCase().endsWith('.xml'));
   const info = xmls.filter((i) => i.name.toLowerCase() !== 'primary_doc.xml').sort((a, b) => Number(b.size || 0) - Number(a.size || 0))[0];
   return { base: `https://www.sec.gov/Archives/edgar/data/${cikInt}/${accNo}/`, info: info?.name, primary: xmls.find((i) => i.name.toLowerCase() === 'primary_doc.xml')?.name };
 }
