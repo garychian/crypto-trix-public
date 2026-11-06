@@ -3,13 +3,13 @@
     "type": "week",
     "id": "2026-W45",
     "period_start": "2026-11-02",
-    "period_end": "2026-11-04",
+    "period_end": "2026-11-05",
     "us": {
-      "pnl_usd": -175,
-      "pct": -0.12,
+      "pnl_usd": -8368,
+      "pct": -5.75,
       "total_start": 145452.78,
-      "total_end": 145278.25,
-      "closes": 3,
+      "total_end": 137085.41,
+      "closes": 4,
       "daily": [
         {
           "date": "2026-11-02",
@@ -22,42 +22,46 @@
         {
           "date": "2026-11-04",
           "pnl_usd": -76
+        },
+        {
+          "date": "2026-11-05",
+          "pnl_usd": -8193
         }
       ],
-      "cash_pct_end": 24.09,
+      "cash_pct_end": 25.53,
       "cash_pct_start": 24.06,
       "top_gainers": [
         {
-          "ticker": "MSFT",
-          "contribution_usd": 576,
-          "price_pct": 6.49
-        },
-        {
           "ticker": "AMZN",
-          "contribution_usd": 437,
-          "price_pct": 10.68
+          "contribution_usd": 338,
+          "price_pct": 8.26
         },
         {
-          "ticker": "GOOGL",
-          "contribution_usd": 282,
-          "price_pct": 3.25
+          "ticker": "MSFT",
+          "contribution_usd": 238,
+          "price_pct": 2.69
+        },
+        {
+          "ticker": "BRK.B",
+          "contribution_usd": 209,
+          "price_pct": 5.5
         }
       ],
       "top_losers": [
         {
           "ticker": "TSLA",
-          "contribution_usd": -1462,
-          "price_pct": -3.66
+          "contribution_usd": -5612,
+          "price_pct": -14.04
         },
         {
           "ticker": "NVDA",
-          "contribution_usd": -189,
-          "price_pct": -2.2
+          "contribution_usd": -968,
+          "price_pct": -11.26
         },
         {
-          "ticker": "PLTR",
-          "contribution_usd": -186,
-          "price_pct": -6.74
+          "ticker": "AMD",
+          "contribution_usd": -803,
+          "price_pct": -19.89
         }
       ],
       "position_changes": []
@@ -68,12 +72,12 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 300254,
-      "ytd_usd": 11155,
-      "ytd_pct": 8.32
+      "total_usd_end": 292061,
+      "ytd_usd": 2962,
+      "ytd_pct": 2.21
     },
     "partial": true,
-    "generated_at": "2026-11-05T00:08:55.572Z"
+    "generated_at": "2026-11-06T00:09:00.488Z"
   },
   {
     "type": "month",
