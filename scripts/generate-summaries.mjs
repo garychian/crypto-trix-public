@@ -317,12 +317,14 @@ const put = (e) => {
   if (lock) {
     // User-confirmed net snapshot changes. Do not let the auto share diff overwrite them,
     // and do not publish that diff as exact fills (prior quantities were rounded).
-    e.user_operations = {
+    const opsOut = {
       locked: true,
       heading: lock.heading || '本周操作',
-      disclaimer: lock.disclaimer || '',
       items: Array.isArray(lock.items) ? lock.items : [],
     };
+    // A blank or omitted disclaimer stays omitted. Do not copy prose back from the previous summary.
+    if (typeof lock.disclaimer === 'string' && lock.disclaimer.trim()) opsOut.disclaimer = lock.disclaimer.trim();
+    e.user_operations = opsOut;
     if (e.us) e.us.position_changes = [];
   }
   const strip = (x) => JSON.stringify({ ...x, generated_at: undefined });
