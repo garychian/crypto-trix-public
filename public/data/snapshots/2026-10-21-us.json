@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-21",
+  "source": "public/data/holdings.json",
+  "total_usd": 149707.67,
+  "cash_usd": 34992.98,
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "shares": 100,
+      "price": 386.47,
+      "mv": 38647,
+      "cost_total": 21537.42
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 15.14,
+      "price": 725.2,
+      "mv": 10979.53,
+      "cost_total": 9093.31
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 31.19,
+      "price": 334.76,
+      "mv": 10441.16,
+      "cost_total": 3726.34
+    },
+    {
+      "ticker": "VOO",
+      "shares": 14.22,
+      "price": 710.72,
+      "mv": 10106.44,
+      "cost_total": 7382.91
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 17.19,
+      "price": 532.95,
+      "mv": 9161.41,
+      "cost_total": 6026.45
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 41,
+      "price": 221.97,
+      "mv": 9100.77,
+      "cost_total": 5085.63
+    },
+    {
+      "ticker": "AMD",
+      "shares": 8,
+      "price": 552.72,
+      "mv": 4421.76,
+      "cost_total": -490.37
+    },
+    {
+      "ticker": "META",
+      "shares": 6.04,
+      "price": 697.52,
+      "mv": 4213.02,
+      "cost_total": 484.88
+    },
+    {
+      "ticker": "AMZN",
+      "shares": 17,
+      "price": 262.37,
+      "mv": 4460.29,
+      "cost_total": 3435.04
+    },
+    {
+      "ticker": "BRK.B",
+      "shares": 7,
+      "price": 538.99,
+      "mv": 3772.93,
+      "cost_total": 3549.41
+    },
+    {
+      "ticker": "SPCX",
+      "shares": 20,
+      "price": 159.31,
+      "mv": 3186.2,
+      "cost_total": 2736
+    },
+    {
+      "ticker": "PLTR",
+      "shares": 15,
+      "price": 201.72,
+      "mv": 3025.8,
+      "cost_total": 53.8
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6.09,
+      "price": 343.99,
+      "mv": 2094.9,
+      "cost_total": 884.4
+    },
+    {
+      "ticker": "EUV",
+      "shares": 50,
+      "price": 22.07,
+      "mv": 1103.5,
+      "cost_total": 1302.7
+    }
+  ]
+}

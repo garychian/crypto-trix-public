@@ -1,0 +1,33 @@
+{
+  "week:2026-W45": {
+    "locked": true,
+    "heading": "本周操作",
+    "items": [
+      {
+        "ticker": "TSLA",
+        "label": "约 −3 股（100 → 97）",
+        "direction": "down"
+      },
+      {
+        "ticker": "MSFT",
+        "label": "约 −3 股（17 → 约 14.19）",
+        "direction": "down"
+      },
+      {
+        "ticker": "GOOGL",
+        "label": "约 +2 股（31 → 约 33.19）",
+        "direction": "up"
+      },
+      {
+        "ticker": "SPCX",
+        "label": "+10 股（20 → 30）",
+        "direction": "up"
+      },
+      {
+        "ticker": "QQQ",
+        "label": "约 +2.37 股（15.14 → 17.51）",
+        "direction": "up"
+      }
+    ]
+  }
+}
