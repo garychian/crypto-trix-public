@@ -20,6 +20,10 @@
  *    or `close_date`) falls in the period. Start value = previous-close snapshot total; if no such snapshot,
  *    end total − pnl − dated deposits (flagged start_derived). Fields that can't be computed are omitted.
  *  - Contributions are PRICE effects on the opening holdings (shares_start × Δprice); they ignore trades and cash.
+ *  - public/data/summary-operations.json may lock a user-written 本周操作 block (key `week:2026-W45`).
+ *    A rebuild copies that block onto the summary and does not replace it with auto share deltas.
+ *    Auto deltas treat previously rounded display shares as fills; the locked text is the net
+ *    snapshot comparison the user confirmed, not a trade blotter.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -124,6 +128,7 @@ const cnJ = readJSON(path.join(DATA, 'cn-fund.json'));
 const capital = readJSON(path.join(DATA, 'capital.json'), {});
 const checkins = readJSON(path.join(DATA, 'fund-checkins.json'), { series: [] });
 const prevSummaries = readJSON(path.join(DATA, 'summaries.json'), []);
+const lockedOps = readJSON(path.join(DATA, 'summary-operations.json'), {});
 let changed = false;
 
 const writeIfChanged = (file, obj) => {
@@ -147,13 +152,20 @@ if (holdingsJ && holdingsJ.as_of && isWeekday(holdingsJ.as_of) && Array.isArray(
     source: 'public/data/holdings.json',
     total_usd: Number(holdingsJ.total_assets_usd),
     cash_usd: Number(holdingsJ.cash_usd),
-    holdings: holdingsJ.holdings.map((h) => ({
-      ticker: h.ticker,
-      shares: Number(h.shares),
-      price: h.price != null ? Number(h.price) : null,
-      mv: h.mv != null ? Number(h.mv) : h.price != null ? r2(Number(h.price) * Number(h.shares)) : null,
-      cost_total: h.costTotal != null ? Number(h.costTotal) : null,
-    })),
+    holdings: holdingsJ.holdings.map((h) => {
+      const row = {
+        ticker: h.ticker,
+        shares: Number(h.shares),
+        price: h.price != null ? Number(h.price) : null,
+        mv: h.mv != null ? Number(h.mv) : h.price != null ? r2(Number(h.price) * Number(h.shares)) : null,
+        cost_total: h.costTotal != null ? Number(h.costTotal) : null,
+      };
+      if (h.display_shares != null && Number.isFinite(Number(h.display_shares))) {
+        row.display_shares = Number(h.display_shares);
+      }
+      if (h.shares_source === 'exact' || h.shares_source === 'inferred') row.shares_source = h.shares_source;
+      return row;
+    }),
   };
   if (Number.isFinite(snap.total_usd) && writeIfChanged(path.join(SNAP, `${snap.date}-us.json`), snap)) changed = true;
 } else {
@@ -299,6 +311,20 @@ const put = (e) => {
   if (!e) return;
   const key = `${e.type}:${e.id}`;
   const old = prevByKey.get(key);
+  const fileLock = lockedOps[key];
+  const prevLock = old && old.user_operations && old.user_operations.locked ? old.user_operations : null;
+  const lock = fileLock && fileLock.locked ? fileLock : prevLock;
+  if (lock) {
+    // User-confirmed net snapshot changes. Do not let the auto share diff overwrite them,
+    // and do not publish that diff as exact fills (prior quantities were rounded).
+    e.user_operations = {
+      locked: true,
+      heading: lock.heading || '本周操作',
+      disclaimer: lock.disclaimer || '',
+      items: Array.isArray(lock.items) ? lock.items : [],
+    };
+    if (e.us) e.us.position_changes = [];
+  }
   const strip = (x) => JSON.stringify({ ...x, generated_at: undefined });
   e.generated_at = old && strip(old) === strip(e) ? old.generated_at : new Date().toISOString();
   out.set(key, e);

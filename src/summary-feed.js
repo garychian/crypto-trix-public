@@ -97,6 +97,20 @@ function cardHTML(e, child) {
     )
   );
 
+  const ops = e.user_operations;
+  const opsHTML =
+    ops && Array.isArray(ops.items) && ops.items.length
+      ? `<div class="sm-row"><span class="sm-rl">${escapeHTML(ops.heading || '本周操作')}</span>` +
+        ops.items
+          .map((item) => {
+            const dir = item.direction === 'down' ? 'cut' : item.direction === 'up' ? 'add' : '';
+            return `<span class="sm-chip ops ${dir}">${escapeHTML(item.ticker)} ${escapeHTML(item.label || '')}</span>`;
+          })
+          .join('') +
+        `</div>` +
+        (ops.disclaimer ? `<p class="sm-note">${escapeHTML(ops.disclaimer)}</p>` : '')
+      : '';
+
   const notes = [];
   if (dep) notes.push(`本${isMonth ? '月' : '周'}入金 ${usd(dep)} 未计入上方盈亏（盈亏 = 打卡交易日 Σpnl）`);
   if ((u.top_gainers && u.top_gainers.length) || (u.top_losers && u.top_losers.length)) notes.push('贡献 = 期初持仓 × 价格变动，不含交易与现金');
@@ -110,6 +124,7 @@ function cardHTML(e, child) {
     main +
     `<div class="sm-stats">${tiles.join('')}</div>` +
     chips.join('') +
+    opsHTML +
     foot +
     `</article>`
   );

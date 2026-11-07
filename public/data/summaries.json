@@ -8,7 +8,7 @@
       "pnl_usd": -5855,
       "pct": -4.03,
       "total_start": 145452.78,
-      "total_end": 139598.49,
+      "total_end": 139426.97,
       "closes": 5,
       "daily": [
         {
@@ -32,7 +32,8 @@
           "pnl_usd": 2513
         }
       ],
-      "cash_pct_end": 25.07,
+      "cash_pct_end": 25.1,
+      "unreconciled_usd": -171,
       "cash_pct_start": 24.06,
       "top_gainers": [
         {
@@ -76,11 +77,43 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 294574,
-      "ytd_usd": 5475,
-      "ytd_pct": 4.08
+      "total_usd_end": 294403,
+      "ytd_usd": 5304,
+      "ytd_pct": 3.95
     },
-    "generated_at": "2026-11-07T00:06:49.667Z"
+    "user_operations": {
+      "locked": true,
+      "heading": "本周操作",
+      "disclaimer": "净持仓变化由本周前已确认持仓与 2026-11-06 券商快照对比得出，不是逐笔成交，也没有成交价。期初股数来自此前四舍五入后的确认数量，因此不写成精确的小数股交易。11/6 总资产按券商市值重锚为 $139,426.97（股票 $104,433.99 + 现金 $34,992.98）。相对校正前盯市 $139,598.49 的差额 −$171.52 是持仓数量对齐，不是 Day 115 行情盈亏；打卡仍为 +$2,513。周总结里期初到期末与打卡盈亏的差额含这一对齐和打卡取整，同样不是行情盈亏。VOO、META、AAPL 成本未变，只把先前取整的展示股数改成与市值相容的数量，不列入上面的操作。",
+      "items": [
+        {
+          "ticker": "TSLA",
+          "label": "约 −3 股（100 → 97）",
+          "direction": "down"
+        },
+        {
+          "ticker": "MSFT",
+          "label": "约 −3 股（17 → 约 14.19）",
+          "direction": "down"
+        },
+        {
+          "ticker": "GOOGL",
+          "label": "约 +2 股（31 → 约 33.19）",
+          "direction": "up"
+        },
+        {
+          "ticker": "SPCX",
+          "label": "+10 股（20 → 30）",
+          "direction": "up"
+        },
+        {
+          "ticker": "QQQ",
+          "label": "约 +0.34 股（15.14 → 约 15.484）",
+          "direction": "up"
+        }
+      ]
+    },
+    "generated_at": "2026-11-07T02:56:40.250Z"
   },
   {
     "type": "month",

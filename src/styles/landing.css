@@ -169,6 +169,7 @@
 .sm-chip.down { color: var(--down); border-color: rgba(246, 70, 93, 0.35); background: rgba(246, 70, 93, 0.08); }
 .sm-chip.add { color: var(--accent); border-color: rgba(240, 185, 11, 0.4); background: rgba(240, 185, 11, 0.08); }
 .sm-chip.cut { color: var(--muted); }
+.sm-chip.ops { white-space: normal; text-align: left; }
 .sm-note { margin-top: 10px; font-size: 11px; color: var(--muted-2); line-height: 1.5; }
 .sm-toggle {
   align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
