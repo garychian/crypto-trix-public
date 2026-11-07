@@ -1,7 +1,7 @@
 {
   "date": "2026-11-06",
   "source": "public/data/holdings.json",
-  "total_usd": 139426.97,
+  "total_usd": 140755.97,
   "cash_usd": 34992.98,
   "holdings": [
     {
@@ -15,12 +15,12 @@
     },
     {
       "ticker": "QQQ",
-      "shares": 15.484393,
+      "shares": 17.51,
       "price": 656.1,
-      "mv": 10159.31,
-      "cost_total": 10200.12,
-      "display_shares": 15.48,
-      "shares_source": "inferred"
+      "mv": 11488.31,
+      "cost_total": 11534.54,
+      "display_shares": 17.51,
+      "shares_source": "exact"
     },
     {
       "ticker": "GOOGL",

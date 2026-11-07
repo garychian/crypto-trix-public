@@ -8,7 +8,7 @@
       "pnl_usd": -5855,
       "pct": -4.03,
       "total_start": 145452.78,
-      "total_end": 139426.97,
+      "total_end": 140755.97,
       "closes": 5,
       "daily": [
         {
@@ -32,8 +32,8 @@
           "pnl_usd": 2513
         }
       ],
-      "cash_pct_end": 25.1,
-      "unreconciled_usd": -171,
+      "cash_pct_end": 24.86,
+      "unreconciled_usd": 1158,
       "cash_pct_start": 24.06,
       "top_gainers": [
         {
@@ -77,9 +77,9 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 294403,
-      "ytd_usd": 5304,
-      "ytd_pct": 3.95
+      "total_usd_end": 295732,
+      "ytd_usd": 6633,
+      "ytd_pct": 4.95
     },
     "user_operations": {
       "locked": true,
@@ -107,12 +107,12 @@
         },
         {
           "ticker": "QQQ",
-          "label": "约 +0.34 股（15.14 → 约 15.484）",
+          "label": "约 +2.37 股（15.14 → 17.51）",
           "direction": "up"
         }
       ]
     },
-    "generated_at": "2026-11-07T03:11:30.901Z"
+    "generated_at": "2026-11-07T03:51:17.895Z"
   },
   {
     "type": "month",
