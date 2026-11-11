@@ -3,43 +3,47 @@
     "type": "week",
     "id": "2026-W46",
     "period_start": "2026-11-09",
-    "period_end": "2026-11-09",
+    "period_end": "2026-11-10",
     "us": {
-      "pnl_usd": 3858,
-      "pct": 2.74,
+      "pnl_usd": 3482,
+      "pct": 2.47,
       "total_start": 140755.97,
-      "total_end": 144613.71,
-      "closes": 1,
+      "total_end": 144237.48,
+      "closes": 2,
       "daily": [
         {
           "date": "2026-11-09",
           "pnl_usd": 3858
+        },
+        {
+          "date": "2026-11-10",
+          "pnl_usd": -376
         }
       ],
-      "cash_pct_end": 24.2,
+      "cash_pct_end": 24.26,
       "cash_pct_start": 24.86,
       "top_gainers": [
         {
           "ticker": "TSLA",
-          "contribution_usd": 1924,
-          "price_pct": 5.54
+          "contribution_usd": 2091,
+          "price_pct": 6.02
         },
         {
           "ticker": "AMD",
-          "contribution_usd": 476,
-          "price_pct": 13.26
+          "contribution_usd": 529,
+          "price_pct": 14.74
         },
         {
           "ticker": "QQQ",
-          "contribution_usd": 407,
-          "price_pct": 3.54
+          "contribution_usd": 327,
+          "price_pct": 2.84
         }
       ],
       "top_losers": [
         {
           "ticker": "NVDA",
-          "contribution_usd": -335,
-          "price_pct": -4.27
+          "contribution_usd": -745,
+          "price_pct": -9.51
         }
       ],
       "position_changes": []
@@ -50,12 +54,12 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 299589,
-      "ytd_usd": 10491,
-      "ytd_pct": 7.82
+      "total_usd_end": 299213,
+      "ytd_usd": 10114,
+      "ytd_pct": 7.54
     },
     "partial": true,
-    "generated_at": "2026-11-10T00:12:35.714Z"
+    "generated_at": "2026-11-11T00:20:47.846Z"
   },
   {
     "type": "week",
