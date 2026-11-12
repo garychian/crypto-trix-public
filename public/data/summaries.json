@@ -3,13 +3,13 @@
     "type": "week",
     "id": "2026-W46",
     "period_start": "2026-11-09",
-    "period_end": "2026-11-10",
+    "period_end": "2026-11-11",
     "us": {
-      "pnl_usd": 3482,
-      "pct": 2.47,
+      "pnl_usd": 5422,
+      "pct": 3.85,
       "total_start": 140755.97,
-      "total_end": 144237.48,
-      "closes": 2,
+      "total_end": 146177.85,
+      "closes": 3,
       "daily": [
         {
           "date": "2026-11-09",
@@ -18,32 +18,41 @@
         {
           "date": "2026-11-10",
           "pnl_usd": -376
+        },
+        {
+          "date": "2026-11-11",
+          "pnl_usd": 1940
         }
       ],
-      "cash_pct_end": 24.26,
+      "cash_pct_end": 23.94,
       "cash_pct_start": 24.86,
       "top_gainers": [
         {
           "ticker": "TSLA",
-          "contribution_usd": 2091,
-          "price_pct": 6.02
+          "contribution_usd": 3164,
+          "price_pct": 9.11
         },
         {
           "ticker": "AMD",
-          "contribution_usd": 529,
-          "price_pct": 14.74
+          "contribution_usd": 831,
+          "price_pct": 23.13
         },
         {
           "ticker": "QQQ",
-          "contribution_usd": 327,
-          "price_pct": 2.84
+          "contribution_usd": 600,
+          "price_pct": 5.22
         }
       ],
       "top_losers": [
         {
           "ticker": "NVDA",
-          "contribution_usd": -745,
-          "price_pct": -9.51
+          "contribution_usd": -542,
+          "price_pct": -6.92
+        },
+        {
+          "ticker": "MSFT",
+          "contribution_usd": -135,
+          "price_pct": -1.79
         }
       ],
       "position_changes": []
@@ -54,12 +63,12 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 299213,
-      "ytd_usd": 10114,
-      "ytd_pct": 7.54
+      "total_usd_end": 301154,
+      "ytd_usd": 12055,
+      "ytd_pct": 8.99
     },
     "partial": true,
-    "generated_at": "2026-11-11T00:20:47.846Z"
+    "generated_at": "2026-11-12T00:21:17.132Z"
   },
   {
     "type": "week",
