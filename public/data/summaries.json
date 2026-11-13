@@ -3,13 +3,13 @@
     "type": "week",
     "id": "2026-W46",
     "period_start": "2026-11-09",
-    "period_end": "2026-11-11",
+    "period_end": "2026-11-12",
     "us": {
-      "pnl_usd": 5422,
-      "pct": 3.85,
+      "pnl_usd": 6099,
+      "pct": 4.33,
       "total_start": 140755.97,
-      "total_end": 146177.85,
-      "closes": 3,
+      "total_end": 146855.13,
+      "closes": 4,
       "daily": [
         {
           "date": "2026-11-09",
@@ -22,37 +22,41 @@
         {
           "date": "2026-11-11",
           "pnl_usd": 1940
+        },
+        {
+          "date": "2026-11-12",
+          "pnl_usd": 677
         }
       ],
-      "cash_pct_end": 23.94,
+      "cash_pct_end": 23.83,
       "cash_pct_start": 24.86,
       "top_gainers": [
         {
           "ticker": "TSLA",
-          "contribution_usd": 3164,
-          "price_pct": 9.11
+          "contribution_usd": 3805,
+          "price_pct": 10.95
         },
         {
           "ticker": "AMD",
-          "contribution_usd": 831,
-          "price_pct": 23.13
+          "contribution_usd": 1090,
+          "price_pct": 30.34
         },
         {
           "ticker": "QQQ",
-          "contribution_usd": 600,
-          "price_pct": 5.22
+          "contribution_usd": 562,
+          "price_pct": 4.89
         }
       ],
       "top_losers": [
         {
           "ticker": "NVDA",
-          "contribution_usd": -542,
-          "price_pct": -6.92
+          "contribution_usd": -859,
+          "price_pct": -10.96
         },
         {
           "ticker": "MSFT",
-          "contribution_usd": -135,
-          "price_pct": -1.79
+          "contribution_usd": -108,
+          "price_pct": -1.43
         }
       ],
       "position_changes": []
@@ -63,12 +67,12 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 301154,
-      "ytd_usd": 12055,
-      "ytd_pct": 8.99
+      "total_usd_end": 301831,
+      "ytd_usd": 12732,
+      "ytd_pct": 9.49
     },
     "partial": true,
-    "generated_at": "2026-11-12T00:21:17.132Z"
+    "generated_at": "2026-11-13T00:19:01.952Z"
   },
   {
     "type": "week",
