@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>13F 追踪 · 大机构持仓 · CryptoTrix</title>
+  <meta name="description" content="13F 追踪：伯克希尔、桥水、Pershing、Appaloosa、段永平等 17 家机构最近 6 个季度的美股持仓与季度变化，数据来自 SEC EDGAR · #NFA">
+  <meta name="theme-color" content="#0B0D10">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="alternate icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+  <link rel="canonical" href="https://crypto-trix-public.vercel.app/13f.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CryptoTrix">
+  <meta property="og:title" content="13F 追踪 · 大机构持仓 · CryptoTrix">
+  <meta property="og:description" content="17 家大机构最近 6 个季度的美股持仓与季度变化，数据来自 SEC EDGAR · #NFA">
+  <meta property="og:url" content="https://crypto-trix-public.vercel.app/13f.html">
+  <meta property="og:image" content="https://crypto-trix-public.vercel.app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="CryptoTrix · $137K → $2M · 持仓、盈亏与决策，全程公开">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@CryptoTrix1">
+  <meta name="twitter:creator" content="@CryptoTrix1">
+  <meta name="twitter:title" content="13F 追踪 · 大机构持仓 · CryptoTrix">
+  <meta name="twitter:description" content="17 家大机构最近 6 个季度的美股持仓与季度变化，数据来自 SEC EDGAR · #NFA">
+  <meta name="twitter:image" content="https://crypto-trix-public.vercel.app/og-image.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/styles/shared.css">
+  <link rel="stylesheet" href="/src/styles/f13.css">
+</head>
+<body>
+  <header data-site-nav></header>
+  <div class="wrap">
+    <div class="toolbar">
+      <span class="badge badge-demo">SEC EDGAR · 13F-HR</span>
+      <span class="badge badge-nfa">⚠️ #NFA #DYOR</span>
+      <span class="muted tiny-meta" id="asof">加载中…</span>
+    </div>
+
+    <section class="fund-head">
+      <div>
+        <h1 class="fund-title">13F 追踪 · <span class="day">大机构持仓</span></h1>
+        <p class="fund-sub" id="d-sub">每季度跟踪大投资人的美股持仓与季度变化</p>
+      </div>
+      <div class="fund-goal">
+        <div class="lbl">口径</div>
+        <div class="val">美股多头 · 季末快照</div>
+      </div>
+    </section>
+
+    <div class="inst-pills" id="inst-pills" role="tablist" aria-label="选择机构"></div>
+
+    <section class="panel inst-card" id="inst-card" aria-live="polite"></section>
+
+    <section class="panel alloc-panel" id="alloc-chart" aria-labelledby="alloc-title" hidden></section>
+
+    <section class="panel hold-panel" id="hold-panel" aria-labelledby="hold-title" hidden>
+      <div class="panel-head">
+        <h2 id="hold-title">持仓明细</h2>
+        <span class="muted" id="hold-count">—</span>
+      </div>
+      <div class="table-scroll">
+        <table class="data f13-table" id="hold-table">
+          <thead>
+            <tr>
+              <th class="l c-rank sortable" data-sort="value">#</th>
+              <th class="l c-sym sortable" data-sort="ticker">代码</th>
+              <th class="l c-name sortable" data-sort="name">名称</th>
+              <th class="c-sh sortable" data-sort="shares">股数 <i class="arr"></i></th>
+              <th class="c-val sortable on" data-sort="value">市值 <i class="arr"></i></th>
+              <th class="c-pct sortable" data-sort="pct">占比 <i class="arr"></i></th>
+              <th class="c-chg sortable" data-sort="chg">较上季 <i class="arr"></i></th>
+            </tr>
+          </thead>
+          <tbody id="hold-body"></tbody>
+        </table>
+      </div>
+      <div class="more-row" id="more-row" hidden><button type="button" class="more-btn" id="more-btn"></button></div>
+      <p class="vol-note" id="hold-note"></p>
+    </section>
+
+    <section class="panel exit-panel" id="exit-panel" hidden></section>
+    <section class="panel opt-panel" id="opt-panel" hidden></section>
+
+    <section class="panel limit-panel" id="limit-panel">
+      <div class="panel-head"><h2>读 13F 前先看这几条</h2></div>
+      <ul class="limit-list">
+        <li><b>滞后约 45 天</b>：季末后 45 天内申报（2/5/8/11 月中旬），看到的是旧仓位。</li>
+        <li><b>只含美股多头</b>：不含空头、债券、现金、非美股、私募和大部分衍生品。</li>
+        <li><b>只能看到一部分</b>：桥水总盘约 $90B+，13F 仅约 $24B；伯克希尔还有大量国债和非上市子公司。</li>
+        <li><b>市值按季末价格</b>：市值涨跌 ≠ 买卖，「较上季」一律按<b>股数</b>对比（±2% 内算持平）。</li>
+        <li><b>期权单独列出</b>：Put/Call 行不计入持仓市值与占比，名义金额可能远大于实际敞口。</li>
+        <li><b>未上市股份也会出现</b>：如 SpaceX（无代码，显示英文名）。同一 CUSIP 的多行已合并。</li>
+      </ul>
+      <p class="vol-note" id="src-note"></p>
+    </section>
+
+    <footer class="site-foot">
+      <div>
+        @<b style="color:var(--accent)">CryptoTrix1</b>
+        · <a href="https://x.com/CryptoTrix1" target="_blank" rel="noopener">X</a>
+        <div class="nfa">⚠️ Not financial advice · #NFA #DYOR · 公开访客视图</div>
+      </div>
+      <div class="nfa">13F 追踪 · 数据来自 SEC EDGAR</div>
+    </footer>
+  </div>
+  <script type="module" src="/src/f13.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+{
+  "as_of": "2026-11-13",
+  "source": "Yahoo Finance 过去 12 个月实际派息（TTM）；股数与价格按 2026-11-13 持仓对齐，每股派息仍为 2026-10-18 获取的 TTM",
+  "note": "税前估算，按过去 12 个月实际派息，不含期权收入",
+  "stocks": [
+    {
+      "ticker": "VOO",
+      "shares": 14.22,
+      "price": 693.38,
+      "ttm_per_share": 7.428,
+      "annual": 105.63,
+      "yield_pct": 1.07
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 17.51,
+      "price": 679.89,
+      "ttm_per_share": 3.091,
+      "annual": 54.12,
+      "yield_pct": 0.45
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 14.19,
+      "price": 523.88,
+      "ttm_per_share": 3.64,
+      "annual": 51.65,
+      "yield_pct": 0.69
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 33.19,
+      "price": 295.77,
+      "ttm_per_share": 0.86,
+      "annual": 28.54,
+      "yield_pct": 0.29
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 42,
+      "price": 162.85,
+      "ttm_per_share": 0.52,
+      "annual": 21.84,
+      "yield_pct": 0.32
+    },
+    {
+      "ticker": "META",
+      "shares": 6.04,
+      "price": 641.69,
+      "ttm_per_share": 2.1,
+      "annual": 12.68,
+      "yield_pct": 0.33
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6.1,
+      "price": 356.27,
+      "ttm_per_share": 1.06,
+      "annual": 6.47,
+      "yield_pct": 0.3
+    }
+  ],
+  "non_payers": [
+    "TSLA",
+    "AMD",
+    "AMZN",
+    "BRK.B",
+    "SPCX",
+    "PLTR",
+    "EUV"
+  ],
+  "missing": [],
+  "stock_market_value": 110359,
+  "stock_subtotal": 280.93,
+  "stock_yield_pct": 0.25,
+  "sgov": {
+    "ticker": "SGOV",
+    "shares": 277,
+    "price": 100.59,
+    "ttm_per_share": 3.666,
+    "annual": 1015.48,
+    "yield_pct": 3.64,
+    "last_div": 0.301,
+    "last_div_date": "2026-10-01",
+    "run_rate_annual": 1000.52,
+    "run_rate_yield_pct": 3.59,
+    "label": "现金中的 SGOV（277 股）"
+  },
+  "total_annual": 1296.41,
+  "monthly_avg": 108.03
+}
