@@ -66,16 +66,74 @@
       "position_changes": []
     },
     "cn": {
-      "as_of": "2026-10-25",
-      "total_wan_end": 104.06
+      "as_of": "2026-11-13",
+      "total_wan_end": 105.07,
+      "total_wan_start": 104.06,
+      "change_wan": 1.01,
+      "category_changes": [
+        {
+          "name": "固收",
+          "change_wan": 0.66
+        },
+        {
+          "name": "A股",
+          "change_wan": 0.44
+        },
+        {
+          "name": "海外",
+          "change_wan": -0.18
+        },
+        {
+          "name": "港股",
+          "change_wan": 0.2
+        },
+        {
+          "name": "商品",
+          "change_wan": -0.11
+        }
+      ],
+      "fund_changes": [
+        {
+          "name": "债券",
+          "change_wan": 0.66
+        },
+        {
+          "name": "黄金",
+          "change_wan": -0.11
+        },
+        {
+          "name": "红利低波",
+          "change_wan": 0.67
+        },
+        {
+          "name": "纳指100",
+          "change_wan": -0.18
+        },
+        {
+          "name": "中证A500",
+          "change_wan": -0.22
+        },
+        {
+          "name": "沪深300",
+          "change_wan": 0.02
+        },
+        {
+          "name": "恒生科技",
+          "change_wan": 0.2
+        },
+        {
+          "name": "科创和创业板",
+          "change_wan": -0.03
+        }
+      ]
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 300328,
+      "total_usd_end": 301832,
       "ytd_usd": 11229,
       "ytd_pct": 8.37
     },
-    "generated_at": "2026-11-14T00:26:31.128Z"
+    "generated_at": "2026-11-14T03:47:57.454Z"
   },
   {
     "type": "week",

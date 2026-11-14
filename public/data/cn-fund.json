@@ -1,91 +1,91 @@
 {
-  "as_of": "2026-10-25",
+  "as_of": "2026-11-13",
   "currency": "CNY",
   "unit": "万元",
   "title": "A股基金",
   "subtitle": "人民币国内配置 · 资产配置快照",
-  "total_wan": 104.06,
+  "total_wan": 105.07,
   "note": "配置快照（非实时行情）· 数据来自仓库 cn-fund.json · #NFA",
   "categories": [
     {
       "name": "固收",
-      "amount_wan": 41.86,
-      "weight_pct": 40.23
+      "amount_wan": 42.52,
+      "weight_pct": 40.47
     },
     {
       "name": "A股",
-      "amount_wan": 37.84,
-      "weight_pct": 36.36
+      "amount_wan": 38.28,
+      "weight_pct": 36.43
     },
     {
       "name": "海外",
-      "amount_wan": 15.59,
-      "weight_pct": 14.98
+      "amount_wan": 15.41,
+      "weight_pct": 14.67
     },
     {
       "name": "港股",
-      "amount_wan": 5.18,
-      "weight_pct": 4.98
+      "amount_wan": 5.38,
+      "weight_pct": 5.12
     },
     {
       "name": "商品",
-      "amount_wan": 3.59,
-      "weight_pct": 3.45
+      "amount_wan": 3.48,
+      "weight_pct": 3.31
     }
   ],
   "holdings": [
     {
       "name": "债券",
-      "amount_wan": 41.86,
-      "weight_pct": 40.23,
+      "amount_wan": 42.52,
+      "weight_pct": 40.47,
       "category": "固收"
     },
     {
       "name": "黄金",
-      "amount_wan": 3.59,
-      "weight_pct": 3.45,
+      "amount_wan": 3.48,
+      "weight_pct": 3.31,
       "category": "商品"
     },
     {
       "name": "红利低波",
-      "amount_wan": 22.28,
-      "weight_pct": 21.41,
+      "amount_wan": 22.95,
+      "weight_pct": 21.84,
       "category": "A股"
     },
     {
       "name": "标普500",
       "amount_wan": 5.66,
-      "weight_pct": 5.44,
+      "weight_pct": 5.39,
       "category": "海外"
     },
     {
       "name": "纳指100",
-      "amount_wan": 9.93,
-      "weight_pct": 9.54,
+      "amount_wan": 9.75,
+      "weight_pct": 9.28,
       "category": "海外"
     },
     {
       "name": "中证A500",
-      "amount_wan": 9.04,
-      "weight_pct": 8.69,
+      "amount_wan": 8.82,
+      "weight_pct": 8.39,
       "category": "A股"
     },
     {
       "name": "沪深300",
-      "amount_wan": 5.27,
-      "weight_pct": 5.06,
+      "amount_wan": 5.29,
+      "weight_pct": 5.03,
       "category": "A股"
     },
     {
       "name": "恒生科技",
-      "amount_wan": 5.18,
-      "weight_pct": 4.98,
+      "amount_wan": 5.38,
+      "weight_pct": 5.12,
       "category": "港股"
     },
     {
       "name": "科创和创业板",
-      "amount_wan": 1.25,
-      "weight_pct": 1.2,
+      "amount_wan": 1.22,
+      "weight_pct": 1.16,
       "category": "A股"
     }
   ],
@@ -95,20 +95,20 @@
       {
         "name": "固收",
         "source": "债券",
-        "amount_wan": 41.86,
+        "amount_wan": 42.52,
         "yield_pct": 3.5,
-        "annual_yuan": 14651
+        "annual_yuan": 14882
       },
       {
         "name": "红利低波",
         "source": "红利低波",
-        "amount_wan": 22.28,
+        "amount_wan": 22.95,
         "yield_pct": 5.0,
-        "annual_yuan": 11140
+        "annual_yuan": 11475
       }
     ],
-    "total_annual_yuan": 25791,
-    "monthly_avg_yuan": 2149,
-    "portfolio_yield_pct": 2.48
+    "total_annual_yuan": 26357,
+    "monthly_avg_yuan": 2196,
+    "portfolio_yield_pct": 2.51
   }
 }
