@@ -1,63 +1,63 @@
 {
-  "as_of": "2026-10-18",
-  "source": "Yahoo Finance 过去 12 个月实际派息（TTM）",
+  "as_of": "2026-11-13",
+  "source": "Yahoo Finance 过去 12 个月实际派息（TTM）；股数与价格按 2026-11-13 持仓对齐，每股派息仍为 2026-10-18 获取的 TTM",
   "note": "税前估算，按过去 12 个月实际派息，不含期权收入",
   "stocks": [
     {
       "ticker": "VOO",
       "shares": 14.22,
-      "price": 701.61,
+      "price": 693.38,
       "ttm_per_share": 7.428,
       "annual": 105.63,
-      "yield_pct": 1.06
-    },
-    {
-      "ticker": "MSFT",
-      "shares": 17.19,
-      "price": 529.05,
-      "ttm_per_share": 3.64,
-      "annual": 62.57,
-      "yield_pct": 0.69
+      "yield_pct": 1.07
     },
     {
       "ticker": "QQQ",
-      "shares": 15.14,
-      "price": 709.8,
+      "shares": 17.51,
+      "price": 679.89,
       "ttm_per_share": 3.091,
-      "annual": 46.8,
-      "yield_pct": 0.44
+      "annual": 54.12,
+      "yield_pct": 0.45
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 14.19,
+      "price": 523.88,
+      "ttm_per_share": 3.64,
+      "annual": 51.65,
+      "yield_pct": 0.69
     },
     {
       "ticker": "GOOGL",
-      "shares": 31.19,
-      "price": 340.59,
+      "shares": 33.19,
+      "price": 295.77,
       "ttm_per_share": 0.86,
-      "annual": 26.82,
-      "yield_pct": 0.25
+      "annual": 28.54,
+      "yield_pct": 0.29
     },
     {
       "ticker": "NVDA",
-      "shares": 41,
-      "price": 214.13,
+      "shares": 42,
+      "price": 162.85,
       "ttm_per_share": 0.52,
-      "annual": 21.32,
-      "yield_pct": 0.24
+      "annual": 21.84,
+      "yield_pct": 0.32
     },
     {
       "ticker": "META",
       "shares": 6.04,
-      "price": 709.325,
+      "price": 641.69,
       "ttm_per_share": 2.1,
       "annual": 12.68,
-      "yield_pct": 0.3
+      "yield_pct": 0.33
     },
     {
       "ticker": "AAPL",
-      "shares": 6.09,
-      "price": 343.46,
+      "shares": 6.1,
+      "price": 356.27,
       "ttm_per_share": 1.06,
-      "annual": 6.46,
-      "yield_pct": 0.31
+      "annual": 6.47,
+      "yield_pct": 0.3
     }
   ],
   "non_payers": [
@@ -70,9 +70,9 @@
     "EUV"
   ],
   "missing": [],
-  "stock_market_value": 110048,
-  "stock_subtotal": 282.28,
-  "stock_yield_pct": 0.26,
+  "stock_market_value": 110359,
+  "stock_subtotal": 280.93,
+  "stock_yield_pct": 0.25,
   "sgov": {
     "ticker": "SGOV",
     "shares": 277,
@@ -86,6 +86,6 @@
     "run_rate_yield_pct": 3.59,
     "label": "现金中的 SGOV（277 股）"
   },
-  "total_annual": 1297.76,
-  "monthly_avg": 108.15
+  "total_annual": 1296.41,
+  "monthly_avg": 108.03
 }
