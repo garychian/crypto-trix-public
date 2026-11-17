@@ -31,6 +31,13 @@
 .ipill-dot.has-av, .badge-ini.has-av { padding: 0; overflow: hidden; background: var(--panel-2, #14171c); }
 .ipill-dot.has-av { width: 28px; height: 28px; }
 .badge-ini.has-av.big { width: 56px; height: 56px; }
+.badge-ini.donut {
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+  border-width: 2px;
+}
+.badge-ini.has-av.donut { width: 100%; height: 100%; }
 
 /* institution card */
 .inst-card { padding: 18px 18px 16px; margin-bottom: 14px; position: relative; }

@@ -3,8 +3,10 @@
  * Pure SVG, no dependency. Slices = top holdings + 其他 (long tail) + 现金.
  * Values come from the same mvOf()/cash numbers the page totals use.
  *
- * Shared by fund.html (USD, defaults) and cn-fund.html (CNY) — pass `opts`
- * to renderAllocation() to change title / center labels / number formats.
+ * Shared by fund.html (USD, defaults), cn-fund.html (CNY), and 13f.html —
+ * pass `opts` to renderAllocation() to change title / center labels / number
+ * formats. Optional `opts.centerHtml` injects a media slot (e.g. an avatar)
+ * into the donut hole; omitted by default so fund pages stay text-only.
  */
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -117,6 +119,7 @@ export function renderAllocation(el, data, opts = {}) {
     meta: (n) => '持仓 ' + n + ' 只 + 现金',
     centerLabel: '总资产',
     centerSub: '持仓 + 现金',
+    centerHtml: '', // optional HTML for a media slot in the hole (avatar, etc.)
     maxNamed: MAX_NAMED,
     twoColFrom: Infinity, // legend switches to 2 columns (desktop) at this many rows
     fmtLegend: money, // legend $ column
@@ -141,7 +144,8 @@ export function renderAllocation(el, data, opts = {}) {
       '<div class="alloc-body">' +
       '<div class="alloc-donut">' +
       '<svg viewBox="0 0 200 200" role="img" aria-label="持仓与现金占比环形图"></svg>' +
-      '<div class="alloc-center" aria-live="polite">' +
+      '<div class="alloc-center' + (o.centerHtml ? ' has-media' : '') + '" aria-live="polite">' +
+      (o.centerHtml ? '<div class="ac-media">' + o.centerHtml + '</div>' : '') +
       '<span class="ac-k"></span><span class="ac-v"></span><span class="ac-s"></span>' +
       '</div></div>' +
       '<ul class="alloc-legend' + (slices.length >= o.twoColFrom ? ' cols2' : '') + '" style="--rows:' + Math.ceil(slices.length / 2) + '">' +
@@ -166,6 +170,8 @@ export function renderAllocation(el, data, opts = {}) {
       '</ul></div>';
 
     const svg = el.querySelector('svg');
+    const center = el.querySelector('.alloc-center');
+    const media = el.querySelector('.ac-media');
     const ck = el.querySelector('.ac-k');
     const cv = el.querySelector('.ac-v');
     const cs = el.querySelector('.ac-s');
@@ -218,13 +224,19 @@ export function renderAllocation(el, data, opts = {}) {
     };
 
     const showTotal = () => {
-      ck.textContent = o.centerLabel;
+      if (media) media.hidden = false;
+      center.classList.remove('is-slice');
+      // With a media slot, the avatar is the main hole content; keep a compact
+      // total under it and drop the idle label / sub so text stays inside the ring.
+      ck.textContent = o.centerHtml ? '' : o.centerLabel;
       cv.textContent = o.fmtCenter(total);
-      cs.textContent = o.centerSub;
+      cs.textContent = o.centerHtml ? (o.centerLabel || '') : o.centerSub;
       cv.style.color = '';
     };
     const showSlice = (i) => {
       const s = slices[i];
+      if (media) media.hidden = true;
+      center.classList.add('is-slice');
       ck.textContent = s.name;
       cv.textContent = s.pct.toFixed(1) + '%';
       cs.textContent = o.fmtHover(s.value);

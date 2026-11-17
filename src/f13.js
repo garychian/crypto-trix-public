@@ -118,6 +118,8 @@ function renderDonut(data) {
   }
   const items = q.holdings.map((h) => ({ label: h.ticker || shortName(h.name), value: h.value, sub: h.cn || (h.ticker ? shortName(h.name) : '') }));
   if (q.other) items.push({ label: `其余 ${q.other.n} 只`, value: q.other.value, sub: '' });
+  // Avatar (or initials badge) in the donut hole; same badge() used by the
+  // institution pills / header so screenshot export can inline the <img>.
   renderAllocation(
     el,
     { items, cash: null },
@@ -126,6 +128,7 @@ function renderDonut(data) {
       meta: () => `前 8 大 + 其他 · 共 ${q.n_positions} 只`,
       centerLabel: '13F 市值',
       centerSub: '美股多头',
+      centerHtml: badge(data, ' donut'),
       maxNamed: 8,
       twoColFrom: 9,
       fmtLegend: fmtUsd,

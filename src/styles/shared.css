@@ -676,6 +676,32 @@ table.data tbody tr:hover td { background: rgba(255, 255, 255, 0.015); }
   font-variant-numeric: tabular-nums;
 }
 
+/* Optional media slot in the hole (e.g. 13F institution avatar). Fund pages
+   omit centerHtml, so they never get .has-media and stay unchanged. */
+.alloc-center.has-media { padding: 0 18%; gap: 0; }
+.alloc-center.has-media .ac-media {
+  flex: none;
+  width: 68px;
+  height: 68px;
+  margin-bottom: 6px;
+  display: grid;
+  place-items: center;
+}
+.alloc-center.has-media .ac-media[hidden] { display: none; }
+.alloc-center.has-media .ac-k:empty { display: none; }
+.alloc-center.has-media:not(.is-slice) .ac-v {
+  margin-top: 0;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+  line-height: 1.15;
+}
+.alloc-center.has-media:not(.is-slice) .ac-s {
+  margin-top: 2px;
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  font-weight: 600;
+}
+
 .alloc-legend {
   list-style: none;
   flex: 1 1 280px;
@@ -736,6 +762,9 @@ table.data tbody tr:hover td { background: rgba(255, 255, 255, 0.015); }
   .alloc-body { flex-direction: column; gap: 14px; padding: 14px 10px 4px; }
   .alloc-donut { width: min(240px, 70vw); height: min(240px, 70vw); }
   .alloc-center { padding: 0 14%; }
+  .alloc-center.has-media { padding: 0 16%; }
+  .alloc-center.has-media .ac-media { width: 60px; height: 60px; margin-bottom: 5px; }
+  .alloc-center.has-media:not(.is-slice) .ac-v { font-size: 15px; }
   .alloc-legend { width: 100%; max-width: none; flex-basis: auto; }
 }
 
