@@ -1,6 +1,58 @@
 [
   {
     "type": "week",
+    "id": "2026-W47",
+    "period_start": "2026-11-16",
+    "period_end": "2026-11-16",
+    "us": {
+      "pnl_usd": -3016,
+      "pct": -2.07,
+      "total_start": 145352.46,
+      "total_end": 142336.05,
+      "closes": 1,
+      "daily": [
+        {
+          "date": "2026-11-16",
+          "pnl_usd": -3016
+        }
+      ],
+      "cash_pct_end": 24.58,
+      "cash_pct_start": 24.07,
+      "top_gainers": [],
+      "top_losers": [
+        {
+          "ticker": "TSLA",
+          "contribution_usd": -1017,
+          "price_pct": -2.69
+        },
+        {
+          "ticker": "GOOGL",
+          "contribution_usd": -400,
+          "price_pct": -4.07
+        },
+        {
+          "ticker": "QQQ",
+          "contribution_usd": -318,
+          "price_pct": -2.67
+        }
+      ],
+      "position_changes": []
+    },
+    "cn": {
+      "as_of": "2026-11-13",
+      "total_wan_end": 105.07
+    },
+    "combined": {
+      "fx_usdcny": 6.7146,
+      "total_usd_end": 298816,
+      "ytd_usd": 8213,
+      "ytd_pct": 6.12
+    },
+    "partial": true,
+    "generated_at": "2026-11-17T00:08:46.053Z"
+  },
+  {
+    "type": "week",
     "id": "2026-W46",
     "period_start": "2026-11-09",
     "period_end": "2026-11-13",
