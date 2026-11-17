@@ -52,7 +52,9 @@ export const INSTITUTIONS = [
   { id: 'elliott', avatar: '/img/13f/elliott.webp', name: 'Elliott Investment Management', name_cn: 'Elliott', manager: 'Paul Singer', cik: '0001791786', initials: 'EL', color: '#E573B5' },
   { id: 'hh', avatar: '/img/13f/hh.webp', name: 'H&H International Investment', name_cn: 'H&H（段永平）', manager: '段永平', cik: '0001759760', initials: 'HH', color: '#F0B90B' },
   { id: 'ark', avatar: '/img/13f/ark.webp', name: 'ARK Investment Management', name_cn: 'ARK', manager: 'Cathie Wood', cik: '0001697748', initials: 'ARK', color: '#8FD14F' },
-  { id: 'pershing', avatar: '/img/13f/pershing.webp', name: 'Pershing Square Capital Management', name_cn: '潘兴广场', manager: 'Bill Ackman', cik: '0001336528', also_ciks: ['0002026053'], initials: 'PS', color: '#2E9E8F' },
+  // 2026Q2 起 13F-HR 改由 Pershing Square Inc.（CIK 2026053）申报，旧 LP（CIK 1336528）同期只有 13F-NT。
+  // 更早季度两家都有 HR，持仓互补（不是同一本账），仍按季度合并。主 CIK 用实际申报 HR 的主体，SEC 链接才不会落到 NT。
+  { id: 'pershing', avatar: '/img/13f/pershing.webp', name: 'Pershing Square Capital Management', name_cn: '潘兴广场', manager: 'Bill Ackman', cik: '0002026053', also_ciks: ['0001336528'], initials: 'PS', color: '#2E9E8F' },
   { id: 'appaloosa', avatar: '/img/13f/appaloosa.webp', name: 'Appaloosa LP', name_cn: 'Appaloosa', manager: 'David Tepper', cik: '0001656456', initials: 'AP', color: '#C9A27A' },
   { id: 'duquesne', avatar: '/img/13f/duquesne.webp', name: 'Duquesne Family Office', name_cn: 'Duquesne', manager: 'Stanley Druckenmiller', cik: '0001536411', initials: 'DQ', color: '#9BB7D4' },
   { id: 'thirdpoint', avatar: '/img/13f/thirdpoint.webp', name: 'Third Point', name_cn: 'Third Point', manager: 'Dan Loeb', cik: '0001040273', initials: 'TP', color: '#D9D26A' },
@@ -95,6 +97,17 @@ const CUSIP_OVERRIDE = {
   '674599105': ['OXY', 'Occidental Petroleum'], '382550101': ['GT', 'Goodyear Tire'], '47233W109': ['JEF', 'Jefferies Financial'],
   '14040H105': ['COF', 'Capital One'], '55616P104': ['M', "Macy's"], '46137V357': ['RSP', 'Invesco S&P 500 Equal Weight ETF'],
   '92189F676': ['SMH', 'VanEck Semiconductor ETF'], '07782B104': ['BLTE', 'Belite Bio (ADR)'], '06849F108': ['B', 'Barrick Mining'],
+  // 同一发行人多类股份：SEC company_tickers 名称归一后会撞车，按 13F 行内类别 + 发行人 10-Q 封面交易代码锁定
+  '35137L105': ['FOXA', 'Fox (A)'], '35137L204': ['FOX', 'Fox (B)'],
+  '526057104': ['LEN', 'Lennar (A)'], '526057302': ['LEN.B', 'Lennar (B)'],
+  '530909100': ['LLYVA', 'Liberty Live (A)'], '530909308': ['LLYVK', 'Liberty Live (C)'],
+  '531229755': ['FWONK', 'Liberty Media (C)'],
+  '98954M200': ['Z', 'Zillow (C)'],
+  '879433829': ['TDS', 'Telephone & Data Systems'],
+  '45866F104': ['ICE', 'Intercontinental Exchange'],
+  '78392B206': ['SKHY', 'SK hynix (ADR)'],
+  // 1/20 Class A 存托份额，不是 GOOGL 普通股，不标成 GOOGL
+  '02079K404': [null, 'Alphabet (A 1/20 depositary)'],
 };
 // 名称前缀覆盖（SEC 标题对不上的简称）
 const NAME_OVERRIDE = [
@@ -168,7 +181,7 @@ function parseInfoTable(xml) {
 
 // ── ticker 映射 ───────────────────────────────────────────────────────────────────
 const STOP = new Set(['INC', 'CORP', 'CORPORATION', 'CO', 'COM', 'LTD', 'LIMITED', 'PLC', 'HLDGS', 'HOLDINGS', 'HLDG', 'GROUP', 'GRP', 'THE', 'NEW', 'DEL', 'NV', 'SA', 'AG', 'LP', 'LLC', 'COMPANY', 'CL', 'CLASS', 'ORD', 'ADS', 'ADR', 'SHS', 'N', 'V', 'DE', 'INCORPORATED', 'SE', 'SHS', 'COMMON', 'STOCK']);
-const ABBR = { PETE: 'PETROLEUM', FINL: 'FINANCIAL', INTL: 'INTERNATIONAL', TECHN: 'TECHNOLOGIES', TECH: 'TECHNOLOGIES', TECHNOLOGY: 'TECHNOLOGIES', MFG: 'MANUFACTURING', BK: 'BANK', RUBR: 'RUBBER', SVCS: 'SERVICES', SYS: 'SYSTEMS', PHARMACEUTICAL: 'PHARMACEUTICALS', PHARMA: 'PHARMACEUTICALS', LABS: 'LABORATORIES', ENERGY: 'ENERGY', RESOURCES: 'RESOURCES', ENTMT: 'ENTERTAINMENT', COMMUNICATIONS: 'COMMUNICATIONS', COMMUNICATION: 'COMMUNICATIONS', COMMS: 'COMMUNICATIONS', MKTS: 'MARKETS', AMERN: 'AMERICAN', NATL: 'NATIONAL', INDS: 'INDUSTRIES', IND: 'INDUSTRIES', STORES: 'STORES', PPTYS: 'PROPERTIES', PRODS: 'PRODUCTS', MATLS: 'MATERIALS', ELECTRS: 'ELECTRONICS', ELEC: 'ELECTRIC', HEALTHCARE: 'HEALTH', HLTH: 'HEALTH' };
+const ABBR = { PETE: 'PETROLEUM', FINL: 'FINANCIAL', INTL: 'INTERNATIONAL', TECHN: 'TECHNOLOGIES', TECH: 'TECHNOLOGIES', TECHNOLOGY: 'TECHNOLOGIES', MFG: 'MANUFACTURING', BK: 'BANK', RUBR: 'RUBBER', SVCS: 'SERVICES', SYS: 'SYSTEMS', PHARMACEUTICAL: 'PHARMACEUTICALS', PHARMA: 'PHARMACEUTICALS', LABS: 'LABORATORIES', ENERGY: 'ENERGY', RESOURCES: 'RESOURCES', ENTMT: 'ENTERTAINMENT', COMMUNICATIONS: 'COMMUNICATIONS', COMMUNICATION: 'COMMUNICATIONS', COMMS: 'COMMUNICATIONS', MKTS: 'MARKETS', AMERN: 'AMERICAN', NATL: 'NATIONAL', INDS: 'INDUSTRIES', IND: 'INDUSTRIES', STORES: 'STORES', PPTYS: 'PROPERTIES', PRODS: 'PRODUCTS', MATLS: 'MATERIALS', ELECTRS: 'ELECTRONICS', ELEC: 'ELECTRIC', HEALTHCARE: 'HEALTH', HLTH: 'HEALTH', GEN: 'GENERAL', UTILS: 'UTILITIES', RLTY: 'REALTY' };
 const norm = (s) =>
   String(s).toUpperCase().replace(/&/g, ' AND ').replace(/['’]/g, '').replace(/[^A-Z0-9 ]/g, ' ').split(/\s+/).filter((w) => w && !STOP.has(w)).map((w) => ABBR[w] || w).join(' ');
 
@@ -200,19 +213,61 @@ const tidy = (t) => {
   return fixName(x === x.toUpperCase() ? prettyName(x) : x);
 };
 
+function nameKeys(name) {
+  const n = norm(name);
+  const keys = [];
+  const push = (x) => {
+    const s = String(x || '').trim();
+    if (s && !keys.includes(s)) keys.push(s);
+  };
+  push(n);
+  // SEC 有时把美国发行人写成 "Name Inc/United States"
+  if (n.endsWith(' UNITED STATES')) push(n.slice(0, -' UNITED STATES'.length));
+  // 13F 名称上限约 30 字符，末词可能是 INC/CORP/HOLDING 的残段
+  const parts = n.split(' ').filter(Boolean);
+  if (parts.length >= 2) {
+    const last = parts[parts.length - 1];
+    if (last.length >= 2 && last.length <= 6 && [...STOP].some((w) => w.startsWith(last) && w.length > last.length)) push(parts.slice(0, -1).join(' '));
+  }
+  return keys;
+}
+
+function exactHit(n, row, idx) {
+  if (!n || /ETF|TRUST|TR$/.test(row.name.toUpperCase())) return null;
+  const hit = idx.byName.get(n);
+  if (!hit) return null;
+  return { ticker: hit.ticker, display: tidy(hit.title), via: 'sec' };
+}
+
+function prefixHit(n, row, idx) {
+  // 13F 名称常被截断。只在前缀落到同一发行人全名时采纳：唯一代码，或该全名下 SEC 名单里的第一只（主上市代码，优先股/OTC 排在后面）。
+  // 多个不同全名同时命中则放弃，避免把缩写安到另一家公司。双类普通股（FOXA/FOX 等）靠 CUSIP 覆盖，不在这里猜。
+  if (!n || n.length < 9) return null;
+  const c = idx.list.filter(([k]) => k.startsWith(n));
+  if (!c.length) return null;
+  const uniq = [...new Set(c.map(([, v]) => v.ticker))];
+  const sameName = new Set(c.map(([k]) => k)).size === 1;
+  let ticker = null;
+  if (uniq.length === 1) ticker = uniq[0];
+  else if (sameName) ticker = c[0][1].ticker;
+  if (!ticker) return null;
+  const hit = c.find(([, v]) => v.ticker === ticker);
+  return { ticker, display: tidy(hit[1].title), via: 'sec-prefix' };
+}
+
 function mapTicker(row, idx) {
   const o = CUSIP_OVERRIDE[row.cusip];
   if (o) return { ticker: o[0], display: o[1], via: 'cusip' };
   for (const [re, t, d] of NAME_OVERRIDE) if (re.test(row.name.toUpperCase())) return { ticker: t, display: d, via: 'name-override' };
-  const n = norm(row.name);
-  if (!n) return { ticker: null, display: prettyName(row.name), via: null };
-  const hit = idx.byName.get(n);
-  if (hit && !/ETF|TRUST|TR$/.test(row.name.toUpperCase())) return { ticker: hit.ticker, display: tidy(hit.title), via: 'sec' };
-  // 13F 名称常被截断（≤30 字符）：唯一前缀命中才采纳
-  if (n.length >= 9) {
-    const c = idx.list.filter(([k]) => k.startsWith(n));
-    const uniq = [...new Set(c.map(([, v]) => v.ticker))];
-    if (uniq.length === 1 || (c.length && new Set(c.map(([k]) => k)).size === 1)) return { ticker: c[0][1].ticker, display: tidy(c[0][1].title), via: 'sec-prefix' };
+  const keys = nameKeys(row.name);
+  if (!keys.length) return { ticker: null, display: prettyName(row.name), via: null };
+  for (const n of keys) {
+    const hit = exactHit(n, row, idx);
+    if (hit) return hit;
+  }
+  for (const n of keys) {
+    const hit = prefixHit(n, row, idx);
+    if (hit) return hit;
   }
   const etf = /^(ISHARES|SPDR|VANGUARD|INVESCO|SELECT SECTOR|PROSHARES|DIREXION|WISDOMTREE|GLOBAL X|KRANESHARES|FIRST TR|FLEXSHARES|VANECK|ISHARES)/.test(row.name.toUpperCase());
   return { ticker: null, display: etf && row.cls ? `${prettyName(row.name)} ${row.cls}` : prettyName(row.name), via: null };
@@ -276,8 +331,8 @@ async function loadOneFiler(items) {
     }
     const rows = parseInfoTable(await get(x.base + x.info));
     if (!rows.length) continue;
-    // 个别申报人（如 Duquesne）以「千美元」填 value：用前 10 大行的隐含股价中位数判断
-    const px = rows.filter((r) => r.sh_type === 'SH' && r.shares > 0).sort((a, b) => b.value - a.value).slice(0, 10).map((r) => r.value / r.shares).sort((a, b) => a - b);
+    // 个别申报人（如 Duquesne）以「千美元」填 value：用前 10 大非期权普通股的隐含股价中位数判断（期权不参与，避免权利金把整表误乘 1000）
+    const px = rows.filter((r) => r.sh_type === 'SH' && r.shares > 0 && !(r.put_call && /put|call/i.test(r.put_call))).sort((a, b) => b.value - a.value).slice(0, 10).map((r) => r.value / r.shares).sort((a, b) => a - b);
     if (px.length && px[Math.floor(px.length / 2)] < 2) {
       for (const r of rows) r.value *= 1000;
       notes.push(`value 按千美元申报，已 ×1000（${f.form} ${f.filed}）`);
