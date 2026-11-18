@@ -3,37 +3,47 @@
     "type": "week",
     "id": "2026-W47",
     "period_start": "2026-11-16",
-    "period_end": "2026-11-16",
+    "period_end": "2026-11-17",
     "us": {
-      "pnl_usd": -3016,
-      "pct": -2.07,
+      "pnl_usd": -3504,
+      "pct": -2.41,
       "total_start": 145352.46,
-      "total_end": 142336.05,
-      "closes": 1,
+      "total_end": 141848.49,
+      "closes": 2,
       "daily": [
         {
           "date": "2026-11-16",
           "pnl_usd": -3016
+        },
+        {
+          "date": "2026-11-17",
+          "pnl_usd": -488
         }
       ],
-      "cash_pct_end": 24.58,
+      "cash_pct_end": 24.67,
       "cash_pct_start": 24.07,
-      "top_gainers": [],
+      "top_gainers": [
+        {
+          "ticker": "SPCX",
+          "contribution_usd": 78,
+          "price_pct": 1.86
+        }
+      ],
       "top_losers": [
         {
           "ticker": "TSLA",
-          "contribution_usd": -1017,
-          "price_pct": -2.69
+          "contribution_usd": -981,
+          "price_pct": -2.59
         },
         {
           "ticker": "GOOGL",
-          "contribution_usd": -400,
-          "price_pct": -4.07
+          "contribution_usd": -517,
+          "price_pct": -5.26
         },
         {
           "ticker": "QQQ",
-          "contribution_usd": -318,
-          "price_pct": -2.67
+          "contribution_usd": -402,
+          "price_pct": -3.37
         }
       ],
       "position_changes": []
@@ -44,12 +54,12 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 298816,
-      "ytd_usd": 8213,
-      "ytd_pct": 6.12
+      "total_usd_end": 298328,
+      "ytd_usd": 7725,
+      "ytd_pct": 5.76
     },
     "partial": true,
-    "generated_at": "2026-11-17T00:08:46.053Z"
+    "generated_at": "2026-11-18T00:15:28.767Z"
   },
   {
     "type": "week",
