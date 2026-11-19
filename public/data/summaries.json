@@ -5,10 +5,11 @@
     "period_start": "2026-11-16",
     "period_end": "2026-11-18",
     "us": {
-      "pnl_usd": -2878,
-      "pct": -1.98,
+      "pnl_usd": -2835,
+      "pct": -1.95,
       "total_start": 145352.46,
-      "total_end": 142474.4,
+      "total_end": 144417.23,
+      "deposits_usd": 1900,
       "closes": 3,
       "daily": [
         {
@@ -21,10 +22,10 @@
         },
         {
           "date": "2026-11-18",
-          "pnl_usd": 626
+          "pnl_usd": 669
         }
       ],
-      "cash_pct_end": 24.56,
+      "cash_pct_end": 25.54,
       "cash_pct_start": 24.07,
       "top_gainers": [
         {
@@ -63,12 +64,28 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 298954,
-      "ytd_usd": 8351,
-      "ytd_pct": 6.23
+      "total_usd_end": 300897,
+      "ytd_usd": 8394,
+      "ytd_pct": 6.17
     },
     "partial": true,
-    "generated_at": "2026-11-19T00:11:25.098Z"
+    "user_operations": {
+      "locked": true,
+      "heading": "本周操作",
+      "items": [
+        {
+          "ticker": "NVDA",
+          "label": "−17 股（42 → 25）@ 152.86",
+          "direction": "down"
+        },
+        {
+          "ticker": "QQQ",
+          "label": "IQQ +117 股 @ 22.24，折算为约 +3.96 股 QQQ（17.51 → 约 21.47）",
+          "direction": "up"
+        }
+      ]
+    },
+    "generated_at": "2026-11-19T02:22:48.323Z"
   },
   {
     "type": "week",

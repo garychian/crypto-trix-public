@@ -29,5 +29,21 @@
         "direction": "up"
       }
     ]
+  },
+  "week:2026-W47": {
+    "locked": true,
+    "heading": "本周操作",
+    "items": [
+      {
+        "ticker": "NVDA",
+        "label": "−17 股（42 → 25）@ 152.86",
+        "direction": "down"
+      },
+      {
+        "ticker": "QQQ",
+        "label": "IQQ +117 股 @ 22.24，折算为约 +3.96 股 QQQ（17.51 → 约 21.47）",
+        "direction": "up"
+      }
+    ]
   }
 }
