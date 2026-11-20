@@ -3,14 +3,14 @@
     "type": "week",
     "id": "2026-W47",
     "period_start": "2026-11-16",
-    "period_end": "2026-11-18",
+    "period_end": "2026-11-19",
     "us": {
-      "pnl_usd": -2835,
-      "pct": -1.95,
+      "pnl_usd": -5713,
+      "pct": -3.93,
       "total_start": 145352.46,
-      "total_end": 144417.23,
+      "total_end": 141539.69,
       "deposits_usd": 1900,
-      "closes": 3,
+      "closes": 4,
       "daily": [
         {
           "date": "2026-11-16",
@@ -23,37 +23,30 @@
         {
           "date": "2026-11-18",
           "pnl_usd": 669
-        }
-      ],
-      "cash_pct_end": 25.54,
-      "cash_pct_start": 24.07,
-      "top_gainers": [
-        {
-          "ticker": "SPCX",
-          "contribution_usd": 132,
-          "price_pct": 3.16
         },
         {
-          "ticker": "AMZN",
-          "contribution_usd": 18,
-          "price_pct": 0.41
+          "date": "2026-11-19",
+          "pnl_usd": -2878
         }
       ],
+      "cash_pct_end": 26.06,
+      "cash_pct_start": 24.07,
+      "top_gainers": [],
       "top_losers": [
         {
           "ticker": "TSLA",
-          "contribution_usd": -630,
-          "price_pct": -1.67
-        },
-        {
-          "ticker": "NVDA",
-          "contribution_usd": -499,
-          "price_pct": -7.3
+          "contribution_usd": -1534,
+          "price_pct": -4.05
         },
         {
           "ticker": "GOOGL",
-          "contribution_usd": -442,
-          "price_pct": -4.51
+          "contribution_usd": -767,
+          "price_pct": -7.81
+        },
+        {
+          "ticker": "NVDA",
+          "contribution_usd": -709,
+          "price_pct": -10.36
         }
       ],
       "position_changes": []
@@ -64,9 +57,9 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 300897,
-      "ytd_usd": 8394,
-      "ytd_pct": 6.17
+      "total_usd_end": 298020,
+      "ytd_usd": 5517,
+      "ytd_pct": 4.06
     },
     "partial": true,
     "user_operations": {
@@ -85,7 +78,7 @@
         }
       ]
     },
-    "generated_at": "2026-11-19T02:22:48.323Z"
+    "generated_at": "2026-11-20T00:08:34.357Z"
   },
   {
     "type": "week",
