@@ -15,7 +15,7 @@ import {
 } from './lib/format.js';
 import { initEquityChart } from './equity-chart.js';
 import { renderAllocation } from './allocation-chart.js';
-import { computeYtd, computePeriod, loadCheckins } from './lib/capital.js';
+import { computeYtd, computePeriod, loadCheckins, settledDailyPnl } from './lib/capital.js';
 
 
 /** Three "灯塔" waypoints on the path to $2M FI (pinned-tweet framing). */
@@ -453,8 +453,11 @@ function computeAndRender() {
       sub.textContent = '持仓 ' + usd(holdingsMV) + ' · 现金 ' + usd(cashUSD);
     }
   }
-  setMoney('d-daypnl', dailyPnL);
-  document.getElementById('d-daypnl-sub').textContent = holdings.length + ' 只持仓';
+  const settledDay = settledDailyPnl(holdingsMeta, srcLabel);
+  setMoney('d-daypnl', settledDay ?? dailyPnL);
+  document.getElementById('d-daypnl-sub').textContent = settledDay != null
+    ? holdingsMeta.as_of + ' 已结算 · 含交易及平仓现金支出'
+    : holdings.length + ' 只持仓';
   setMoney('d-cumpnl', displayCumPnL);
   document.getElementById('d-cumpnl-sub').textContent =
     totalInvested != null ? '当前持仓股票，不含现金 · 成本 ' + usd(totalInvested) : '';

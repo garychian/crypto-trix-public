@@ -1,8 +1,8 @@
 {
   "date": "2026-11-20",
   "source": "public/data/holdings.json",
-  "total_usd": 135181.27,
-  "cash_usd": 36889.52,
+  "total_usd": 134024.37,
+  "cash_usd": 36797.72,
   "holdings": [
     {
       "ticker": "TSLA",
@@ -15,11 +15,11 @@
     },
     {
       "ticker": "QQQ",
-      "shares": 21.471441,
+      "shares": 23.84715,
       "price": 608.45,
-      "mv": 13064.3,
-      "cost_total": 14136.62,
-      "display_shares": 21.47,
+      "mv": 14509.8,
+      "cost_total": 15631.82,
+      "display_shares": 23.85,
       "shares_source": "inferred"
     },
     {
@@ -51,11 +51,11 @@
     },
     {
       "ticker": "NVDA",
-      "shares": 25,
+      "shares": 5,
       "price": 125.53,
-      "mv": 3138.25,
-      "cost_total": 3155.25,
-      "display_shares": 25,
+      "mv": 627.65,
+      "cost_total": 631.05,
+      "display_shares": 5,
       "shares_source": "exact"
     },
     {

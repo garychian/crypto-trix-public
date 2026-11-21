@@ -173,3 +173,15 @@ export function computePeriod(checkins, total, capital, kind, ref = null, now = 
     deposits,
   };
 }
+
+/** Use an explicitly dated settled account P&L until a new live US session.
+ * Quote-only P&L omits same-day trades and realized option cash flows.
+ * The date guard prevents a later holdings update from reusing a stale value. */
+export function settledDailyPnl(holdings, source, now = new Date()) {
+  const row = holdings?.daily_pnl;
+  if (!row || row.close_date !== holdings.as_of || !Number.isFinite(row.pnl_usd)) return null;
+  const today = nyToday(now);
+  const dow = new Date(today + 'T12:00:00Z').getUTCDay();
+  const newSession = dow >= 1 && dow <= 5 && today > row.close_date;
+  return source !== 'live' || !newSession ? row.pnl_usd : null;
+}

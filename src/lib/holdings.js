@@ -135,6 +135,7 @@ export async function loadHoldingsData() {
       cum_pnl_usd: pos.pnl,
       cum_return_pct: pos.pct,
       total_assets_usd: j.total_assets_usd != null ? Number(j.total_assets_usd) : null,
+      daily_pnl: j.daily_pnl || null,
       annual_return_target_pct:
         j.annual_return_target_pct != null ? Number(j.annual_return_target_pct) : null,
       annual_return_year: j.annual_return_year != null ? Number(j.annual_return_year) : null,

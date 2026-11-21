@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-11-18",
-  "source": "Yahoo Finance 过去 12 个月实际派息（TTM）；QQQ / NVDA 股数与价格按 2026-11-18 持仓对齐（QQQ 含 11/18 买入的 IQQ 折算等值股），其余股票股数与价格仍按 2026-11-13 持仓；每股派息仍为 2026-10-18 获取的 TTM",
+  "as_of": "2026-11-20",
+  "source": "Yahoo Finance 过去 12 个月实际派息（TTM）；QQQ / NVDA 股数与价格按 2026-11-20 持仓对齐（QQQ 含折算等值股），其余股票股数与价格仍按 2026-11-13 持仓；每股派息仍为 2026-10-18 获取的 TTM",
   "note": "税前估算，按过去 12 个月实际派息，不含期权收入",
   "stocks": [
     {
@@ -13,11 +13,11 @@
     },
     {
       "ticker": "QQQ",
-      "shares": 21.47,
-      "price": 659.51,
+      "shares": 23.84715,
+      "price": 608.45,
       "ttm_per_share": 3.091,
-      "annual": 66.36,
-      "yield_pct": 0.47
+      "annual": 73.71,
+      "yield_pct": 0.51
     },
     {
       "ticker": "MSFT",
@@ -36,14 +36,6 @@
       "yield_pct": 0.29
     },
     {
-      "ticker": "NVDA",
-      "shares": 25,
-      "price": 150.96,
-      "ttm_per_share": 0.52,
-      "annual": 13.0,
-      "yield_pct": 0.34
-    },
-    {
       "ticker": "META",
       "shares": 6.04,
       "price": 641.69,
@@ -58,6 +50,14 @@
       "ttm_per_share": 1.06,
       "annual": 6.47,
       "yield_pct": 0.3
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 5,
+      "price": 125.53,
+      "ttm_per_share": 0.52,
+      "annual": 2.6,
+      "yield_pct": 0.41
     }
   ],
   "non_payers": [
@@ -70,8 +70,8 @@
     "EUV"
   ],
   "missing": [],
-  "stock_market_value": 109548,
-  "stock_subtotal": 284.33,
+  "stock_market_value": 106752,
+  "stock_subtotal": 281.28,
   "stock_yield_pct": 0.26,
   "sgov": {
     "ticker": "SGOV",
@@ -86,6 +86,6 @@
     "run_rate_yield_pct": 3.59,
     "label": "现金中的 SGOV（277 股）"
   },
-  "total_annual": 1299.81,
-  "monthly_avg": 108.32
+  "total_annual": 1296.76,
+  "monthly_avg": 108.06
 }

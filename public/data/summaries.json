@@ -5,10 +5,10 @@
     "period_start": "2026-11-16",
     "period_end": "2026-11-20",
     "us": {
-      "pnl_usd": -12071,
-      "pct": -8.3,
+      "pnl_usd": -13228,
+      "pct": -9.1,
       "total_start": 145352.46,
-      "total_end": 135181.27,
+      "total_end": 134024.37,
       "deposits_usd": 1900,
       "closes": 5,
       "daily": [
@@ -30,10 +30,10 @@
         },
         {
           "date": "2026-11-20",
-          "pnl_usd": -6358
+          "pnl_usd": -7515
         }
       ],
-      "cash_pct_end": 27.29,
+      "cash_pct_end": 27.46,
       "cash_pct_start": 24.07,
       "top_gainers": [],
       "top_losers": [
@@ -61,9 +61,9 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 291661,
-      "ytd_usd": -842,
-      "ytd_pct": -0.62
+      "total_usd_end": 290504,
+      "ytd_usd": -1999,
+      "ytd_pct": -1.47
     },
     "user_operations": {
       "locked": true,
@@ -71,17 +71,22 @@
       "items": [
         {
           "ticker": "NVDA",
-          "label": "−17 股（42 → 25）@ 152.86",
+          "label": "本周合计 −37 股（42 → 5）：11/18 卖17股 @ $152.86；11/20 卖20股 @ $138.42",
           "direction": "down"
         },
         {
           "ticker": "QQQ",
-          "label": "IQQ +117 股 @ 22.24，折算为约 +3.96 股 QQQ（17.51 → 约 21.47）",
+          "label": "11/18 买入 +3.961441 股等值，投入 $2,602.08；11/20 买入 +2.375709 股等值，投入 $1,495.20（17.51 → 23.847150 股）",
           "direction": "up"
+        },
+        {
+          "ticker": "QQQ",
+          "label": "11/20 平仓 11/27 到期 660/640 牛市看跌价差1组：卖640P @ $18.17，买回660P @ $31.82；净支出 $1,365，按用户口径全额计当日亏损（非完整盯市）",
+          "direction": "down"
         }
       ]
     },
-    "generated_at": "2026-11-21T00:09:10.995Z"
+    "generated_at": "2026-11-21T01:48:56.789Z"
   },
   {
     "type": "week",
