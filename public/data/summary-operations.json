@@ -1,0 +1,54 @@
+{
+  "week:2026-W45": {
+    "locked": true,
+    "heading": "本周操作",
+    "items": [
+      {
+        "ticker": "TSLA",
+        "label": "约 −3 股（100 → 97）",
+        "direction": "down"
+      },
+      {
+        "ticker": "MSFT",
+        "label": "约 −3 股（17 → 约 14.19）",
+        "direction": "down"
+      },
+      {
+        "ticker": "GOOGL",
+        "label": "约 +2 股（31 → 约 33.19）",
+        "direction": "up"
+      },
+      {
+        "ticker": "SPCX",
+        "label": "+10 股（20 → 30）",
+        "direction": "up"
+      },
+      {
+        "ticker": "QQQ",
+        "label": "约 +2.37 股（15.14 → 17.51）",
+        "direction": "up"
+      }
+    ]
+  },
+  "week:2026-W47": {
+    "locked": true,
+    "heading": "本周操作",
+    "items": [
+      {
+        "ticker": "NVDA",
+        "label": "本周合计 −37 股（42 → 5）：11/18 卖17股 @ $152.86；11/20 卖20股 @ $138.42",
+        "direction": "down"
+      },
+      {
+        "ticker": "QQQ",
+        "label": "11/18 买入 +3.961441 股等值，投入 $2,602.08；11/20 买入 +2.375709 股等值，投入 $1,495.20（17.51 → 23.847150 股）",
+        "direction": "up"
+      },
+      {
+        "ticker": "QQQ",
+        "label": "11/20 平仓 11/27 到期 660/640 牛市看跌价差1组：卖640P @ $18.17，买回660P @ $31.82；净支出 $1,365，按用户口径全额计当日亏损（非完整盯市）",
+        "direction": "down"
+      }
+    ]
+  }
+}
