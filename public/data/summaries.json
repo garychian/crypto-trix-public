@@ -3,14 +3,14 @@
     "type": "week",
     "id": "2026-W47",
     "period_start": "2026-11-16",
-    "period_end": "2026-11-19",
+    "period_end": "2026-11-20",
     "us": {
-      "pnl_usd": -5713,
-      "pct": -3.93,
+      "pnl_usd": -12071,
+      "pct": -8.3,
       "total_start": 145352.46,
-      "total_end": 141539.69,
+      "total_end": 135181.27,
       "deposits_usd": 1900,
-      "closes": 4,
+      "closes": 5,
       "daily": [
         {
           "date": "2026-11-16",
@@ -27,26 +27,30 @@
         {
           "date": "2026-11-19",
           "pnl_usd": -2878
+        },
+        {
+          "date": "2026-11-20",
+          "pnl_usd": -6358
         }
       ],
-      "cash_pct_end": 26.06,
+      "cash_pct_end": 27.29,
       "cash_pct_start": 24.07,
       "top_gainers": [],
       "top_losers": [
         {
           "ticker": "TSLA",
-          "contribution_usd": -1534,
-          "price_pct": -4.05
-        },
-        {
-          "ticker": "GOOGL",
-          "contribution_usd": -767,
-          "price_pct": -7.81
+          "contribution_usd": -4307,
+          "price_pct": -11.38
         },
         {
           "ticker": "NVDA",
-          "contribution_usd": -709,
-          "price_pct": -10.36
+          "contribution_usd": -1567,
+          "price_pct": -22.92
+        },
+        {
+          "ticker": "QQQ",
+          "contribution_usd": -1251,
+          "price_pct": -10.51
         }
       ],
       "position_changes": []
@@ -57,11 +61,10 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 298020,
-      "ytd_usd": 5517,
-      "ytd_pct": 4.06
+      "total_usd_end": 291661,
+      "ytd_usd": -842,
+      "ytd_pct": -0.62
     },
-    "partial": true,
     "user_operations": {
       "locked": true,
       "heading": "本周操作",
@@ -78,7 +81,7 @@
         }
       ]
     },
-    "generated_at": "2026-11-20T00:08:34.357Z"
+    "generated_at": "2026-11-21T00:09:10.995Z"
   },
   {
     "type": "week",
