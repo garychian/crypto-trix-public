@@ -50,5 +50,21 @@
         "direction": "down"
       }
     ]
+  },
+  "week:2026-W48": {
+    "locked": true,
+    "heading": "本周操作",
+    "items": [
+      {
+        "ticker": "QQQ",
+        "label": "11/23 卖出 −3.722256 股等值，收入 $2,410.10（23.847150 → 20.124894 股）；按当日正规收盘市值折算",
+        "direction": "down"
+      },
+      {
+        "ticker": "NVDA",
+        "label": "11/23 买入 +15 股 @ $160（5 → 20 股），投入 $2,400",
+        "direction": "up"
+      }
+    ]
   }
 }

@@ -456,7 +456,7 @@ function computeAndRender() {
   const settledDay = settledDailyPnl(holdingsMeta, srcLabel);
   setMoney('d-daypnl', settledDay ?? dailyPnL);
   document.getElementById('d-daypnl-sub').textContent = settledDay != null
-    ? holdingsMeta.as_of + ' 已结算 · 含交易及平仓现金支出'
+    ? holdingsMeta.as_of + ' 已结算 · 含当日交易调整'
     : holdings.length + ' 只持仓';
   setMoney('d-cumpnl', displayCumPnL);
   document.getElementById('d-cumpnl-sub').textContent =
