@@ -3,39 +3,54 @@
     "type": "week",
     "id": "2026-W48",
     "period_start": "2026-11-23",
-    "period_end": "2026-11-23",
+    "period_end": "2026-11-24",
     "us": {
-      "pnl_usd": 7363,
-      "pct": 5.49,
+      "pnl_usd": 6118,
+      "pct": 4.56,
       "total_start": 134024.37,
-      "total_end": 141387.81,
-      "closes": 1,
+      "total_end": 140143.09,
+      "closes": 2,
       "daily": [
         {
           "date": "2026-11-23",
           "pnl_usd": 7363
+        },
+        {
+          "date": "2026-11-24",
+          "pnl_usd": -1245
         }
       ],
-      "cash_pct_end": 26.03,
+      "cash_pct_end": 26.26,
       "cash_pct_start": 27.46,
       "top_gainers": [
         {
           "ticker": "TSLA",
-          "contribution_usd": 3845,
-          "price_pct": 11.46
+          "contribution_usd": 3769,
+          "price_pct": 11.24
         },
         {
           "ticker": "QQQ",
-          "contribution_usd": 1015,
-          "price_pct": 7
+          "contribution_usd": 707,
+          "price_pct": 4.87
         },
         {
           "ticker": "GOOGL",
-          "contribution_usd": 558,
-          "price_pct": 6.34
+          "contribution_usd": 457,
+          "price_pct": 5.19
         }
       ],
-      "top_losers": [],
+      "top_losers": [
+        {
+          "ticker": "AMD",
+          "contribution_usd": -89,
+          "price_pct": -2.62
+        },
+        {
+          "ticker": "SPCX",
+          "contribution_usd": -59,
+          "price_pct": -1.55
+        }
+      ],
       "position_changes": []
     },
     "cn": {
@@ -44,9 +59,9 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 297868,
-      "ytd_usd": 5365,
-      "ytd_pct": 3.94
+      "total_usd_end": 296623,
+      "ytd_usd": 4120,
+      "ytd_pct": 3.03
     },
     "partial": true,
     "user_operations": {
@@ -65,7 +80,7 @@
         }
       ]
     },
-    "generated_at": "2026-11-23T23:44:15.214Z"
+    "generated_at": "2026-11-25T00:14:58.921Z"
   },
   {
     "type": "week",

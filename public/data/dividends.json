@@ -1,12 +1,12 @@
 {
-  "as_of": "2026-11-23",
-  "source": "Yahoo Finance 过去 12 个月实际派息（TTM）；全部股票股数及价格按 2026-11-23 持仓和正规收盘对齐，QQQ 含折算等值股；每股派息仍为 2026-10-18 获取的 TTM，现金中 SGOV 假设未刷新",
+  "as_of": "2026-11-24",
+  "source": "Yahoo Finance 过去 12 个月实际派息（TTM）；全部股票股数及价格按 2026-11-24 持仓和正规收盘对齐，QQQ 含折算等值股；每股派息仍为 2026-10-18 获取的 TTM，现金中 SGOV 假设未刷新",
   "note": "税前估算，按过去 12 个月实际派息，不含期权收入",
   "stocks": [
     {
       "ticker": "VOO",
       "shares": 14.219352,
-      "price": 663.91,
+      "price": 660.71,
       "ttm_per_share": 7.428,
       "annual": 105.62,
       "yield_pct": 1.12
@@ -14,47 +14,47 @@
     {
       "ticker": "QQQ",
       "shares": 20.124894,
-      "price": 651.03,
+      "price": 638.1,
       "ttm_per_share": 3.091,
       "annual": 62.21,
-      "yield_pct": 0.47
+      "yield_pct": 0.48
     },
     {
       "ticker": "MSFT",
       "shares": 14.188236,
-      "price": 492.5,
+      "price": 496.13,
       "ttm_per_share": 3.64,
       "annual": 51.65,
-      "yield_pct": 0.74
+      "yield_pct": 0.73
     },
     {
       "ticker": "GOOGL",
       "shares": 33.190709,
-      "price": 282.1,
+      "price": 279.05,
       "ttm_per_share": 0.86,
       "annual": 28.54,
-      "yield_pct": 0.3
+      "yield_pct": 0.31
     },
     {
       "ticker": "META",
       "shares": 6.035647,
-      "price": 597.6,
+      "price": 589.82,
       "ttm_per_share": 2.1,
       "annual": 12.67,
-      "yield_pct": 0.35
+      "yield_pct": 0.36
     },
     {
       "ticker": "NVDA",
       "shares": 20,
-      "price": 165.05,
+      "price": 155.38,
       "ttm_per_share": 0.52,
       "annual": 10.4,
-      "yield_pct": 0.32
+      "yield_pct": 0.33
     },
     {
       "ticker": "AAPL",
       "shares": 6.095014,
-      "price": 349.08,
+      "price": 354.07,
       "ttm_per_share": 1.06,
       "annual": 6.46,
       "yield_pct": 0.3
@@ -70,7 +70,7 @@
     "EUV"
   ],
   "missing": [],
-  "stock_market_value": 104580,
+  "stock_market_value": 103335,
   "stock_subtotal": 277.55,
   "stock_yield_pct": 0.27,
   "sgov": {
