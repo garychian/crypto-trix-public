@@ -2,7 +2,7 @@
   "start": "2026-07-16",
   "unit": "USD",
   "source": "portfolio-daily-tweet",
-  "as_of": "2026-11-26",
+  "as_of": "2026-11-28",
   "series": [
     {
       "date": "2026-07-28",
@@ -438,6 +438,12 @@
       "close_date": "2026-11-25",
       "pnl": -926,
       "day": 132
+    },
+    {
+      "date": "2026-11-28",
+      "close_date": "2026-11-27",
+      "pnl": 3363,
+      "day": 133
     }
   ]
 }

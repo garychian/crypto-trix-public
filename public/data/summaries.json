@@ -3,13 +3,13 @@
     "type": "week",
     "id": "2026-W48",
     "period_start": "2026-11-23",
-    "period_end": "2026-11-25",
+    "period_end": "2026-11-27",
     "us": {
-      "pnl_usd": 5192,
-      "pct": 3.87,
+      "pnl_usd": 8555,
+      "pct": 6.38,
       "total_start": 134024.37,
-      "total_end": 139217.18,
-      "closes": 3,
+      "total_end": 142580.12,
+      "closes": 4,
       "daily": [
         {
           "date": "2026-11-23",
@@ -22,44 +22,32 @@
         {
           "date": "2026-11-25",
           "pnl_usd": -926
+        },
+        {
+          "date": "2026-11-27",
+          "pnl_usd": 3363
         }
       ],
-      "cash_pct_end": 26.44,
+      "cash_pct_end": 25.82,
       "cash_pct_start": 27.46,
       "top_gainers": [
         {
           "ticker": "TSLA",
-          "contribution_usd": 3329,
-          "price_pct": 9.92
+          "contribution_usd": 5255,
+          "price_pct": 15.67
         },
         {
           "ticker": "QQQ",
-          "contribution_usd": 608,
-          "price_pct": 4.19
+          "contribution_usd": 1014,
+          "price_pct": 6.99
         },
         {
           "ticker": "VOO",
-          "contribution_usd": 332,
-          "price_pct": 3.67
+          "contribution_usd": 487,
+          "price_pct": 5.39
         }
       ],
-      "top_losers": [
-        {
-          "ticker": "AMD",
-          "contribution_usd": -147,
-          "price_pct": -4.33
-        },
-        {
-          "ticker": "AMZN",
-          "contribution_usd": -41,
-          "price_pct": -0.97
-        },
-        {
-          "ticker": "SPCX",
-          "contribution_usd": -11,
-          "price_pct": -0.27
-        }
-      ],
+      "top_losers": [],
       "position_changes": []
     },
     "cn": {
@@ -68,11 +56,10 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 295697,
-      "ytd_usd": 3194,
-      "ytd_pct": 2.35
+      "total_usd_end": 299060,
+      "ytd_usd": 6557,
+      "ytd_pct": 4.82
     },
-    "partial": true,
     "user_operations": {
       "locked": true,
       "heading": "本周操作",
@@ -89,7 +76,7 @@
         }
       ]
     },
-    "generated_at": "2026-11-26T00:14:38.573Z"
+    "generated_at": "2026-11-28T00:13:45.232Z"
   },
   {
     "type": "week",
