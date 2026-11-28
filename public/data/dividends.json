@@ -1,0 +1,91 @@
+{
+  "as_of": "2026-11-27",
+  "source": "Yahoo Finance 过去 12 个月实际派息（TTM）；全部股票股数及价格按 2026-11-27 持仓和正规收盘对齐，QQQ 含折算等值股；每股派息仍为 2026-10-18 获取的 TTM；SGOV 股数按 11/24 与 11/27 卖出后 257 股，价格对齐 11/27 官方收盘 $100.71",
+  "note": "税前估算，按过去 12 个月实际派息，不含期权收入",
+  "stocks": [
+    {
+      "ticker": "VOO",
+      "shares": 14.219352,
+      "price": 669.79,
+      "ttm_per_share": 7.428,
+      "annual": 105.62,
+      "yield_pct": 1.11
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 23.509493,
+      "price": 650.99,
+      "ttm_per_share": 3.091,
+      "annual": 72.67,
+      "yield_pct": 0.47
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 14.188236,
+      "price": 492.85,
+      "ttm_per_share": 3.64,
+      "annual": 51.65,
+      "yield_pct": 0.74
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 33.190709,
+      "price": 274.96,
+      "ttm_per_share": 0.86,
+      "annual": 28.54,
+      "yield_pct": 0.31
+    },
+    {
+      "ticker": "META",
+      "shares": 6.035647,
+      "price": 628.96,
+      "ttm_per_share": 2.1,
+      "annual": 12.67,
+      "yield_pct": 0.33
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 20,
+      "price": 150.49,
+      "ttm_per_share": 0.52,
+      "annual": 10.4,
+      "yield_pct": 0.35
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6.095014,
+      "price": 358.54,
+      "ttm_per_share": 1.06,
+      "annual": 6.46,
+      "yield_pct": 0.3
+    }
+  ],
+  "non_payers": [
+    "TSLA",
+    "AMD",
+    "AMZN",
+    "BRK.B",
+    "SPCX",
+    "PLTR",
+    "EUV"
+  ],
+  "missing": [],
+  "stock_market_value": 107976,
+  "stock_subtotal": 288.01,
+  "stock_yield_pct": 0.27,
+  "sgov": {
+    "ticker": "SGOV",
+    "shares": 257,
+    "price": 100.71,
+    "ttm_per_share": 3.666,
+    "annual": 942.16,
+    "yield_pct": 3.64,
+    "last_div": 0.301,
+    "last_div_date": "2026-10-01",
+    "run_rate_annual": 928.28,
+    "run_rate_yield_pct": 3.59,
+    "label": "现金中的 SGOV（257 股）"
+  },
+  "total_annual": 1230.17,
+  "monthly_avg": 102.51
+}

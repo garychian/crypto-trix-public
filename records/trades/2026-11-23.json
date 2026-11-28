@@ -1,0 +1,231 @@
+{
+  "market_date": "2026-11-23",
+  "report_date_asia_shanghai": "2026-11-24",
+  "source": "用户成交截图；原始标的仅作内部审计，网站统一 QQQ 等值记账",
+  "trades": [
+    {
+      "id": "2026-11-23-IQQ-SELL-110-21.91",
+      "symbol": "IQQ",
+      "side": "SELL",
+      "filled_shares": 110,
+      "ordered_shares": 110,
+      "price": 21.91,
+      "status": "FILLED",
+      "cash_effect_usd": 2410.1
+    },
+    {
+      "id": "2026-11-23-NVDA-BUY-15-160",
+      "symbol": "NVDA",
+      "side": "BUY",
+      "filled_shares": 15,
+      "ordered_shares": 15,
+      "price": 160,
+      "status": "FILLED",
+      "cash_effect_usd": -2400
+    },
+    {
+      "symbol": "IQQ",
+      "side": "BUY",
+      "filled_shares": 0,
+      "ordered_shares": 10,
+      "limit_price": 21,
+      "status": "CANCELLED",
+      "cash_effect_usd": 0
+    }
+  ],
+  "equivalent_booking": {
+    "ticker": "QQQ",
+    "formula": "110 * 22.03 / 651.03; round equivalent shares to 6 decimals, subtract from existing equivalent pool without reconverting older units",
+    "sold_shares": 3.722256,
+    "before_shares": 23.84715,
+    "after_shares": 20.124894,
+    "cost_basis_method": "existing QQQ-equivalent pool weighted-average cost; allocate costTotal pro rata using 6-decimal booked units, round cost to cents",
+    "cost_removed_usd": 2439.94,
+    "remaining_cost_total_usd": 13191.88,
+    "realized_pnl_usd": -29.84
+  },
+  "quotes": {
+    "TSLA": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/TSLA?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 385.46,
+      "raw_close": 385.4599914550781,
+      "meta": {
+        "regularMarketTime": 1795467600,
+        "regularMarketPrice": 385.46,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "QQQ": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/QQQ?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 651.03,
+      "raw_close": 651.030029296875,
+      "meta": {
+        "regularMarketTime": 1795467601,
+        "regularMarketPrice": 651.03,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "GOOGL": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/GOOGL?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 282.1,
+      "raw_close": 282.1000061035156,
+      "meta": {
+        "regularMarketTime": 1795467601,
+        "regularMarketPrice": 282.1,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "VOO": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/VOO?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 663.91,
+      "raw_close": 663.9099731445312,
+      "meta": {
+        "regularMarketTime": 1795467600,
+        "regularMarketPrice": 663.91,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "MSFT": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/MSFT?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 492.5,
+      "raw_close": 492.5,
+      "meta": {
+        "regularMarketTime": 1795467601,
+        "regularMarketPrice": 492.5,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "NVDA": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/NVDA?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 165.05,
+      "raw_close": 165.0500030517578,
+      "meta": {
+        "regularMarketTime": 1795467601,
+        "regularMarketPrice": 165.05,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "AMD": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/AMD?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 453.46,
+      "raw_close": 453.4599914550781,
+      "meta": {
+        "regularMarketTime": 1795467601,
+        "regularMarketPrice": 453.46,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "META": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/META?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 597.6,
+      "raw_close": 597.5999755859375,
+      "meta": {
+        "regularMarketTime": 1795467601,
+        "regularMarketPrice": 597.6,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "AMZN": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/AMZN?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 255.39,
+      "raw_close": 255.38999938964844,
+      "meta": {
+        "regularMarketTime": 1795467601,
+        "regularMarketPrice": 255.39,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "BRK.B": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/BRK-B?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 572.36,
+      "raw_close": 572.3599853515625,
+      "meta": {
+        "regularMarketTime": 1795467602,
+        "regularMarketPrice": 572.36,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "SPCX": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/SPCX?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 133.35,
+      "raw_close": 133.35000610351562,
+      "meta": {
+        "regularMarketTime": 1795467600,
+        "regularMarketPrice": 133.35,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "PLTR": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/PLTR?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 159.36,
+      "raw_close": 159.36000061035156,
+      "meta": {
+        "regularMarketTime": 1795467601,
+        "regularMarketPrice": 159.36,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "AAPL": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/AAPL?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 349.08,
+      "raw_close": 349.0799865722656,
+      "meta": {
+        "regularMarketTime": 1795467601,
+        "regularMarketPrice": 349.08,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "EUV": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/EUV?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 17.9,
+      "raw_close": 17.899999618530273,
+      "meta": {
+        "regularMarketTime": 1795467600,
+        "regularMarketPrice": 17.9,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    },
+    "IQQ": {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/IQQ?range=5d&interval=1d",
+      "date": "2026-11-23",
+      "close": 22.03,
+      "raw_close": 22.030000686645508,
+      "meta": {
+        "regularMarketTime": 1795467601,
+        "regularMarketPrice": 22.03,
+        "exchangeTimezoneName": "America/New_York",
+        "currency": "USD"
+      }
+    }
+  },
+  "fees": "No fee information provided; no fees invented",
+  "options": "Unchanged; no new option transaction"
+}

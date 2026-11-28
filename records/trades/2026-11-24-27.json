@@ -1,0 +1,148 @@
+{
+  "market_dates": [
+    "2026-11-24",
+    "2026-11-25",
+    "2026-11-27"
+  ],
+  "skipped": [
+    {
+      "date": "2026-11-26",
+      "reason": "US Thanksgiving holiday, no session"
+    }
+  ],
+  "report_date_asia_shanghai": "2026-11-28",
+  "source": "用户成交截图；原始 IQQ 成交仅作内部审计，网站统一按当日官方收盘市值折成 QQQ 等值记账",
+  "fees": "No fee information provided; no fees invented",
+  "options": "Unchanged; Day 129 QQQ 660/640 close not restated",
+  "capital": {
+    "base_usd": 136023,
+    "deposits_total_usd": 30700,
+    "note": "11/18 $1,900 deposit already booked, not repeated"
+  },
+  "sgov_accounting": {
+    "starting_shares": 277,
+    "ending_shares": 257,
+    "in_holdings": false,
+    "included_in_cash_usd": true,
+    "evidence": [
+      "generate-dividends.mjs and dividend card: 「现金里的 SGOV」「当作现金，不进持仓」",
+      "10/5 cash $32,778.61 could contain 255×$100.44; 510-share first draft was corrected the same day because it would have exceeded cash",
+      "10/18 +22 shares updated only the dividend card; cash_usd unchanged, consistent with USD→SGOV conversion inside cash",
+      "total assets have always equaled stock market value + cash_usd, with no separate SGOV line"
+    ],
+    "treatment": "Sale proceeds $1,006.60 and $1,007.00 were not added to cash_usd and were not booked as trading profit. No SGOV cost basis is on file; 11/24 fill equals the official close $100.66, 11/27 fill $100.70 vs close $100.71, so no spread was invented.",
+    "sales": [
+      {
+        "date": "2026-11-24",
+        "shares": 10,
+        "price": 100.66,
+        "proceeds_usd": 1006.6,
+        "official_close": 100.66
+      },
+      {
+        "date": "2026-11-27",
+        "shares": 10,
+        "price": 100.7,
+        "proceeds_usd": 1007.0,
+        "official_close": 100.71
+      }
+    ]
+  },
+  "tbil": {
+    "holding_in_ledger": false,
+    "action": "No TBIL stock position created",
+    "dividend_usd": 28.48,
+    "date": "2026-11-25",
+    "accounting": "Cash dividend added to cash_usd and included in Day 132 P&L as dividend income, not trading profit"
+  },
+  "qqq_equivalent_buys": [
+    {
+      "date": "2026-11-24",
+      "source_symbol": "IQQ",
+      "source_shares": 30,
+      "fill": 21.68,
+      "cash_out_usd": 650.4,
+      "iqq_close": 21.6,
+      "qqq_close": 638.1,
+      "formula": "30 * 21.60 / 638.10",
+      "equivalent_shares": 1.015515,
+      "close_mv_usd": 648.0
+    },
+    {
+      "date": "2026-11-25",
+      "source_symbol": "IQQ",
+      "source_shares": 20,
+      "fill": 20.82,
+      "cash_out_usd": 416.4,
+      "iqq_close": 21.46,
+      "qqq_close": 633.93,
+      "formula": "20 * 21.46 / 633.93",
+      "equivalent_shares": 0.677046,
+      "close_mv_usd": 429.2
+    },
+    {
+      "date": "2026-11-27",
+      "source_symbol": "IQQ",
+      "source_shares": 50,
+      "fill": 21.68,
+      "cash_out_usd": 1084.0,
+      "iqq_close": 22.03,
+      "qqq_close": 650.99,
+      "formula": "50 * 22.03 / 650.99",
+      "equivalent_shares": 1.692038,
+      "close_mv_usd": 1101.5
+    }
+  ],
+  "quote_sources": {
+    "yahoo_history_iqq": "https://finance.yahoo.com/quote/IQQ/history/",
+    "yahoo_history_qqq": "https://finance.yahoo.com/quote/QQQ/history/",
+    "stockanalysis_iqq": "https://stockanalysis.com/etf/iqq/history/",
+    "stockanalysis_qqq": "https://stockanalysis.com/etf/qqq/history/",
+    "yahoo_chart": "https://query1.finance.yahoo.com/v8/finance/chart/{SYM}?range=10d&interval=1d",
+    "official_closes": {
+      "IQQ": {
+        "2026-11-24": 21.6,
+        "2026-11-25": 21.46,
+        "2026-11-27": 22.03
+      },
+      "QQQ": {
+        "2026-11-24": 638.1,
+        "2026-11-25": 633.93,
+        "2026-11-27": 650.99
+      },
+      "SGOV": {
+        "2026-11-24": 100.66,
+        "2026-11-25": 100.68,
+        "2026-11-27": 100.71
+      }
+    },
+    "note": "Regular-session official closes only; after-hours quotes were not used. Existing Day 131–133 holdings prices already matched these official closes and were reused for unchanged tickers."
+  },
+  "revised_settlements": {
+    "day131": {
+      "close_date": "2026-11-24",
+      "heatmap_date": "2026-11-25",
+      "total_usd": 140140.69,
+      "cash_usd": 36157.42,
+      "pnl_usd": -1247.12,
+      "checkin_pnl": -1247
+    },
+    "day132": {
+      "close_date": "2026-11-25",
+      "heatmap_date": "2026-11-26",
+      "total_usd": 139251.83,
+      "cash_usd": 35769.5,
+      "pnl_usd": -888.86,
+      "checkin_pnl": -889
+    },
+    "day133": {
+      "close_date": "2026-11-27",
+      "heatmap_date": "2026-11-28",
+      "total_usd": 142661.14,
+      "cash_usd": 34685.5,
+      "pnl_usd": 3409.31,
+      "checkin_pnl": 3409
+    }
+  },
+  "cash_path": "36807.82 - 650.40 = 36157.42; 36157.42 - 416.40 + 28.48 = 35769.50; 35769.50 - 1084.00 = 34685.50"
+}

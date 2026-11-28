@@ -1,0 +1,106 @@
+{
+  "date": "2026-11-03",
+  "source": "public/data/holdings.json",
+  "total_usd": 145354.12,
+  "cash_usd": 34992.98,
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "shares": 100,
+      "price": 398.5,
+      "mv": 39850,
+      "cost_total": 21537.42
+    },
+    {
+      "ticker": "QQQ",
+      "shares": 15.14,
+      "price": 685.28,
+      "mv": 10375.14,
+      "cost_total": 9093.31
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 31,
+      "price": 280.03,
+      "mv": 8680.93,
+      "cost_total": 3726.34
+    },
+    {
+      "ticker": "VOO",
+      "shares": 14,
+      "price": 693.54,
+      "mv": 9709.56,
+      "cost_total": 7382.91
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 17,
+      "price": 520.99,
+      "mv": 8856.83,
+      "cost_total": 6026.45
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 42,
+      "price": 206.69,
+      "mv": 8680.98,
+      "cost_total": 5300.63
+    },
+    {
+      "ticker": "AMD",
+      "shares": 8,
+      "price": 483.9,
+      "mv": 3871.2,
+      "cost_total": -490.37
+    },
+    {
+      "ticker": "META",
+      "shares": 6,
+      "price": 621.03,
+      "mv": 3726.18,
+      "cost_total": 484.88
+    },
+    {
+      "ticker": "AMZN",
+      "shares": 17,
+      "price": 250.69,
+      "mv": 4261.73,
+      "cost_total": 3435.04
+    },
+    {
+      "ticker": "BRK.B",
+      "shares": 7,
+      "price": 557.07,
+      "mv": 3899.49,
+      "cost_total": 3549.41
+    },
+    {
+      "ticker": "SPCX",
+      "shares": 20,
+      "price": 141.31,
+      "mv": 2826.2,
+      "cost_total": 2736
+    },
+    {
+      "ticker": "PLTR",
+      "shares": 15,
+      "price": 175.4,
+      "mv": 2631,
+      "cost_total": 53.8
+    },
+    {
+      "ticker": "AAPL",
+      "shares": 6,
+      "price": 331.9,
+      "mv": 1991.4,
+      "cost_total": 884.4
+    },
+    {
+      "ticker": "EUV",
+      "shares": 50,
+      "price": 20.01,
+      "mv": 1000.5,
+      "cost_total": 1302.7
+    }
+  ]
+}
