@@ -1,6 +1,6 @@
 {
   "as_of": "2026-11-27",
-  "source": "Yahoo Finance 过去 12 个月实际派息（TTM）；全部股票股数及价格按 2026-11-27 持仓和正规收盘对齐，QQQ 含折算等值股；每股派息仍为 2026-10-18 获取的 TTM，现金中 SGOV 假设未刷新",
+  "source": "Yahoo Finance 过去 12 个月实际派息（TTM）；全部股票股数及价格按 2026-11-27 持仓和正规收盘对齐，QQQ 含折算等值股；每股派息仍为 2026-10-18 获取的 TTM；SGOV 股数按 11/24 与 11/27 卖出后 257 股，价格对齐 11/27 官方收盘 $100.71",
   "note": "税前估算，按过去 12 个月实际派息，不含期权收入",
   "stocks": [
     {
@@ -13,10 +13,10 @@
     },
     {
       "ticker": "QQQ",
-      "shares": 20.124894,
+      "shares": 23.509493,
       "price": 650.99,
       "ttm_per_share": 3.091,
-      "annual": 62.21,
+      "annual": 72.67,
       "yield_pct": 0.47
     },
     {
@@ -70,22 +70,22 @@
     "EUV"
   ],
   "missing": [],
-  "stock_market_value": 105772,
-  "stock_subtotal": 277.55,
-  "stock_yield_pct": 0.26,
+  "stock_market_value": 107976,
+  "stock_subtotal": 288.01,
+  "stock_yield_pct": 0.27,
   "sgov": {
     "ticker": "SGOV",
-    "shares": 277,
-    "price": 100.59,
+    "shares": 257,
+    "price": 100.71,
     "ttm_per_share": 3.666,
-    "annual": 1015.48,
+    "annual": 942.16,
     "yield_pct": 3.64,
     "last_div": 0.301,
     "last_div_date": "2026-10-01",
-    "run_rate_annual": 1000.52,
+    "run_rate_annual": 928.28,
     "run_rate_yield_pct": 3.59,
-    "label": "现金中的 SGOV（277 股）"
+    "label": "现金中的 SGOV（257 股）"
   },
-  "total_annual": 1293.03,
-  "monthly_avg": 107.75
+  "total_annual": 1230.17,
+  "monthly_avg": 102.51
 }

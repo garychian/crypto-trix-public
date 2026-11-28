@@ -5,10 +5,10 @@
     "period_start": "2026-11-23",
     "period_end": "2026-11-27",
     "us": {
-      "pnl_usd": 8555,
-      "pct": 6.38,
+      "pnl_usd": 8636,
+      "pct": 6.44,
       "total_start": 134024.37,
-      "total_end": 142580.12,
+      "total_end": 142661.14,
       "closes": 4,
       "daily": [
         {
@@ -17,18 +17,18 @@
         },
         {
           "date": "2026-11-24",
-          "pnl_usd": -1245
+          "pnl_usd": -1247
         },
         {
           "date": "2026-11-25",
-          "pnl_usd": -926
+          "pnl_usd": -889
         },
         {
           "date": "2026-11-27",
-          "pnl_usd": 3363
+          "pnl_usd": 3409
         }
       ],
-      "cash_pct_end": 25.82,
+      "cash_pct_end": 24.31,
       "cash_pct_start": 27.46,
       "top_gainers": [
         {
@@ -56,9 +56,9 @@
     },
     "combined": {
       "fx_usdcny": 6.7146,
-      "total_usd_end": 299060,
-      "ytd_usd": 6557,
-      "ytd_pct": 4.82
+      "total_usd_end": 299141,
+      "ytd_usd": 6638,
+      "ytd_pct": 4.88
     },
     "user_operations": {
       "locked": true,
@@ -73,10 +73,25 @@
           "ticker": "NVDA",
           "label": "11/23 买入 +15 股 @ $160（5 → 20 股），投入 $2,400",
           "direction": "up"
+        },
+        {
+          "ticker": "QQQ",
+          "label": "11/24 买入 +1.015515 股等值，投入 $650.40；11/25 买入 +0.677046 股等值，投入 $416.40；11/27 买入 +1.692038 股等值，投入 $1,084.00（20.124894 → 23.509493 股）",
+          "direction": "up"
+        },
+        {
+          "ticker": "SGOV",
+          "label": "11/24 卖出 10 股 @ $100.66；11/27 卖出 10 股 @ $100.70（277 → 257 股）。SGOV 本已计入现金、不进持仓，卖款不再加入台账现金，亦不记为交易盈利",
+          "direction": "down"
+        },
+        {
+          "ticker": "TBIL",
+          "label": "11/25 现金红利 $28.48 入账并计入当日盈亏；账本无 TBIL 持仓，未新建仓位",
+          "direction": "up"
         }
       ]
     },
-    "generated_at": "2026-11-28T00:13:45.232Z"
+    "generated_at": "2026-11-28T05:49:31.400Z"
   },
   {
     "type": "week",

@@ -1,8 +1,8 @@
 {
   "date": "2026-11-24",
   "source": "public/data/holdings.json",
-  "total_usd": 140143.09,
-  "cash_usd": 36807.82,
+  "total_usd": 140140.69,
+  "cash_usd": 36157.42,
   "holdings": [
     {
       "ticker": "TSLA",
@@ -15,11 +15,11 @@
     },
     {
       "ticker": "QQQ",
-      "shares": 20.124894,
+      "shares": 21.140409,
       "price": 638.1,
-      "mv": 12841.69,
-      "cost_total": 13191.88,
-      "display_shares": 20.12,
+      "mv": 13489.69,
+      "cost_total": 13842.28,
+      "display_shares": 21.14,
       "shares_source": "inferred"
     },
     {
